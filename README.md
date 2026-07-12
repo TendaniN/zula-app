@@ -67,7 +67,7 @@ npm install
 ### 2. Configure environment
 
 ```bash
-cp .env.example .env
+cp .env.local .env
 ```
 
 ```dotenv
