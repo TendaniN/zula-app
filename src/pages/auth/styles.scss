@@ -1,0 +1,15 @@
+.auth-header {
+  background-color: light-dark(
+    var(--mantine-primary-color-1),
+    var(--mantine-primary-color-9)
+  );
+  border: 2px solid var(--text-color);
+}
+
+.link {
+  text-align: end;
+  font-size: var(--mantine-font-size-sm);
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--mantine-color-blue-7);
+}
