@@ -8,6 +8,8 @@ import { theme } from "@/theme";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
+import Pages from "./pages";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   useEffect(() => {
@@ -19,7 +21,9 @@ function App() {
     <MantineProvider theme={theme} defaultColorScheme={colorScheme}>
       <DatesProvider settings={{ firstDayOfWeek: 1 }}>
         <Notifications />
-        <div>Pages</div>
+        <BrowserRouter basename="zula">
+          <Pages />
+        </BrowserRouter>
       </DatesProvider>
     </MantineProvider>
   );

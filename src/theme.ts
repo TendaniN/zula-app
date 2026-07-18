@@ -1,11 +1,3 @@
-// src/theme.ts
-// Zula "Candy" theme for Mantine v7 — soft pastels, 2px borders, soft corners.
-// Works with <MantineProvider theme={theme} defaultColorScheme={colorScheme}> (see AppProviders).
-//
-//   npm i @mantine/core @mantine/hooks
-//   // load fonts once (index.html <head> or a global CSS):
-//   // @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
-
 import { createTheme, rem, type MantineColorsTuple } from "@mantine/core";
 
 /* ------------------------------------------------------------------ *
@@ -71,22 +63,16 @@ export const theme = createTheme({
   primaryColor: "lavender",
   primaryShade: { light: 4, dark: 4 }, // index 4 = step 5 = brand lavender
   colors: { lavender, peach, mint, dark: candyDark },
-
-  // soft, not-stark neutrals
   white: "#ffffff",
   black: "#4a3d63",
-
   fontFamily: "Nunito, system-ui, sans-serif",
   fontFamilyMonospace: "ui-monospace, SFMono-Regular, monospace",
   headings: {
     fontFamily: "Poppins, Nunito, sans-serif",
     fontWeight: "600",
   },
-
   defaultRadius: "md",
   radius: { sm: rem(8), md: rem(11), lg: rem(14), xl: rem(18) },
-
-  // the signature 2px borders
   components: {
     Card: {
       defaultProps: { withBorder: true, radius: "lg" },
@@ -130,28 +116,6 @@ export const theme = createTheme({
           borderStyle: "solid",
           borderColor: "var(--mantine-color-default-border)",
         },
-      },
-    },
-  },
-
-  other: {
-    // raw tokens if you need them outside Mantine components (exports, charts…)
-    candy: {
-      primary: "#b8a4e0",
-      secondary: "#f6c6a4",
-      tertiary: "#a8ddc9",
-      ink: "#4a3d63",
-      light: {
-        bg: "#f5f2fa",
-        surface: "#ffffff",
-        border: "#4a3d63",
-        muted: "#8a7fa0",
-      },
-      dark: {
-        bg: "#211b2e",
-        surface: "#2c2440",
-        border: "#5a4d78",
-        muted: "#a99bc2",
       },
     },
   },
