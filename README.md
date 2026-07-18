@@ -1,4 +1,21 @@
 # Zula
+<p align="center">
+  <img src="src/assets/logo.svg" alt="Zula" width="200" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/version-0.0.0-4A9DD4.svg" alt="Version" />
+  <img src="https://img.shields.io/badge/status-active%20development-F082A0.svg" alt="Status" />
+  <img src="https://img.shields.io/badge/react-19.x-61dafb.svg" alt="React" />
+  <img src="https://img.shields.io/badge/typescript-strict-3285BB.svg" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/license-TBD-lightgrey.svg" alt="License" />
+</p>
+
+<p align="center">
+  <a href="https://tendanin.github.io/zula/">
+    <img src="https://img.shields.io/badge/live-demo-82A895" />
+  </a>
+</p>
 
 > **Packed bags. Packed itinerary.**
 
@@ -17,7 +34,9 @@ share it with fellow travellers.
 - **Itinerary** — activities per stay (name, cost, date, time, duration, link).
 - **Transport** — trip-level travel between stays (flight, train, metro, …).
 - **To-dos** — a pre-trip checklist with due dates and completion state.
-- **Automatic cost summaries** — read-only totals per stay and per trip.
+- **Automatic cost & budget summaries** — read-only totals per stay and per
+  trip, plus a per-category budget breakdown you can plan monthly.
+- **Export** a trip to PDF, PowerPoint, or Excel (itinerary / transport / budget).
 - **Search & filter** trips by name/destination and status; archived trips are
   hidden by default.
 
@@ -36,15 +55,27 @@ which controls to render.
 
 ## Tech stack
 
-| Layer        | Choice                                             |
-|--------------|----------------------------------------------------|
-| Language     | TypeScript                                         |
-| UI           | React + [Mantine](https://mantine.dev)             |
-| Build/dev    | Vite                                               |
-| Routing      | React Router                                       |
-| Data fetching| TanStack Query                                     |
-| Dates        | Day.js                                             |
-| Backend      | [Supabase](https://supabase.com) (Postgres + Auth + RLS) |
+| Layer         | Choice                                                    |
+|---------------|-----------------------------------------------------------|
+| Language      | TypeScript                                                |
+| UI            | React + [Mantine](https://mantine.dev)                    |
+| Build/dev     | Vite                                                      |
+| Routing       | React Router — **Declarative mode** (`<BrowserRouter>` + `<Routes>`) |
+| State         | [Zustand](https://zustand.docs.pmnd.rs) (client/UI **and** server data via feature stores) |
+| Forms         | [TanStack Form](https://tanstack.com/form) + [Zod](https://zod.dev) |
+| Dates         | Day.js                                                    |
+| Exports       | pdfmake (PDF) · pptxgenjs (PPTX) · [ExcelJS](https://github.com/exceljs/exceljs) (XLSX) |
+| Backend       | [Supabase](https://supabase.com) (Postgres + Auth + RLS)  |
+
+> **On data fetching:** Zula does not use TanStack Query. Server rows are read
+> and cached in per-feature **Zustand** stores (`locationStore`, `activityStore`,
+> `travelStore`, …) that call `supabase-js` directly. Forms are owned by
+> **TanStack Form** with Zod schemas as the single source of truth for values
+> and validation.
+
+> **On XLSX export:** the old `xlsx` (SheetJS) dependency is unmaintained, so
+> Excel export uses **ExcelJS**. It writes a Buffer, which the export utility
+> turns into a Blob download in the browser.
 
 ---
 
@@ -67,7 +98,7 @@ npm install
 ### 2. Configure environment
 
 ```bash
-cp .env.local .env
+cp .env.example .env
 ```
 
 ```dotenv
@@ -78,7 +109,7 @@ VITE_SUPABASE_ANON_KEY=<anon-key>
 ### 3. Set up the database
 
 Open the Supabase SQL editor and run [`zula_schema.sql`](./zula_schema.sql).
-It creates the enums, tables, RLS policies, cost-summary views, triggers, and
+It creates the enums, tables, RLS policies, cost & budget views, triggers, and
 indexes. A profile row is created automatically on signup, and the trip owner
 is auto-added to `trip_members`.
 
@@ -103,19 +134,19 @@ npm run dev
 ## Project structure
 
 Feature-first: shared plumbing lives at the top of `src/`, and each domain is a
-self-contained `features/<domain>/` folder (`api.ts` → `hooks.ts` →
+self-contained `features/<domain>/` folder (`api.ts` → `store.ts` →
 `components/` → `pages/`).
 
 ```
 src/
-├── lib/          supabase client, query client, dayjs setup
+├── lib/          supabase client, dayjs setup
 ├── types/        generated DB types + app-facing model aliases
-├── providers/    AuthProvider, AppProviders
+├── stores/       Zustand: auth, ui/filters, and per-feature server-data stores
 ├── hooks/        useAuth, useTripAccess (RBAC)
-├── components/   layout, guards, shared UI
-├── features/     auth · trips · locations · activities · transport · todos
+├── components/   layout, guards, form field adapters, shared UI
+├── features/     auth · trips · locations · activities · transport · todos · budget
 ├── mocks/        mockData.ts (removed once Supabase is live)
-└── utils/        formatting, error handling
+└── utils/        formatting, error handling, export (pdf/pptx/xlsx)
 ```
 
 The full breakdown, including key file implementations, is in
@@ -131,15 +162,21 @@ trips    ─1─* transports
 trips    ─1─* todos
 ```
 
-**Cost summaries** are read-only Postgres views, not stored data:
+**Cost & budget summaries** are read-only Postgres views, not stored data:
 
 - `location_cost_summary` — `cost_per_night × nights + Σ activity costs`
 - `trip_cost_summary` — `Σ location totals + Σ transport costs`
+- `trip_budget_summary` — the budget table: `buffer + accommodation + activities
+  + travel`, split by category, per trip
+- `trip_summary` — derived trip start/end dates, distinct `countries[]`, and the
+  budget totals (the row the app maps to its `TripSummary` type)
+- `trip_monthly_budget` *(optional)* — server-side monthly split; the export
+  utilities also compute this client-side
 
 ## Mock data
 
 `src/mocks/mockData.ts` provides a fully-linked dataset for every model, plus
-`selectors` that mimic the Supabase queries the real `api.ts` modules will make
+`selectors` that mimic the Supabase queries the real feature stores will make
 (including an RLS-like `visibleTrips`). Swap `currentUser` to preview the app as
 an admin, owner, or member. The mock layer is deleted in milestone **0.2.0**
 once Supabase flows are working.
@@ -162,7 +199,7 @@ once Supabase flows are working.
 | Milestone | Outcome                                                              |
 |-----------|---------------------------------------------------------------------|
 | **0.1.0** | All pages and components built, running on mock data                |
-| **0.2.0** | Mock data removed; Supabase auth, RLS, and cost views working       |
+| **0.2.0** | Mock data removed; Supabase auth, RLS, and cost/budget views working |
 | **0.3.0** | Theme toggling (light/dark/auto) and full responsiveness complete   |
 | **0.4.0** | Beta-ready: feedback mechanism, help pages, tooltips, onboarding, published to GitHub Pages |
 | **1.0.0** | Beta feedback implemented; ready to expand the user base            |
@@ -172,10 +209,20 @@ Detailed milestones and issue checklists are in
 
 ## Deployment
 
-The app deploys as a static SPA to **GitHub Pages** (milestone 0.4.0). This
-requires setting Vite's `base` path, a client-routing 404 fallback, a GitHub
-Actions build/deploy workflow, and adding the Pages URL to Supabase's allowed
-auth redirect URLs.
+The app deploys as a static SPA to **GitHub Pages** (milestone 0.4.0). Because
+it's served from a sub-path, the router runs with `basename="/zula"` and Vite's
+`base` is set to `/zula/`. This also needs a client-routing 404 fallback, a
+GitHub Actions build/deploy workflow, and the Pages URL added to Supabase's
+allowed auth redirect URLs.
+
+```tsx
+<MantineProvider theme={theme}>
+  <Notifications />
+  <BrowserRouter basename="/zula">
+    <Pages />
+  </BrowserRouter>
+</MantineProvider>
+```
 
 ---
 
@@ -184,6 +231,7 @@ auth redirect URLs.
 Work is tracked through the milestones and issues above. Each issue's checklist
 is its acceptance criteria; a milestone is complete when all its issues close.
 
-## License
+## 👤 Author
 
-Add a license (e.g. MIT) before making the repository public.
+**Tendani Netshitenzhe**
+[@TendaniN](https://github.com/TendaniN)
