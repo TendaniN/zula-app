@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "gen:types": "supabase gen types typescript --project-id <YOUR_ID> > src/types/database.types.ts"
+    "gen:types": "supabase gen types typescript --project-id bneffjsakfyqwlehbido > src/types/database.types.ts"
   },
   "dependencies": {
     "@mantine/core": "^9.4.1",
@@ -16,8 +16,15 @@
     "@mantine/hooks": "^9.4.1",
     "@mantine/modals": "^9.4.1",
     "@mantine/notifications": "^9.4.1",
+    "@supabase/supabase-js": "^2.110.2",
     "@tanstack/react-form": "^1.33.1",
+    "clsx": "^2.1.1",
+    "country-flag-icons": "^1.6.20",
+    "currency-codes": "^2.2.0",
     "dayjs": "^1.11.21",
+    "exceljs": "^4.4.0",
+    "pdfmake": "^0.3.11",
+    "pptxgenjs": "^4.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.1",
@@ -27,6 +34,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^24.13.2",
+    "@types/pdfmake": "^0.3.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
@@ -35,6 +43,7 @@
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.7.0",
     "prettier": "3.9.5",
+    "sass": "^1.101.0",
     "supabase": "^2.109.1",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.62.0",

@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&&family=Source+Sans+3:wght@400;500;600;700&display=swap");
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--mantine-font-family);
+  background-color: var(--background-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--mantine-font-family-headings);
+}
+
+:root {
+  --background-color: #f5f2fa;
+  --surface-color: #ffffff;
+  --border-color: #4a3d63;
+  --muted: #8a7fa0;
+}
+
+[data-mantine-color-scheme="dark"] {
+  --background-color: #211b2e;
+  --surface-color: #2c2440;
+  --border-color: #5a4d78;
+  --muted: #a99bc2;
+}
