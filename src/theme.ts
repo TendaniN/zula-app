@@ -84,27 +84,43 @@ export const theme = createTheme({
       },
     },
     Paper: { styles: { root: { borderWidth: rem(2) } } },
-    Button: {
-      defaultProps: { radius: "md" },
-      styles: { root: { borderWidth: rem(2), fontWeight: 800 } },
-    },
     TextInput: {
-      defaultProps: { radius: "md" },
-      styles: { input: { borderWidth: rem(2) } },
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: {
+          borderWidth: rem(2),
+          border: "2px solid var(--text-color)",
+        },
+        label: { color: "var(--border-color)" },
+      },
+    },
+    PasswordInput: {
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: { borderWidth: rem(2), border: "2px solid var(--text-color)" },
+        label: { color: "var(--border-color)" },
+      },
     },
     NumberInput: {
-      defaultProps: { radius: "md" },
-      styles: { input: { borderWidth: rem(2) } },
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: { borderWidth: rem(2), border: "2px solid var(--text-color)" },
+      },
     },
     Select: {
-      defaultProps: { radius: "md" },
-      styles: { input: { borderWidth: rem(2) } },
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: { borderWidth: rem(2), border: "2px solid var(--text-color)" },
+      },
     },
     Badge: {
       defaultProps: { radius: "xl", variant: "light" },
       styles: {
         root: { borderWidth: rem(2), borderStyle: "solid", fontWeight: 800 },
       },
+    },
+    Divider: {
+      defaultProps: { size: "sm" },
     },
     Switch: { defaultProps: { color: "lavender" } },
     Tabs: { defaultProps: { color: "lavender" } },
