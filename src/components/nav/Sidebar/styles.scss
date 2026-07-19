@@ -1,0 +1,42 @@
+.sidebar {
+  background-color: light-dark(
+    var(--mantine-primary-color-1),
+    var(--mantine-color-dark-9)
+  );
+
+  &__nav {
+    &--item {
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--mantine-radius-md);
+      border: 2px solid transparent;
+      color: light-dark(
+        var(--mantine-color-gray-6),
+        var(--mantine-primary-color-5)
+      );
+      text-decoration: none;
+
+      p {
+        font-weight: 600;
+      }
+
+      &:hover,
+      &.active {
+        background-color: var(--mantine-primary-color-5);
+        border-color: var(--border-color);
+        color: var(--mantine-color-dark-6);
+      }
+    }
+  }
+
+  &__avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+
+    &[data-role="admin"] {
+      background: var(--aurora);
+    }
+    &[data-role="user"] {
+      background: var(--meadow);
+    }
+  }
+}

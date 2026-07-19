@@ -89,7 +89,7 @@ export const theme = createTheme({
       styles: {
         input: {
           borderWidth: rem(2),
-          border: "2px solid var(--text-color)",
+          border: "2px solid var(--border-color)",
         },
         label: { color: "var(--border-color)" },
       },
@@ -97,20 +97,20 @@ export const theme = createTheme({
     PasswordInput: {
       defaultProps: { radius: "md", size: "md" },
       styles: {
-        input: { borderWidth: rem(2), border: "2px solid var(--text-color)" },
+        input: { borderWidth: rem(2), border: "2px solid var(--border-color)" },
         label: { color: "var(--border-color)" },
       },
     },
     NumberInput: {
       defaultProps: { radius: "md", size: "md" },
       styles: {
-        input: { borderWidth: rem(2), border: "2px solid var(--text-color)" },
+        input: { borderWidth: rem(2), border: "2px solid var(--border-color)" },
       },
     },
     Select: {
       defaultProps: { radius: "md", size: "md" },
       styles: {
-        input: { borderWidth: rem(2), border: "2px solid var(--text-color)" },
+        input: { borderWidth: rem(2), border: "2px solid var(--border-color)" },
       },
     },
     Badge: {
