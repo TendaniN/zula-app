@@ -7,7 +7,7 @@ export default function AppLayout() {
 
   if (loading) {
     return (
-      <Center h="100dvh">
+      <Center h="100%">
         <Loader size="xl" type="bars" />
       </Center>
     );
@@ -17,9 +17,5 @@ export default function AppLayout() {
     return <Navigate to="/login" replace />;
   }
 
-  return (
-    <div style={{ height: "100dvh", width: "100dvw" }}>
-      <Outlet />
-    </div>
-  );
+  return <Outlet />;
 }

@@ -7,6 +7,7 @@ export default function Pages() {
     <Routes>
       <Route element={<AppLayout />}>
         <Route path="/" element={<div>Pages</div>} />
+        <Route path="/trips" element={<div>Trips</div>} />
       </Route>
 
       <Route element={<AuthLayout />}>
