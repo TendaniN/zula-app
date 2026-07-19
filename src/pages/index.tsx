@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { AppLayout, AuthLayout } from "@/components/layouts";
-import LoginPage from "./auth/LoginPage";
+import { LoginPage, RegisterPage } from "./auth";
 
 export default function Pages() {
   return (
@@ -11,6 +11,7 @@ export default function Pages() {
 
       <Route element={<AuthLayout />}>
         <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
       </Route>
     </Routes>
   );

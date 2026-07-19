@@ -26,7 +26,7 @@ export default function AuthLayout() {
       }}
     >
       <Group h="calc(100dvh - 4px)" gap={0}>
-        <Stack p="lg" h="100%" w={{ base: "20%", sm: "40%", xl: "50%" }}>
+        <Stack p="lg" h="100%" w={{ base: "30%", sm: "50%", xl: "60%" }}>
           <Group>
             <Image w={{ base: 32, sm: 40 }} src={logoImg} />
             <Title order={2} fw="bold">
@@ -50,7 +50,7 @@ export default function AuthLayout() {
           </Stack>
         </Stack>
         <Container
-          w={{ base: "80%", sm: "60%", xl: "50%" }}
+          w={{ base: "70%", sm: "50%", xl: "40%" }}
           p="xl"
           h="100%"
           bg="var(--bg-color)"
