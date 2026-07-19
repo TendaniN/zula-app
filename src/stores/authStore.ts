@@ -2,7 +2,6 @@ import { create } from "zustand";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import type { Profile, ProfileUpdate } from "@/types/models";
-import type { TablesInsert } from "@/types/database.types";
 
 interface AuthState {
   session: Session | null;
@@ -94,25 +93,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
       if (error) throw error;
       set({ session: data.session, user: data.user });
-
-      if (data.user) {
-        const profileRow: TablesInsert<"profiles"> = {
-          id: data.user.id,
-          email,
-          first_name: details?.first_name ?? null,
-          last_name: details?.last_name ?? null,
-          username: details?.username ?? null,
-          app_role: "admin",
-        };
-        // Upsert avoids a conflict if a DB trigger already inserted a base row.
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .upsert(profileRow)
-          .select()
-          .single();
-        if (profileError) throw profileError;
-        set({ profile, error: null });
-      }
     } catch (e) {
       set({ error: e instanceof Error ? e.message : "Sign up failed" });
       throw e;
