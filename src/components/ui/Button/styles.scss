@@ -1,0 +1,26 @@
+button.button {
+  width: fit-content;
+  border-radius: var(--mantine-radius-md);
+  padding: 0.625rem 1.125rem;
+  display: flex;
+  gap: 0.5rem;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 800;
+
+  &--fluid {
+    width: 100%;
+  }
+
+  &--primary {
+    background-color: var(--mantine-primary-color-5);
+    color: var(--mantine-primary-color-9);
+    box-shadow: 0 4px 0 var(--mantine-primary-color-7);
+    border: 2px solid var(--mantine-primary-color-7);
+  }
+
+  &:active {
+    transform: translateY(0.0625rem);
+  }
+}

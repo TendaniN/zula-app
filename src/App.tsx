@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { MantineProvider } from "@mantine/core";
 import { DatesProvider } from "@mantine/dates";
 import { Notifications } from "@mantine/notifications";
-import { initAuth } from "@/stores/authStore";
+import { useAuthStore } from "@/stores/authStore";
 import { useUiStore } from "@/stores/uiStore";
 import { theme } from "@/theme";
 import "@mantine/core/styles.css";
@@ -12,6 +12,8 @@ import Pages from "./pages";
 import { BrowserRouter } from "react-router-dom";
 
 function App() {
+  const initAuth = useAuthStore((s) => s.initialize);
+
   useEffect(() => {
     initAuth();
   }, []);

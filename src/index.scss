@@ -8,7 +8,11 @@ body,
 
 body {
   font-family: var(--mantine-font-family);
-  background-color: var(--background-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
+  width: 100dvw;
+  height: 100dvh;
 }
 
 h1,
@@ -21,15 +25,19 @@ h6 {
 }
 
 :root {
-  --background-color: #f5f2fa;
+  --bg-color: #f5f2fa;
   --surface-color: #ffffff;
   --border-color: #4a3d63;
   --muted: #8a7fa0;
+
+  --text-color: var(--mantine-color-black);
 }
 
 [data-mantine-color-scheme="dark"] {
-  --background-color: #211b2e;
+  --bg-color: #211b2e;
   --surface-color: #2c2440;
   --border-color: #5a4d78;
   --muted: #a99bc2;
+
+  --text-color: var(--mantine-color-white);
 }
