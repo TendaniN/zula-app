@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { Center, Loader } from "@mantine/core";
 
 export default function DefaultLayout() {
-  const { profile, loading } = useAuthStore();
+  const { loading, user, profile } = useAuthStore();
 
   if (loading) {
     return (
@@ -13,7 +13,7 @@ export default function DefaultLayout() {
     );
   }
 
-  if (!profile) {
+  if (!user && !profile) {
     return <Navigate to="/login" replace />;
   }
 

@@ -25,6 +25,10 @@
         border-color: var(--border-color);
         color: var(--mantine-color-dark-6);
       }
+
+      &.active p {
+        font-weight: 700;
+      }
     }
   }
 

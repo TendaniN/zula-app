@@ -84,27 +84,70 @@ export const theme = createTheme({
       },
     },
     Paper: { styles: { root: { borderWidth: rem(2) } } },
+    Textarea: {
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: {
+          borderWidth: rem(2),
+          border: "2px solid var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        label: {
+          color: "var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+      },
+    },
     TextInput: {
       defaultProps: { radius: "md", size: "md" },
       styles: {
         input: {
           borderWidth: rem(2),
           border: "2px solid var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
         },
-        label: { color: "var(--border-color)" },
+        label: {
+          color: "var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        description: {
+          fontSize: "var(--mantine-font-size-xs)",
+        },
       },
     },
     PasswordInput: {
       defaultProps: { radius: "md", size: "md" },
       styles: {
-        input: { borderWidth: rem(2), border: "2px solid var(--border-color)" },
-        label: { color: "var(--border-color)" },
+        input: {
+          borderWidth: rem(2),
+          border: "2px solid var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        label: {
+          color: "var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+
+        description: {
+          fontSize: "var(--mantine-font-size-xs)",
+        },
       },
     },
     NumberInput: {
       defaultProps: { radius: "md", size: "md" },
       styles: {
-        input: { borderWidth: rem(2), border: "2px solid var(--border-color)" },
+        input: {
+          borderWidth: rem(2),
+          border: "2px solid var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        label: {
+          color: "var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        description: {
+          fontSize: "var(--mantine-font-size-xs)",
+        },
       },
     },
     Select: {
@@ -130,7 +173,7 @@ export const theme = createTheme({
         content: {
           borderWidth: rem(2),
           borderStyle: "solid",
-          borderColor: "var(--mantine-color-default-border)",
+          borderColor: "var(--border-color)",
         },
       },
     },

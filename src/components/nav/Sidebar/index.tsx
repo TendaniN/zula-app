@@ -63,7 +63,7 @@ export const Sidebar = () => {
           >
             <Group>
               {icon}
-              <Text>{label}</Text>
+              <Text fz="sm">{label}</Text>
             </Group>
           </Link>
         ))}

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { AppLayout, DefaultLayout, AuthLayout } from "@/components/layouts";
 import { LoginPage, RegisterPage } from "./auth";
 import TripsPage from "./trips";
@@ -6,6 +6,8 @@ import TripsPage from "./trips";
 export default function Pages() {
   return (
     <Routes>
+      <Route path="*" element={<Navigate to="/trips" replace />} />
+
       <Route element={<DefaultLayout />}>
         <Route path="/" element={<div>Pages</div>} />
 
