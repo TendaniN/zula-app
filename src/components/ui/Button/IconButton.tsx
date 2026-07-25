@@ -8,45 +8,33 @@ type NativeButtonProps = DetailedHTMLProps<
   HTMLButtonElement
 >;
 
-interface ButtonProps extends NativeButtonProps {
-  children: ReactNode;
-  leftSection?: ReactNode;
-  rightSection?: ReactNode;
+interface IconButtonProps extends Omit<NativeButtonProps, "children"> {
+  icon: ReactNode;
   variant?: ButtonVariant;
-  fluid?: boolean;
   size?: ButtonSize;
-  loading?: boolean;
+  /** Required: icon-only buttons have no visible text, so they need an accessible name. */
+  "aria-label": string;
 }
 
-export const Button = ({
-  children,
-  leftSection,
-  rightSection,
+export const IconButton = ({
+  icon,
   variant = "primary",
-  fluid = false,
+  size = "md",
   className,
   type = "button",
-  size = "md",
-  loading,
-  disabled,
   ...props
-}: ButtonProps) => (
+}: IconButtonProps) => (
   <button
     type={type}
     className={clsx(
       "button",
+      "button--icon",
       `button--${variant}`,
       `button--${size}`,
-      {
-        "button--fluid": fluid,
-      },
       className,
     )}
-    disabled={loading || disabled}
     {...props}
   >
-    {leftSection && leftSection}
-    {children && children}
-    {rightSection && rightSection}
+    {icon}
   </button>
 );
