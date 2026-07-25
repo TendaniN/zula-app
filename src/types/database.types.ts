@@ -684,13 +684,7 @@ export type Database = {
         | "ferry"
         | "metro"
         | "other"
-      trip_status:
-        | "planning"
-        | "saved"
-        | "accepted"
-        | "active"
-        | "completed"
-        | "archived"
+      trip_status: "planning" | "active" | "completed" | "archived"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -837,14 +831,7 @@ export const Constants = {
         "metro",
         "other",
       ],
-      trip_status: [
-        "planning",
-        "saved",
-        "accepted",
-        "active",
-        "completed",
-        "archived",
-      ],
+      trip_status: ["planning", "active", "completed", "archived"],
     },
   },
 } as const
