@@ -3,7 +3,6 @@ import { MantineProvider } from "@mantine/core";
 import { DatesProvider } from "@mantine/dates";
 import { Notifications } from "@mantine/notifications";
 import { useAuthStore } from "@/stores/authStore";
-import { useUiStore } from "@/stores/uiStore";
 import { theme } from "@/theme";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
@@ -17,10 +16,9 @@ function App() {
   useEffect(() => {
     initAuth();
   }, []);
-  const colorScheme = useUiStore((s) => s.colorScheme);
 
   return (
-    <MantineProvider theme={theme} defaultColorScheme={colorScheme}>
+    <MantineProvider theme={theme}>
       <DatesProvider settings={{ firstDayOfWeek: 1 }}>
         <Notifications />
         <BrowserRouter basename="zula">
