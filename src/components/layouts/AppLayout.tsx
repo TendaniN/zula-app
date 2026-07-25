@@ -1,25 +1,14 @@
-import { useAuthStore } from "@/stores/authStore";
-import { Navigate, Outlet } from "react-router-dom";
-import { Center, Loader } from "@mantine/core";
+import { Container, Group } from "@mantine/core";
+import { Outlet } from "react-router-dom";
+import { Sidebar } from "../nav";
 
 export default function AppLayout() {
-  const { profile, loading } = useAuthStore();
-
-  if (loading) {
-    return (
-      <Center h="100dvh">
-        <Loader size="xl" type="bars" />
-      </Center>
-    );
-  }
-
-  if (!profile) {
-    return <Navigate to="/login" replace />;
-  }
-
   return (
-    <div style={{ height: "100dvh", width: "100dvw" }}>
-      <Outlet />
-    </div>
+    <Group gap={0} h="calc(100dvh - 4px)" bg="var(--bg-color)">
+      <Sidebar />
+      <Container h="100%" miw="calc(100% - 15rem)" m={0} p="xl">
+        <Outlet />
+      </Container>
+    </Group>
   );
 }

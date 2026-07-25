@@ -79,32 +79,91 @@ export const theme = createTheme({
       styles: {
         root: {
           borderWidth: rem(2),
-          borderColor: "var(--mantine-color-default-border)",
+          borderColor: "var(--border-color)",
         },
       },
     },
     Paper: { styles: { root: { borderWidth: rem(2) } } },
-    Button: {
-      defaultProps: { radius: "md" },
-      styles: { root: { borderWidth: rem(2), fontWeight: 800 } },
+    Textarea: {
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: {
+          borderWidth: rem(2),
+          border: "2px solid var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        label: {
+          color: "var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+      },
     },
     TextInput: {
-      defaultProps: { radius: "md" },
-      styles: { input: { borderWidth: rem(2) } },
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: {
+          borderWidth: rem(2),
+          border: "2px solid var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        label: {
+          color: "var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        description: {
+          fontSize: "var(--mantine-font-size-xs)",
+        },
+      },
+    },
+    PasswordInput: {
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: {
+          borderWidth: rem(2),
+          border: "2px solid var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        label: {
+          color: "var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+
+        description: {
+          fontSize: "var(--mantine-font-size-xs)",
+        },
+      },
     },
     NumberInput: {
-      defaultProps: { radius: "md" },
-      styles: { input: { borderWidth: rem(2) } },
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: {
+          borderWidth: rem(2),
+          border: "2px solid var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        label: {
+          color: "var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        description: {
+          fontSize: "var(--mantine-font-size-xs)",
+        },
+      },
     },
     Select: {
-      defaultProps: { radius: "md" },
-      styles: { input: { borderWidth: rem(2) } },
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: { borderWidth: rem(2), border: "2px solid var(--border-color)" },
+      },
     },
     Badge: {
       defaultProps: { radius: "xl", variant: "light" },
       styles: {
         root: { borderWidth: rem(2), borderStyle: "solid", fontWeight: 800 },
       },
+    },
+    Divider: {
+      defaultProps: { size: "sm" },
     },
     Switch: { defaultProps: { color: "lavender" } },
     Tabs: { defaultProps: { color: "lavender" } },
@@ -114,7 +173,7 @@ export const theme = createTheme({
         content: {
           borderWidth: rem(2),
           borderStyle: "solid",
-          borderColor: "var(--mantine-color-default-border)",
+          borderColor: "var(--border-color)",
         },
       },
     },
