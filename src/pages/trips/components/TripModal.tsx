@@ -22,6 +22,7 @@ import { useCurrencyStore } from "@/stores/currencyStore";
 import { useTripStore } from "@/stores/tripStore";
 import { TripSchema, type TripFormValues } from "../schema";
 import type { Trip, TripStatus } from "@/types/models";
+import { useNavigate } from "react-router-dom";
 
 interface TripModalProps {
   /** Pass a trip to edit it; omit for create mode. */
@@ -46,6 +47,7 @@ export const TripModal = ({
   opened: openedProp,
   onClose,
 }: TripModalProps) => {
+  const navigate = useNavigate();
   const currency = useCurrencyStore((s) => s.symbol);
   const { createTrip, updateTrip } = useTripStore();
 
@@ -73,7 +75,11 @@ export const TripModal = ({
         if (isEdit && trip) {
           await updateTrip(trip.id, parsed);
         } else {
-          await createTrip(parsed);
+          const data = await createTrip(parsed);
+
+          if (data) {
+            navigate(`/trips/${data.id}`);
+          }
         }
         form.reset();
         close();

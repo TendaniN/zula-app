@@ -6,6 +6,7 @@ import type {
   TripInsert,
   TripUpdate,
   TripMemberWithProfile,
+  TripSummaryRow,
 } from "@/types/models";
 
 /** Fields a create form supplies; owner_id is injected from the session. */
@@ -13,7 +14,9 @@ export type NewTripInput = Omit<TripInsert, "owner_id">;
 
 interface TripState {
   trips: Trip[];
+  tripSummaries: TripSummaryRow[];
   currentTrip: Trip | null;
+  currentTripSummary: TripSummaryRow | null;
   currentMembers: TripMemberWithProfile[];
   loading: boolean;
   error: string | null;
@@ -30,33 +33,58 @@ interface TripState {
 
 export const useTripStore = create<TripState>((set, get) => ({
   trips: [],
+  tripSummaries: [],
   currentTrip: null,
+  currentTripSummary: null,
   currentMembers: [],
   loading: false,
   error: null,
 
   fetchTrips: async () => {
     set({ loading: true, error: null });
-    // RLS scopes results to trips the user owns or is a member of.
-    // Swap to `.from("trip_summary")` if you want precomputed costs/countries.
-    const { data, error } = await supabase
-      .from("trips")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (error) set({ error: error.message });
-    else set({ trips: data ?? [] });
+
+    // Fetch raw trips and their summaries in parallel. RLS on trips scopes
+    // both queries to trips the user owns or is a member of.
+    const [tripsResult, summariesResult] = await Promise.all([
+      supabase
+        .from("trips")
+        .select("*")
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("trip_summary")
+        .select("*")
+        .order("created_at", { ascending: false }),
+    ]);
+
+    if (tripsResult.error) set({ error: tripsResult.error.message });
+    else if (summariesResult.error)
+      set({ error: summariesResult.error.message });
+    else
+      set({
+        trips: tripsResult.data ?? [],
+        tripSummaries: summariesResult.data ?? [],
+      });
+
     set({ loading: false });
   },
 
   fetchTrip: async (id) => {
     set({ loading: true, error: null });
-    const { data, error } = await supabase
-      .from("trips")
-      .select("*")
-      .eq("id", id)
-      .single();
-    if (error) set({ error: error.message });
-    else set({ currentTrip: data });
+
+    // Fetch the raw trip row and its summary in parallel.
+    const [tripResult, summaryResult] = await Promise.all([
+      supabase.from("trips").select("*").eq("id", id).single(),
+      supabase.from("trip_summary").select("*").eq("id", id).single(),
+    ]);
+
+    if (tripResult.error) set({ error: tripResult.error.message });
+    else if (summaryResult.error) set({ error: summaryResult.error.message });
+    else
+      set({
+        currentTrip: tripResult.data,
+        currentTripSummary: summaryResult.data,
+      });
+
     set({ loading: false });
     await get().fetchMembers(id);
   },
@@ -88,7 +116,20 @@ export const useTripStore = create<TripState>((set, get) => ({
       throw error;
     }
 
-    set((state) => ({ trips: [data, ...state.trips] }));
+    // Fetch the new summary so tripSummaries stays in sync.
+    const { data: summary } = await supabase
+      .from("trip_summary")
+      .select("*")
+      .eq("id", data.id)
+      .single();
+
+    set((state) => ({
+      trips: [data, ...state.trips],
+      tripSummaries: summary
+        ? [summary, ...state.tripSummaries]
+        : state.tripSummaries,
+    }));
+
     return data;
   },
 
@@ -103,9 +144,24 @@ export const useTripStore = create<TripState>((set, get) => ({
       set({ error: error.message });
       throw error;
     }
+
+    // Re-fetch the summary so costs/countries/dates stay accurate.
+    const { data: summary } = await supabase
+      .from("trip_summary")
+      .select("*")
+      .eq("id", id)
+      .single();
+
     set((state) => ({
       trips: state.trips.map((t) => (t.id === id ? data : t)),
+      tripSummaries: summary
+        ? state.tripSummaries.map((s) => (s.id === id ? summary : s))
+        : state.tripSummaries,
       currentTrip: state.currentTrip?.id === id ? data : state.currentTrip,
+      currentTripSummary:
+        state.currentTripSummary?.id === id
+          ? (summary ?? state.currentTripSummary)
+          : state.currentTripSummary,
     }));
   },
 
@@ -117,7 +173,10 @@ export const useTripStore = create<TripState>((set, get) => ({
     }
     set((state) => ({
       trips: state.trips.filter((t) => t.id !== id),
+      tripSummaries: state.tripSummaries.filter((s) => s.id !== id),
       currentTrip: state.currentTrip?.id === id ? null : state.currentTrip,
+      currentTripSummary:
+        state.currentTripSummary?.id === id ? null : state.currentTripSummary,
     }));
   },
 
@@ -125,5 +184,6 @@ export const useTripStore = create<TripState>((set, get) => ({
     await get().updateTrip(id, { status: "archived" });
   },
 
-  clearCurrent: () => set({ currentTrip: null, currentMembers: [] }),
+  clearCurrent: () =>
+    set({ currentTrip: null, currentTripSummary: null, currentMembers: [] }),
 }));

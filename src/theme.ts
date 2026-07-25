@@ -79,7 +79,7 @@ export const theme = createTheme({
       styles: {
         root: {
           borderWidth: rem(2),
-          borderColor: "var(--mantine-color-default-border)",
+          borderColor: "var(--border-color)",
         },
       },
     },

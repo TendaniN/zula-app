@@ -77,3 +77,5 @@ export const TRIP_STATUS_FILTERS = [
   { id: "all" as const, label: "All", color: "lavender" },
   ...STATUS_MAP,
 ];
+
+export type TripFilter = (typeof TRIP_STATUS_FILTERS)[number]["id"];
