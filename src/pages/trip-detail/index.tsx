@@ -21,11 +21,14 @@ import {
   PiCheckSquare,
   PiCreditCard,
   PiDotBold,
+  PiArrowRight,
   PiMapPin,
   PiPaperPlaneTilt,
 } from "react-icons/pi";
 import "./styles.scss";
 import noLocationsImg from "@/assets/icons/empty-no-locations.svg";
+import { LocationModal } from "./components/LocationModal";
+import { Button } from "@/components/ui";
 
 export default function TripDetailPage() {
   const {
@@ -195,6 +198,14 @@ export default function TripDetailPage() {
                       Stays, activities, transport and budget all hang off your
                       stops.
                     </Text>
+                    <LocationModal
+                      tripId={tripId}
+                      trigger={(open) => (
+                        <Button leftSection={<PiArrowRight />} onClick={open}>
+                          Add a your first stay
+                        </Button>
+                      )}
+                    />
                   </Center>
                 </Stack>
               ) : (
