@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AppLayout, DefaultLayout, AuthLayout } from "@/components/layouts";
 import { LoginPage, RegisterPage } from "./auth";
-import TripsPage from "./trips";
+import TripListPage from "./trip-list";
 
 export default function Pages() {
   return (
@@ -12,7 +12,7 @@ export default function Pages() {
         <Route path="/" element={<div>Pages</div>} />
 
         <Route element={<AppLayout />}>
-          <Route path="/trips" element={<TripsPage />} />
+          <Route path="/trips" element={<TripListPage />} />
         </Route>
       </Route>
 

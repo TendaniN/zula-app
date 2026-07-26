@@ -26,7 +26,7 @@ import { FilterChip } from "./components/FilterChip";
 import { TripCard } from "./components/TripCard";
 import mockDb from "@/mocks/mockData";
 
-export default function TripsPage() {
+export default function TripListPage() {
   const { loading, fetchTrips } = useTripStore();
   const { tripSummaries } = mockDb;
 
