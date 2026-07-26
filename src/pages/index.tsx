@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { AppLayout, DefaultLayout, AuthLayout } from "@/components/layouts";
 import { LoginPage, RegisterPage } from "./auth";
 import TripListPage from "./trip-list";
+import TripDetailPage from "./trip-detail";
 
 export default function Pages() {
   return (
@@ -13,6 +14,7 @@ export default function Pages() {
 
         <Route element={<AppLayout />}>
           <Route path="/trips" element={<TripListPage />} />
+          <Route path="/trips/:tripId" element={<TripDetailPage />} />
         </Route>
       </Route>
 

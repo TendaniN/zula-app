@@ -1,0 +1,13 @@
+.mantine-Tabs-tab {
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-md);
+
+  &:hover,
+  &[data-active] {
+    color: var(--text-color);
+    background-color: light-dark(
+      var(--mantine-primary-color-1),
+      var(--mantine-color-dark-9)
+    );
+  }
+}
