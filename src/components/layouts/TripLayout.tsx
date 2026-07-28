@@ -14,6 +14,7 @@ import { useLocationStore } from "@/stores/locationStore";
 import { Navigate, Outlet, useNavigate, useParams } from "react-router-dom";
 import { getStatusColor } from "@/constants/status";
 import dayjs from "dayjs";
+import { TripCostPanel } from "../ui/TripCostPanel";
 import { calcNights } from "@/utils/calcNights";
 import {
   PiCheckSquare,
@@ -41,8 +42,9 @@ export default function TripLayout() {
   // fetch even starts (loading defaults to false, summary is null).
   const [initialized, setInitialized] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("Stays & itinerary");
-  const navigate = useNavigate();
+  const [costPanelExpanded, setCostPanelExpanded] = useState(true);
 
+  const navigate = useNavigate();
   const { tripId } = useParams();
 
   useEffect(() => {
@@ -165,7 +167,17 @@ export default function TripLayout() {
                 Budget
               </Tabs.Tab>
             </Tabs.List>
-            <Outlet />
+            <Stack p="lg" gap="lg">
+              <Group align="flex-start" gap="lg" wrap="nowrap">
+                <Outlet />
+
+                <TripCostPanel
+                  summary={currentTripSummary}
+                  expanded={costPanelExpanded}
+                  onToggle={() => setCostPanelExpanded((v) => !v)}
+                />
+              </Group>
+            </Stack>
           </Tabs>
         </Stack>
       </Group>
