@@ -1,6 +1,4 @@
 /**
- * src/stores/locationStore.ts
- *
  * Locations for the active trip, plus each location's 0..1 accommodation
  * (a location has at most one). Scoped by trip: call fetchByTrip(tripId) when a
  * trip opens. Accommodation helpers use upsert since it's a 1:0..1 relationship.
