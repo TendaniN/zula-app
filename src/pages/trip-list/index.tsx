@@ -24,11 +24,9 @@ import { useEffect, useState } from "react";
 import { TRIP_STATUS_FILTERS, type TripFilter } from "@/constants/status";
 import { FilterChip } from "./components/FilterChip";
 import { TripCard } from "./components/TripCard";
-import mockDb from "@/mocks/mockData";
 
-export default function TripsPage() {
-  const { loading, fetchTrips } = useTripStore();
-  const { tripSummaries } = mockDb;
+export default function TripListPage() {
+  const { loading, fetchTrips, tripSummaries } = useTripStore();
 
   const [search, setSearch] = useState("");
   const [filterTrips, setFilterTrips] = useState<TripFilter>("all");
@@ -43,7 +41,7 @@ export default function TripsPage() {
 
   if (!loading && tripSummaries.length === 0) {
     return (
-      <Stack>
+      <Stack p="xl">
         <Group justify="space-between">
           <Stack>
             <Title fw="bold">My trips</Title>
@@ -93,7 +91,7 @@ export default function TripsPage() {
 
   if (loading) {
     return (
-      <Stack>
+      <Stack p="xl">
         <Group justify="space-between">
           <Stack>
             <Title fw="bold">My trips</Title>
@@ -128,7 +126,7 @@ export default function TripsPage() {
   }
 
   return (
-    <Stack>
+    <Stack p="xl">
       <Group justify="space-between">
         <Stack>
           <Title fw="bold">My trips</Title>
