@@ -24,44 +24,46 @@ export default function TripDetailPage() {
     return <Navigate to="/trips" replace />;
   }
 
-  return locations.length === 0 ? (
-    <Stack
-      p="xl"
-      bdrs="lg"
-      bd="2px dashed var(--muted)"
-      style={{
-        backgroundColor:
-          "light-dark(var(--mantine-color-white), var(--mantine-color-black))",
-      }}
-    >
-      <Center
-        display="flex"
-        style={{
-          flexDirection: "column",
-          justifyContent: "center",
-          gap: "0.75rem",
-        }}
+  if (locations.length === 0) {
+    return (
+      <Stack
         p="xl"
+        bdrs="lg"
+        bd="2px dashed var(--muted)"
+        style={{
+          backgroundColor:
+            "light-dark(var(--mantine-color-white), var(--mantine-color-black))",
+        }}
       >
-        <Image src={noLocationsImg} w="8rem" h="6.5rem" />
-        <Title order={3} ta="center" fw="semibold">
-          Where are you headed?
-        </Title>
-        <Text c="dimmed" ta="center">
-          Add your first location to start building the itinerary. Stays,
-          activities, transport and budget all hang off your stops.
-        </Text>
-        <LocationModal
-          tripId={tripId}
-          trigger={(open) => (
-            <Button leftSection={<PiArrowRight />} onClick={open}>
-              Add a your first stay
-            </Button>
-          )}
-        />
-      </Center>
-    </Stack>
-  ) : (
-    <LocationPanel tripId={tripId} />
-  );
+        <Center
+          display="flex"
+          style={{
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "0.75rem",
+          }}
+          p="xl"
+        >
+          <Image src={noLocationsImg} w="8rem" h="6.5rem" />
+          <Title order={3} ta="center" fw="semibold">
+            Where are you headed?
+          </Title>
+          <Text c="dimmed" ta="center">
+            Add your first location to start building the itinerary. Stays,
+            activities, transport and budget all hang off your stops.
+          </Text>
+          <LocationModal
+            tripId={tripId}
+            trigger={(open) => (
+              <Button leftSection={<PiArrowRight />} onClick={open}>
+                Add a your first stay
+              </Button>
+            )}
+          />
+        </Center>
+      </Stack>
+    );
+  }
+
+  return <LocationPanel tripId={tripId} />;
 }

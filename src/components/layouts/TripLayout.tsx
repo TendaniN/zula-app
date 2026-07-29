@@ -171,11 +171,13 @@ export default function TripLayout() {
               <Group align="flex-start" gap="lg" wrap="nowrap">
                 <Outlet />
 
-                <TripCostPanel
-                  summary={currentTripSummary}
-                  expanded={costPanelExpanded}
-                  onToggle={() => setCostPanelExpanded((v) => !v)}
-                />
+                {locations.length > 0 && (
+                  <TripCostPanel
+                    summary={currentTripSummary}
+                    expanded={costPanelExpanded}
+                    onToggle={() => setCostPanelExpanded((v) => !v)}
+                  />
+                )}
               </Group>
             </Stack>
           </Tabs>

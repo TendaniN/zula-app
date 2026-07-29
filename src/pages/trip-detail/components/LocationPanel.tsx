@@ -14,7 +14,7 @@ export const LocationPanel = ({ tripId }: LocationPanelProps) => {
   const { locations, accommodationFor } = useLocationStore();
 
   return (
-    <Stack gap="md" style={{ flex: 1, minWidth: 0 }}>
+    <Stack gap="md" flex={1} miw={0}>
       <Group justify="flex-end">
         <LocationModal
           tripId={tripId}
