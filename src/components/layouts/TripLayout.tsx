@@ -24,6 +24,7 @@ import {
   PiPaperPlaneTilt,
 } from "react-icons/pi";
 import { useEffect, useState } from "react";
+import { ViewOnlyBanner } from "../auth/ViewOnlyBanner";
 
 export default function TripLayout() {
   const {
@@ -130,6 +131,7 @@ export default function TripLayout() {
               </Text>
             )}
           </Group>
+          <ViewOnlyBanner />
           <Tabs value={activeTab}>
             <Tabs.List
               fw="bold"

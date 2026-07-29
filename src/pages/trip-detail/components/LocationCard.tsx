@@ -24,6 +24,7 @@ import { LocationModal } from "./LocationModal";
 import { useLocationStore } from "@/stores/locationStore";
 import { useDisclosure } from "@mantine/hooks";
 import { Link } from "react-router-dom";
+import { CanEditTrip } from "@/components/auth/CanEditTrip";
 
 const TYPE_COLOR: Record<Accommodation["type"], string> = {
   hotel: "lavender",
@@ -121,41 +122,42 @@ export const LocationCard = ({
                 {accommodationTotal.toLocaleString()}
               </Text>
             </Stack>
+            <CanEditTrip>
+              <Menu position="bottom-end" withinPortal shadow="md">
+                <Menu.Target>
+                  <IconButton
+                    icon={<TbDots />}
+                    variant="ghost"
+                    size="sm"
+                    aria-label="Location options"
+                  />
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <LocationModal
+                    location={location}
+                    tripId={tripId}
+                    accommodation={accommodationFor(location.id)}
+                    trigger={(open) => (
+                      <Menu.Item
+                        leftSection={<FaPencil size={13} />}
+                        onClick={open}
+                      >
+                        Edit
+                      </Menu.Item>
+                    )}
+                  />
 
-            <Menu position="bottom-end" withinPortal shadow="md">
-              <Menu.Target>
-                <IconButton
-                  icon={<TbDots />}
-                  variant="ghost"
-                  size="sm"
-                  aria-label="Location options"
-                />
-              </Menu.Target>
-              <Menu.Dropdown>
-                <LocationModal
-                  location={location}
-                  tripId={tripId}
-                  accommodation={accommodationFor(location.id)}
-                  trigger={(open) => (
-                    <Menu.Item
-                      leftSection={<FaPencil size={13} />}
-                      onClick={open}
-                    >
-                      Edit
-                    </Menu.Item>
-                  )}
-                />
-
-                <Menu.Divider />
-                <Menu.Item
-                  color="red"
-                  leftSection={<FaRegTrashCan size={13} />}
-                  onClick={openDelete}
-                >
-                  Delete
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
+                  <Menu.Divider />
+                  <Menu.Item
+                    color="red"
+                    leftSection={<FaRegTrashCan size={13} />}
+                    onClick={openDelete}
+                  >
+                    Delete
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </CanEditTrip>
           </Group>
         </Group>
 

@@ -38,7 +38,7 @@ export default function ItineraryListPage() {
   // Show loader until the first fetch resolves.
   if (!initialized || loading) {
     return (
-      <Stack>
+      <Stack flex={1}>
         <Center
           display="flex"
           style={{

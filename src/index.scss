@@ -20,6 +20,11 @@ body {
   --seaform: linear-gradient(135deg, #a8ddc9 0%, #f6c6a4 100%);
   --frost: linear-gradient(180deg, #ffffff 0%, #efeaf7 100%);
   --dusk: linear-gradient(135deg, #654f8c 0%, #2c2440 100%);
+
+  --bg-secondary: light-dark(
+    var(--mantine-primary-color-1),
+    var(--mantine-color-dark-9)
+  );
 }
 
 h1,

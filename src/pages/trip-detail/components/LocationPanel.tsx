@@ -5,6 +5,7 @@ import { useLocationStore } from "@/stores/locationStore";
 import { LocationModal } from "./LocationModal";
 import { LocationCard } from "./LocationCard";
 import { PiPlus } from "react-icons/pi";
+import { CanEditTrip } from "@/components/auth/CanEditTrip";
 
 interface LocationPanelProps {
   tripId: string;
@@ -16,14 +17,16 @@ export const LocationPanel = ({ tripId }: LocationPanelProps) => {
   return (
     <Stack gap="md" flex={1} miw={0}>
       <Group justify="flex-end">
-        <LocationModal
-          tripId={tripId}
-          trigger={(open) => (
-            <Button onClick={open} leftSection={<PiPlus />}>
-              Add a stay
-            </Button>
-          )}
-        />
+        <CanEditTrip>
+          <LocationModal
+            tripId={tripId}
+            trigger={(open) => (
+              <Button onClick={open} leftSection={<PiPlus />}>
+                Add a stay
+              </Button>
+            )}
+          />
+        </CanEditTrip>
       </Group>
       {locations.length === 0 ? (
         <Text c="dimmed" ta="center" py="xl">

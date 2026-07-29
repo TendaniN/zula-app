@@ -8,6 +8,7 @@ import noLocationsImg from "@/assets/icons/empty-no-locations.svg";
 import { LocationModal } from "./components/LocationModal";
 import { Button } from "@/components/ui";
 import { LocationPanel } from "./components/LocationPanel";
+import { CanEditTrip } from "@/components/auth/CanEditTrip";
 
 export default function TripDetailPage() {
   const { currentTripSummary } = useTripStore();
@@ -34,6 +35,7 @@ export default function TripDetailPage() {
           backgroundColor:
             "light-dark(var(--mantine-color-white), var(--mantine-color-black))",
         }}
+        flex={1}
       >
         <Center
           display="flex"
@@ -52,14 +54,16 @@ export default function TripDetailPage() {
             Add your first location to start building the itinerary. Stays,
             activities, transport and budget all hang off your stops.
           </Text>
-          <LocationModal
-            tripId={tripId}
-            trigger={(open) => (
-              <Button leftSection={<PiArrowRight />} onClick={open}>
-                Add a your first stay
-              </Button>
-            )}
-          />
+          <CanEditTrip>
+            <LocationModal
+              tripId={tripId}
+              trigger={(open) => (
+                <Button leftSection={<PiArrowRight />} onClick={open}>
+                  Add your first stay
+                </Button>
+              )}
+            />
+          </CanEditTrip>
         </Center>
       </Stack>
     );
