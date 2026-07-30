@@ -47,6 +47,11 @@ interface ActivityModalProps {
    *  opened Modal down with it). No trigger is rendered in this mode. */
   opened?: boolean;
   onClose?: () => void;
+  /**
+   * Pre-fill the date field when creating from a specific day slot (e.g. an
+   * empty "Day 3" row). Ignored when editing an existing activity.
+   */
+  defaultActivityDate?: string | null;
 }
 
 export const ActivityModal = ({
@@ -55,6 +60,7 @@ export const ActivityModal = ({
   trigger,
   opened: openedProp,
   onClose,
+  defaultActivityDate,
 }: ActivityModalProps) => {
   const currency = useCurrencyStore((s) => s.symbol);
   const { createActivity, updateActivity } = useActivityStore();
@@ -72,7 +78,7 @@ export const ActivityModal = ({
     defaultValues: {
       name: activity?.name ?? "",
       cost: activity?.cost ?? 0,
-      activity_date: activity?.activity_date ?? null,
+      activity_date: activity?.activity_date ?? defaultActivityDate ?? null,
       activity_time: activity?.activity_time ?? null,
       duration_minutes: activity?.duration_minutes ?? null,
       link: activity?.link ?? "",
@@ -125,6 +131,7 @@ export const ActivityModal = ({
         title={null}
         withCloseButton={false}
         overlayProps={{ blur: 2 }}
+        withinPortal={true}
       >
         {/* Banner header */}
         <Group
@@ -286,7 +293,11 @@ export const ActivityModal = ({
       {isControlled ? null : trigger ? (
         trigger(open)
       ) : (
-        <Button onClick={open} leftSection={isEdit ? <LuPencil /> : <LuPlus />}>
+        <Button
+          onClick={open}
+          size="sm"
+          leftSection={isEdit ? <LuPencil /> : <LuPlus />}
+        >
           {isEdit ? "Edit activity" : "Add activity"}
         </Button>
       )}
