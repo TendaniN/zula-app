@@ -25,6 +25,12 @@ body {
     var(--mantine-primary-color-1),
     var(--mantine-color-dark-9)
   );
+
+  .scrollbar {
+    &[data-orientation="vertical"] .thumb {
+      background-color: var(--mantine-color-lavender-3);
+    }
+  }
 }
 
 h1,
