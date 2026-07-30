@@ -137,7 +137,7 @@ export default function ItineraryListPage() {
             >
               <PiArrowLeft />
               {location.country && getCountryFlag(location.country, 22)}
-              <Text component="span" fw={700}>
+              <Text component="span" fw="bold">
                 {location.city}
                 {location.country ? `, ${location.country}` : ""}
               </Text>

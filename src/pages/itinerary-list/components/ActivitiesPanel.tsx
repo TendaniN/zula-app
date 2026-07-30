@@ -114,7 +114,7 @@ export const ActivitiesPanel = ({
             </Group>
             <Divider flex={1} size="md" color="mint.1" />
             {day.total > 0 && (
-              <Text fw={700} c="dimmed" size="sm" style={{ flexShrink: 0 }}>
+              <Text fw="bold" c="dimmed" size="sm" style={{ flexShrink: 0 }}>
                 {currency}
                 {day.total}
               </Text>

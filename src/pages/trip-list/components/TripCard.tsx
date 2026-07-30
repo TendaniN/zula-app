@@ -50,7 +50,7 @@ export const TripCard = ({ trip, index }: TripCardProps) => {
         <Group mt={-28} mx="sm" gap="xs" style={{ zIndex: 1 }}>
           {trip.countries?.map((country) => getCountryFlag(country))}
         </Group>
-        <Text fz="md" fw={700} px="sm">
+        <Text fz="md" fw="bold" px="sm">
           {trip.name}
         </Text>
         {trip.start_date && trip.end_date && (
@@ -67,7 +67,7 @@ export const TripCard = ({ trip, index }: TripCardProps) => {
           justify="space-between"
         >
           <Text c="dimmed">Total</Text>
-          <Text fw={700}>
+          <Text fw="bold">
             <NumberFormatter
               prefix={`${currency} `}
               value={trip.total_cost ?? 0}

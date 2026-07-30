@@ -313,7 +313,7 @@ export const LocationModal = ({
 
             <Group justify="space-between">
               <Group gap="xs">
-                <LuBed size={16} />
+                <LuBed />
                 <Text fw={600} size="sm">
                   Accommodation
                 </Text>

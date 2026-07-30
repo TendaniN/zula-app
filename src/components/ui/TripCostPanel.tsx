@@ -100,7 +100,7 @@ export const TripCostPanel = ({
         >
           <Group gap={6}>
             <LuChevronLeft />
-            <Text fw={700} size="sm">
+            <Text fw="bold" size="sm">
               Trip cost
             </Text>
           </Group>
@@ -157,7 +157,7 @@ export const TripCostPanel = ({
         <LuChevronRight />
         <Text
           size="sm"
-          fw={700}
+          fw="bold"
           style={{
             writingMode: "vertical-rl",
             whiteSpace: "nowrap",
