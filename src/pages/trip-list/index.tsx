@@ -136,38 +136,43 @@ export default function TripListPage() {
             <Text fz="sm">Packed bags. Packed itinerary ✨</Text>
           </Group>
         </Stack>
-        <TripModal />
+        {tripSummaries.length > 0 && <TripModal />}
       </Group>
-      <Group>
-        <TextInput
-          w={{ base: "100%", lg: "50%" }}
-          placeholder="Search trips & destinations..."
-          leftSection={<PiMagnifyingGlassBold />}
-          rightSection={
-            search !== "" && (
-              <PiXBold
-                style={{ cursor: "pointer" }}
-                onClick={() => setSearch("")}
-              />
-            )
-          }
-          rightSectionPointerEvents="all"
-          value={search}
-          onChange={(e) => setSearch(e.currentTarget.value)}
-        />
-      </Group>
-      <Group>
-        {TRIP_STATUS_FILTERS.map(({ label, id }) => (
-          <FilterChip
-            key={`filter-chip-${id}`}
-            active={filterTrips === id}
-            id={id}
-            onClick={() => setFilterTrips(id)}
-          >
-            {label}
-          </FilterChip>
-        ))}
-      </Group>
+      {tripSummaries.length > 0 && (
+        <>
+          <Group>
+            <TextInput
+              w={{ base: "100%", lg: "50%" }}
+              placeholder="Search trips & destinations..."
+              leftSection={<PiMagnifyingGlassBold />}
+              rightSection={
+                search !== "" && (
+                  <PiXBold
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setSearch("")}
+                  />
+                )
+              }
+              rightSectionPointerEvents="all"
+              value={search}
+              onChange={(e) => setSearch(e.currentTarget.value)}
+            />
+          </Group>
+          <Group>
+            {TRIP_STATUS_FILTERS.map(({ label, id }) => (
+              <FilterChip
+                key={`filter-chip-${id}`}
+                active={filterTrips === id}
+                id={id}
+                onClick={() => setFilterTrips(id)}
+              >
+                {label}
+              </FilterChip>
+            ))}
+          </Group>
+        </>
+      )}
+
       {tripSummaries.filter(
         ({ status }) => filterTrips === "all" || status === filterTrips,
       ).length === 0 ? (
