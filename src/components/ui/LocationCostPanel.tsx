@@ -1,19 +1,24 @@
-import { Badge, Divider, Group, Stack, Text } from "@mantine/core";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { Badge, Group, Stack, Text } from "@mantine/core";
 import { useCurrencyStore } from "@/stores/currencyStore";
-import type { TripSummaryRow } from "@/types/models";
 
 const EXPANDED_WIDTH = 260;
 const COLLAPSED_WIDTH = 52;
-// Keep these in sync with the transition durations below.
+// Keep these in sync with TripCostPanel's transition durations, since the
+// two panels are meant to expand/collapse together as one visual column.
 const WIDTH_MS = 260;
 const FADE_MS = 150;
-const FADE_IN_DELAY_MS = 120; // let the width shrink/grow before fading in
+const FADE_IN_DELAY_MS = 120;
 
-interface TripCostPanelProps {
-  summary: TripSummaryRow | null;
+interface LocationCostPanelProps {
+  city: string;
+  accommodationCost: number;
+  activitiesCost: number;
+  /**
+   * Mirrors TripCostPanel's expanded state — passed down from the same
+   * source, not owned here. This panel has no toggle of its own; only
+   * TripCostPanel's header/collapsed strip controls the shared state.
+   */
   expanded: boolean;
-  onToggle: () => void;
 }
 
 interface CostRowProps {
@@ -38,24 +43,28 @@ const CostRow = ({ label, value, format, bold }: CostRowProps) => (
   </Group>
 );
 
-export const TripCostPanel = ({
-  summary,
+/**
+ * Read-only per-location cost breakdown, stacked under TripCostPanel in the
+ * trip layout's right column. It follows TripCostPanel's expanded state so
+ * the two collapse/expand together, but is purely a follower — it renders no
+ * clickable toggle of its own.
+ */
+export const LocationCostPanel = ({
+  city,
+  accommodationCost,
+  activitiesCost,
   expanded,
-  onToggle,
-}: TripCostPanelProps) => {
+}: LocationCostPanelProps) => {
   const currency = useCurrencyStore((s) => s.symbol);
   const format = (v: number) =>
     `${currency}${v.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
 
-  const accommodation = summary?.accommodation_cost ?? 0;
-  const activities = summary?.activities_cost ?? 0;
-  const travel = summary?.travel_cost ?? 0;
-  const total = summary?.total_cost ?? 0;
+  const stopTotal = accommodationCost + activitiesCost;
 
   return (
     <Stack
       component="aside"
-      aria-label="Trip cost"
+      aria-label={`${city} cost breakdown`}
       gap={0}
       style={{
         width: expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
@@ -72,8 +81,7 @@ export const TripCostPanel = ({
     >
       {/* ── Expanded content ─────────────────────────────────────── */}
       <Stack
-        gap="md"
-
+        gap={0}
         style={{
           width: EXPANDED_WIDTH,
           opacity: expanded ? 1 : 0,
@@ -86,47 +94,38 @@ export const TripCostPanel = ({
       >
         <Group
           justify="space-between"
-          p="md"
-          onClick={onToggle}
-          role="button"
-          tabIndex={expanded ? 0 : -1}
-          onKeyDown={(e) => e.key === "Enter" && onToggle()}
+          px="md"
+          py="sm"
           style={{
-            cursor: "pointer",
+            background: "var(--mantine-color-mint-4)",
             borderBottom: "2px solid var(--border-color)",
-            backgroundColor:
-              "light-dark(var(--mantine-primary-color-1), var(--mantine-color-dark-9))",
           }}
         >
-          <Group gap={6}>
-            <LuChevronLeft />
-            <Text fw="bold" size="sm">
-              Trip cost
-            </Text>
-          </Group>
-          <Badge
-            variant="transparent"
-            size="sm"
-            bd="2px solid var(--border-color)"
-            styles={{ label: { fontWeight: 700 } }}
-          >
-            Read-only
+          <Text fw={800} size="sm" c="var(--text-color)">
+            {city}
+          </Text>
+          <Badge variant="filled" color="mint.7" size="sm" radius="xl">
+            This stop
           </Badge>
         </Group>
 
         <Stack gap="sm" p="md">
           <CostRow
             label="Accommodation"
-            value={accommodation}
+            value={accommodationCost}
             format={format}
           />
-          <CostRow label="Activities" value={activities} format={format} />
-          <CostRow label="Transport" value={travel} format={format} />
+          <CostRow label="Activities" value={activitiesCost} format={format} />
         </Stack>
 
-        <Stack gap={4} px="md" pt={0} pb="md">
-          <Divider px="md" pb="md" color="var(--border-color)" />
-          <CostRow label="Trip total" value={total} format={format} bold />
+        <Stack
+          gap={4}
+          px="md"
+          pb="md"
+          pt="sm"
+          style={{ borderTop: "2px solid var(--border-color)" }}
+        >
+          <CostRow label="Stop total" value={stopTotal} format={format} bold />
         </Stack>
       </Stack>
 
@@ -136,25 +135,17 @@ export const TripCostPanel = ({
         justify="flex-start"
         gap="sm"
         py="md"
-        onClick={onToggle}
-        role="button"
-        tabIndex={expanded ? -1 : 0}
-        onKeyDown={(e) => e.key === "Enter" && onToggle()}
+        bg="mint.3"
+        pos={expanded ? "absolute" : "static"}
         style={{
           width: COLLAPSED_WIDTH,
-          height: "100%",
-          backgroundColor:
-            "light-dark(var(--mantine-primary-color-1), var(--mantine-color-dark-9))",
-          cursor: "pointer",
           opacity: expanded ? 0 : 1,
-          pointerEvents: expanded ? "none" : "auto",
-          position: expanded ? "absolute" : "static",
+          pointerEvents: "none",
           inset: 0,
           transition: `opacity ${FADE_MS}ms ease`,
           transitionDelay: expanded ? "0ms" : `${FADE_IN_DELAY_MS}ms`,
         }}
       >
-        <LuChevronRight />
         <Text
           size="sm"
           fw="bold"
@@ -163,7 +154,7 @@ export const TripCostPanel = ({
             whiteSpace: "nowrap",
           }}
         >
-          {`Trip cost · ${format(total)}`}
+          {`${city} · ${format(stopTotal)}`}
         </Text>
       </Stack>
     </Stack>

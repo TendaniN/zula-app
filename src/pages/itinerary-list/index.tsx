@@ -6,12 +6,23 @@ import {
   Stack,
   Title,
   Text,
+  Badge,
+  Card,
 } from "@mantine/core";
-import { Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useActivityStore } from "@/stores/activityStore";
 import { useEffect, useState } from "react";
 import noActivitiesImg from "@/assets/icons/empty-itinerary.svg";
 import { useLocationStore } from "@/stores/locationStore";
+import { ActivityModal } from "./components/ActivityModal";
+import { Button } from "@/components/ui";
+import { PiArrowLeft, PiPlus } from "react-icons/pi";
+import "./styles.scss";
+import { getCountryFlag } from "@/utils/getCountryFlag";
+import dayjs from "dayjs";
+import { calcNights } from "@/utils/calcNights";
+import { ActivitiesPanel } from "./components/ActivitiesPanel";
+import { CanEditTrip } from "@/components/auth/CanEditTrip";
 
 export default function ItineraryListPage() {
   const { fetchByLocation, loading, activities } = useActivityStore();
@@ -93,16 +104,73 @@ export default function ItineraryListPage() {
             Add activities, meals or notes to your {location.city} days.
             Anything with a price rolls into the budget.
           </Text>
+          <ActivityModal
+            locationId={locationId}
+            trigger={(open) => (
+              <Button leftSection={<PiPlus />} onClick={open}>
+                Add your activity
+              </Button>
+            )}
+          />
         </Center>
       </Stack>
     );
   }
 
+  const nights = calcNights(location.start_date, location.end_date);
+
+  const infoLine = [
+    location.start_date && location.end_date
+      ? `${dayjs(location.start_date).format("D")} – ${dayjs(location.end_date).format("D MMM")}`
+      : null,
+    nights > 0 ? `${nights} ${nights === 1 ? "night" : "nights"}` : null,
+  ].join(" · ");
+
   return (
-    <Stack p="lg" gap="lg">
-      <Group align="flex-start" gap="lg" wrap="nowrap">
-        <Stack gap="md" style={{ flex: 1, minWidth: 0 }}>
-          <Group justify="flex-end"></Group>
+    <Stack p="lg" gap="lg" flex={1} miw={0}>
+      <Group align="flex-start" gap="lg" wrap="nowrap" w="100%">
+        <Stack gap="md" w="100%">
+          <Group justify="space-between">
+            <Link
+              to={`/trips/${tripId}/Stays & itinerary`}
+              className="back-button"
+            >
+              <PiArrowLeft />
+              {location.country && getCountryFlag(location.country, 22)}
+              <Text component="span" fw="bold">
+                {location.city}
+                {location.country ? `, ${location.country}` : ""}
+              </Text>
+            </Link>
+
+            <Badge
+              variant="filled"
+              color="mint.3"
+              c="var(--text-color)"
+              bd="2px solid mint.5"
+            >
+              Itinerary
+            </Badge>
+          </Group>
+          <Card p={0}>
+            <Group
+              justify="space-between"
+              wrap="nowrap"
+              p="md"
+              bg="lavender.1"
+              style={{
+                borderBottom: "2px solid var(--border-color)",
+              }}
+            >
+              <Text size="sm" c="dimmed" fw={500}>
+                {infoLine || "Dates and stay details will show once set"}
+              </Text>
+              <CanEditTrip>
+                <ActivityModal locationId={locationId} />
+              </CanEditTrip>
+            </Group>
+            <ActivitiesPanel location={location} activities={activities} />
+          </Card>
         </Stack>
       </Group>
     </Stack>

@@ -106,6 +106,24 @@ export const theme = createTheme({
           border: "2px solid var(--border-color)",
           fontSize: "var(--mantine-font-size-sm)",
         },
+        label: {
+          color: "var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+      },
+    },
+    TimeInput: {
+      defaultProps: { radius: "md", size: "md" },
+      styles: {
+        input: {
+          borderWidth: rem(2),
+          border: "2px solid var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
+        label: {
+          color: "var(--border-color)",
+          fontSize: "var(--mantine-font-size-sm)",
+        },
       },
     },
     TextInput: {

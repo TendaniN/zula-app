@@ -68,6 +68,14 @@ export const LocationCard = ({
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
 
+  // Edit modal is rendered OUTSIDE the Menu below. Menu.Item closes (and
+  // unmounts) its Menu.Dropdown on click by default, so a modal nested
+  // inside it — like the old <LocationModal trigger={...}> here — gets torn
+  // down before it can show. Lifting the opened state here and rendering the
+  // modal as a sibling of the Menu (not a child) avoids that.
+  const [editOpened, { open: openEdit, close: closeEdit }] =
+    useDisclosure(false);
+
   const nights =
     location.start_date && location.end_date
       ? calcNights(location.start_date, location.end_date)
@@ -108,7 +116,7 @@ export const LocationCard = ({
                 "1px solid var(--border-color)",
               )}
             <Stack gap={0}>
-              <Text fw={700} size="md">
+              <Text fw="bold" size="md">
                 {location.city}
                 {location.country ? `, ${location.country}` : ""}
               </Text>
@@ -139,24 +147,13 @@ export const LocationCard = ({
                   />
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <LocationModal
-                    location={location}
-                    tripId={tripId}
-                    accommodation={accommodationFor(location.id)}
-                    trigger={(open) => (
-                      <Menu.Item
-                        leftSection={<FaPencil size={13} />}
-                        onClick={open}
-                      >
-                        Edit
-                      </Menu.Item>
-                    )}
-                  />
-
+                  <Menu.Item leftSection={<FaPencil />} onClick={openEdit}>
+                    Edit
+                  </Menu.Item>
                   <Menu.Divider />
                   <Menu.Item
                     color="red"
-                    leftSection={<FaRegTrashCan size={13} />}
+                    leftSection={<FaRegTrashCan />}
                     onClick={openDelete}
                   >
                     Delete
@@ -170,7 +167,7 @@ export const LocationCard = ({
         {accommodation ? (
           <Stack justify="space-between" p="md" gap={0} bg="lavender.0">
             <Group gap="xs" wrap="nowrap">
-              <Text fw={700} size="sm">
+              <Text fw="bold" size="sm">
                 {accommodation.name}
               </Text>
               <Badge
@@ -187,7 +184,7 @@ export const LocationCard = ({
               <Group gap="xs">
                 {accommodation.rating != null && (
                   <Group gap={4} wrap="nowrap" c="dimmed">
-                    <FaStar size={12} />
+                    <FaStar />
                     <Text size="xs" fw={600}>
                       {accommodation.rating.toFixed(1)}
                     </Text>
@@ -240,6 +237,17 @@ export const LocationCard = ({
             </Group>
           </Group>
         )}
+
+        {/* Controlled edit modal — rendered outside the Menu above so it
+            survives the menu closing. */}
+        <LocationModal
+          location={location}
+          tripId={tripId}
+          accommodation={accommodationFor(location.id)}
+          opened={editOpened}
+          onClose={closeEdit}
+        />
+
         <Modal
           opened={deleteOpened}
           onClose={closeDelete}

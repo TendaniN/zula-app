@@ -32,7 +32,7 @@ export const FilterChip = ({
           py="md"
           px="lg"
           fz="sm"
-          fw={700}
+          fw="bold"
           bd={
             active
               ? "2px solid var(--border-color)"
@@ -56,7 +56,7 @@ export const FilterChip = ({
       py="md"
       px="lg"
       fz="sm"
-      fw={700}
+      fw="bold"
       bd="2px solid var(--border-color)"
       style={{ cursor: "pointer" }}
       onClick={() => handleSelect()}

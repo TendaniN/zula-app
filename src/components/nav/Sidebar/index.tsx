@@ -82,7 +82,7 @@ export const Sidebar = () => {
           />
           <Stack gap={2}>
             <Text
-              fw={700}
+              fw="bold"
               fz="sm"
             >{`${profile.first_name} ${profile.last_name}`}</Text>
             <Badge
@@ -96,7 +96,7 @@ export const Sidebar = () => {
         </Group>
         <CurrencySelect />
         <Group>
-          <Text fw={700} fz="sm">
+          <Text fw="bold" fz="sm">
             Dark mode
           </Text>
           <ThemeToggle />

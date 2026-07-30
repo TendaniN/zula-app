@@ -58,21 +58,6 @@ const ACCOMMODATION_TYPE_OPTIONS =
     label: t.charAt(0).toUpperCase() + t.slice(1),
   }));
 
-/* ------------------------------------------------------------------ */
-/* Helpers                                                             */
-/* ------------------------------------------------------------------ */
-
-/** Extract the first error message from TanStack Form's error array. */
-const firstError = (errors: readonly unknown[]): string | undefined => {
-  const e = errors[0];
-  if (e == null) return undefined;
-  if (typeof e === "string") return e;
-  if (typeof e === "object" && "message" in e) {
-    return String((e as { message: unknown }).message);
-  }
-  return String(e);
-};
-
 /** Convert a Date to YYYY-MM-DD string, or null. */
 const toDateStr = (value: Date | string | null): string | null =>
   value ? dayjs(value).format("YYYY-MM-DD") : null;
@@ -266,7 +251,7 @@ export const LocationModal = ({
                       )
                     }
                     onBlur={field.handleBlur}
-                    error={firstError(field.state.meta.errors)}
+                    error={field.state.meta.errors[0]}
                   />
                 )}
               </form.Field>
@@ -299,7 +284,7 @@ export const LocationModal = ({
                     value={fromDateStr(field.state.value)}
                     onChange={(value) => field.handleChange(toDateStr(value))}
                     onBlur={field.handleBlur}
-                    error={firstError(field.state.meta.errors)}
+                    error={field.state.meta.errors[0]}
                   />
                 )}
               </form.Field>
@@ -317,7 +302,7 @@ export const LocationModal = ({
                       field.handleChange(toDateStr(d as Date | null))
                     }
                     onBlur={field.handleBlur}
-                    error={firstError(field.state.meta.errors)}
+                    error={field.state.meta.errors[0]}
                   />
                 )}
               </form.Field>
@@ -328,7 +313,7 @@ export const LocationModal = ({
 
             <Group justify="space-between">
               <Group gap="xs">
-                <LuBed size={16} />
+                <LuBed />
                 <Text fw={600} size="sm">
                   Accommodation
                 </Text>
@@ -364,7 +349,7 @@ export const LocationModal = ({
                           field.handleChange(e.currentTarget.value)
                         }
                         onBlur={field.handleBlur}
-                        error={firstError(field.state.meta.errors)}
+                        error={field.state.meta.errors[0]}
                       />
                     )}
                   </form.Field>
@@ -378,7 +363,7 @@ export const LocationModal = ({
                         value={field.state.value ?? null}
                         onChange={(v) => field.handleChange(v ?? undefined)}
                         onBlur={field.handleBlur}
-                        error={firstError(field.state.meta.errors)}
+                        error={field.state.meta.errors[0]}
                         clearable
                       />
                     )}
@@ -399,7 +384,7 @@ export const LocationModal = ({
                           field.handleChange(v === "" ? undefined : Number(v))
                         }
                         onBlur={field.handleBlur}
-                        error={firstError(field.state.meta.errors)}
+                        error={field.state.meta.errors[0]}
                       />
                     )}
                   </form.Field>
@@ -414,7 +399,7 @@ export const LocationModal = ({
                           field.handleChange(e.currentTarget.value)
                         }
                         onBlur={field.handleBlur}
-                        error={firstError(field.state.meta.errors)}
+                        error={field.state.meta.errors[0]}
                       />
                     )}
                   </form.Field>
@@ -432,7 +417,7 @@ export const LocationModal = ({
                           field.handleChange(e.currentTarget.value)
                         }
                         onBlur={field.handleBlur}
-                        error={firstError(field.state.meta.errors)}
+                        error={field.state.meta.errors[0]}
                       />
                     )}
                   </form.Field>
@@ -473,10 +458,10 @@ export const LocationModal = ({
               >
                 <LuInfo size="0.75rem" />
               </ThemeIcon>
-              <Text size="xs" c="var(--muted)">
+              <Text size="xs" c="var(--muted)" my="auto">
                 {isEdit
                   ? "Updating dates here will adjust the trip's overall dates automatically."
-                  : "Trip dates and country flags derive from your locations — they'll update once you save."}
+                  : "Trip dates and country flags derive from your locations - they'll update once you save."}
               </Text>
             </Group>
 

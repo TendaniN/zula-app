@@ -30,7 +30,7 @@ export const LocationPanel = ({ tripId }: LocationPanelProps) => {
       </Group>
       {locations.length === 0 ? (
         <Text c="dimmed" ta="center" py="xl">
-          No stays yet — add your first one to get started.
+          No stays yet - add your first one to get started.
         </Text>
       ) : (
         locations.map((location) => (

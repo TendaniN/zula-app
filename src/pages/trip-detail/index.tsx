@@ -2,7 +2,7 @@ import { useLocationStore } from "@/stores/locationStore";
 import { useTripStore } from "@/stores/tripStore";
 import { Center, Image, Stack, Text, Title } from "@mantine/core";
 import { Navigate, useParams } from "react-router-dom";
-import { PiArrowRight } from "react-icons/pi";
+import { PiPlus } from "react-icons/pi";
 import "./styles.scss";
 import noLocationsImg from "@/assets/icons/empty-no-locations.svg";
 import { LocationModal } from "./components/LocationModal";
@@ -58,7 +58,7 @@ export default function TripDetailPage() {
             <LocationModal
               tripId={tripId}
               trigger={(open) => (
-                <Button leftSection={<PiArrowRight />} onClick={open}>
+                <Button leftSection={<PiPlus />} onClick={open}>
                   Add your first stay
                 </Button>
               )}
