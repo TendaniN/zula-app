@@ -26,6 +26,8 @@ import {
 } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { ViewOnlyBanner } from "../auth/ViewOnlyBanner";
+import { LocationCostPanel } from "../ui/LocationCostPanel";
+import { useActivityStore } from "@/stores/activityStore";
 
 export default function TripLayout() {
   const {
@@ -36,8 +38,10 @@ export default function TripLayout() {
   const {
     locations,
     fetchByTrip,
+    accommodationFor,
     loading: locationsLoading,
   } = useLocationStore();
+  const byLocation = useActivityStore((s) => s.byLocation);
 
   // Tracks whether the initial fetch has completed at least once.
   // Without this, the component redirects on refresh before the
@@ -47,7 +51,7 @@ export default function TripLayout() {
   const [costPanelExpanded, setCostPanelExpanded] = useState(true);
 
   const navigate = useNavigate();
-  const { tripId } = useParams();
+  const { tripId, locationId } = useParams();
 
   useEffect(() => {
     const load = async (id: string) => {
@@ -86,6 +90,27 @@ export default function TripLayout() {
   }
 
   const statusColor = getStatusColor(currentTripSummary.status ?? "planning");
+
+  const activeLocation = locationId
+    ? locations.find((l) => l.id === locationId)
+    : undefined;
+  const activeAccommodation = locationId
+    ? accommodationFor(locationId)
+    : undefined;
+
+  const activeActivities = locationId ? byLocation(locationId) : [];
+
+  const stopNights =
+    activeLocation?.start_date && activeLocation?.end_date
+      ? calcNights(activeLocation.start_date, activeLocation.end_date)
+      : 0;
+  const stopAccommodationCost = activeAccommodation
+    ? activeAccommodation.cost_per_night * stopNights
+    : 0;
+  const stopActivitiesCost = activeActivities.reduce(
+    (sum, a) => sum + (a.cost ?? 0),
+    0,
+  );
 
   const handleTabSelect = (tab: string) => {
     setActiveTab(tab);
@@ -181,11 +206,21 @@ export default function TripLayout() {
                   <Outlet />
 
                   {locations.length > 0 && (
-                    <TripCostPanel
-                      summary={currentTripSummary}
-                      expanded={costPanelExpanded}
-                      onToggle={() => setCostPanelExpanded((v) => !v)}
-                    />
+                    <Stack gap="lg" style={{ flexShrink: 0 }}>
+                      <TripCostPanel
+                        summary={currentTripSummary}
+                        expanded={costPanelExpanded}
+                        onToggle={() => setCostPanelExpanded((v) => !v)}
+                      />
+                      {activeLocation && (
+                        <LocationCostPanel
+                          city={activeLocation.city}
+                          accommodationCost={stopAccommodationCost}
+                          activitiesCost={stopActivitiesCost}
+                          expanded={costPanelExpanded}
+                        />
+                      )}
+                    </Stack>
                   )}
                 </Group>
               </Stack>
