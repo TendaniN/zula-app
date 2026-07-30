@@ -10,7 +10,13 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { FaPencil, FaRegTrashCan, FaStar, FaTrash } from "react-icons/fa6";
+import {
+  FaPencil,
+  FaPlus,
+  FaRegTrashCan,
+  FaStar,
+  FaTrash,
+} from "react-icons/fa6";
 import { TbDots } from "react-icons/tb";
 import { LuMoveRight } from "react-icons/lu";
 
@@ -161,16 +167,8 @@ export const LocationCard = ({
           </Group>
         </Group>
 
-        {/* Accommodation sub-row */}
-        {accommodation && (
-          <Stack
-            justify="space-between"
-            p="md"
-            gap={0}
-            style={{
-              background: `var(--mantine-color-${TYPE_COLOR[accommodation.type]}-0)`,
-            }}
-          >
+        {accommodation ? (
+          <Stack justify="space-between" p="md" gap={0} bg="lavender.0">
             <Group gap="xs" wrap="nowrap">
               <Text fw={700} size="sm">
                 {accommodation.name}
@@ -209,6 +207,38 @@ export const LocationCard = ({
               </Link>
             </Group>
           </Stack>
+        ) : (
+          <Group justify="space-between" p="md" gap={0} bg="lavender.0">
+            <Text c="dimmed" fs="italic">
+              No accommodation yet.
+            </Text>
+            <Group>
+              <CanEditTrip>
+                <LocationModal
+                  location={location}
+                  tripId={tripId}
+                  accommodation={accommodationFor(location.id)}
+                  trigger={(open) => (
+                    <Button
+                      variant="dashed"
+                      onClick={open}
+                      size="xs"
+                      leftSection={<FaPlus />}
+                    >
+                      Add accommodation
+                    </Button>
+                  )}
+                />
+              </CanEditTrip>
+              <Link
+                to={`/trips/${tripId}/locations/${location.id}?tab=Stays & itinerary`}
+                className="link-button"
+              >
+                View itinerary
+                <LuMoveRight />
+              </Link>
+            </Group>
+          </Group>
         )}
         <Modal
           opened={deleteOpened}

@@ -3,6 +3,7 @@ import {
   Center,
   Group,
   Loader,
+  ScrollArea,
   Stack,
   Tabs,
   Text,
@@ -169,19 +170,26 @@ export default function TripLayout() {
                 Budget
               </Tabs.Tab>
             </Tabs.List>
-            <Stack p="lg" gap="lg">
-              <Group align="flex-start" gap="lg" wrap="nowrap">
-                <Outlet />
+            <ScrollArea
+              h="calc(100dvh - 215px)"
+              type="auto"
+              offsetScrollbars
+              classNames={{ scrollbar: "scrollbar", thumb: "thumb" }}
+            >
+              <Stack p="lg" gap="lg">
+                <Group align="flex-start" gap="lg" wrap="nowrap">
+                  <Outlet />
 
-                {locations.length > 0 && (
-                  <TripCostPanel
-                    summary={currentTripSummary}
-                    expanded={costPanelExpanded}
-                    onToggle={() => setCostPanelExpanded((v) => !v)}
-                  />
-                )}
-              </Group>
-            </Stack>
+                  {locations.length > 0 && (
+                    <TripCostPanel
+                      summary={currentTripSummary}
+                      expanded={costPanelExpanded}
+                      onToggle={() => setCostPanelExpanded((v) => !v)}
+                    />
+                  )}
+                </Group>
+              </Stack>
+            </ScrollArea>
           </Tabs>
         </Stack>
       </Group>
