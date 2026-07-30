@@ -31,12 +31,7 @@ const AccommodationSchema = z
       .max(5, "Rating is out of 5")
       .nullable()
       .optional(),
-    link: z
-      .string()
-      .url("Enter a valid URL")
-      .nullable()
-      .optional()
-      .or(z.literal("")),
+    link: z.url("Enter a valid URL").nullable().optional().or(z.literal("")),
     room: z.string().trim().max(120).nullable().optional().or(z.literal("")),
   })
   .refine(

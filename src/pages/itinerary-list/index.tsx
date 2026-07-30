@@ -12,6 +12,9 @@ import { useActivityStore } from "@/stores/activityStore";
 import { useEffect, useState } from "react";
 import noActivitiesImg from "@/assets/icons/empty-itinerary.svg";
 import { useLocationStore } from "@/stores/locationStore";
+import { ActivityModal } from "./components/ActivityModal";
+import { Button } from "@/components/ui";
+import { PiPlus } from "react-icons/pi";
 
 export default function ItineraryListPage() {
   const { fetchByLocation, loading, activities } = useActivityStore();
@@ -93,6 +96,14 @@ export default function ItineraryListPage() {
             Add activities, meals or notes to your {location.city} days.
             Anything with a price rolls into the budget.
           </Text>
+          <ActivityModal
+            locationId={locationId}
+            trigger={(open) => (
+              <Button leftSection={<PiPlus />} onClick={open}>
+                Add your activity
+              </Button>
+            )}
+          />
         </Center>
       </Stack>
     );

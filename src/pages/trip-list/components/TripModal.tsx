@@ -227,7 +227,7 @@ export const TripModal = ({
               >
                 <LuInfo size="0.75rem" />
               </ThemeIcon>
-              <Text size="xs" c="var(--muted)">
+              <Text size="xs" c="var(--muted)" my="auto">
                 {isEdit
                   ? "Set the status yourself - Active and Completed also advance automatically based on your trip dates."
                   : "You'll be the trip owner. Trip dates fill in automatically from your earliest and latest stays, and invites happen from the trip page once it's created."}
