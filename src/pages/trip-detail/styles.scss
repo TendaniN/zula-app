@@ -31,3 +31,14 @@
     margin: auto 0;
   }
 }
+
+.empty-state {
+  --empty-card-border: var(--muted);
+
+  &.transport {
+    --empty-card-border: light-dark(
+      var(--mantine-color-peach-2),
+      var(--mantine-color-peach-7)
+    );
+  }
+}
