@@ -1,5 +1,4 @@
 import { type ReactNode } from "react";
-import dayjs from "dayjs";
 
 import {
   Divider,
@@ -22,19 +21,7 @@ import { useCurrencyStore } from "@/stores/currencyStore";
 import { useActivityStore } from "@/stores/activityStore";
 import { ActivitySchema, type ActivityFormValues } from "../schema";
 import type { Activity } from "@/types/models";
-
-/**
- * Convert whatever DatePickerInput's onChange hands back (Date or string,
- * depending on Mantine version) to a YYYY-MM-DD string. Uses dayjs().format()
- * rather than Date.toISOString(), since toISOString converts to UTC first and
- * can shift the date by a day near midnight in timezones ahead/behind UTC.
- */
-const toDateStr = (value: Date | string | null): string | null =>
-  value ? dayjs(value).format("YYYY-MM-DD") : null;
-
-/** Parse a YYYY-MM-DD string into a Date for DatePickerInput's `value` prop. */
-const fromDateStr = (s: string | null | undefined): Date | null =>
-  s ? dayjs(s, "YYYY-MM-DD").toDate() : null;
+import { formatDate, translateDate } from "@/utils/date";
 
 interface ActivityModalProps {
   locationId: string;
@@ -184,8 +171,8 @@ export const ActivityModal = ({
                     label="Date · optional"
                     placeholder="Pick a date"
                     clearable
-                    value={fromDateStr(field.state.value)}
-                    onChange={(value) => field.handleChange(toDateStr(value))}
+                    value={translateDate(field.state.value)}
+                    onChange={(value) => field.handleChange(formatDate(value))}
                     onBlur={field.handleBlur}
                     error={field.state.meta.errors[0]}
                   />

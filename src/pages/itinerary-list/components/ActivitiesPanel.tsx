@@ -24,6 +24,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDuration } from "@/utils/formatDuration";
+import { formatDate } from "@/utils/date";
+
 interface DayGroup {
   date: string; // YYYY-MM-DD
   index: number; // Day 1, Day 2, ...
@@ -109,7 +111,7 @@ export const ActivitiesPanel = ({
             <Group gap={6} wrap="nowrap" style={{ flexShrink: 0 }}>
               <Text fw="bold">{`Day ${day.index}`}</Text>
               <Text c="dimmed" size="sm">
-                {dayjs(day.date).format("ddd D MMM")}
+                {formatDate(day.date, "ddd D MMM")}
               </Text>
             </Group>
             <Divider flex={1} size="md" color="mint.1" />

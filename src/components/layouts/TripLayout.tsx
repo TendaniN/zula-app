@@ -12,9 +12,14 @@ import {
 import { Breadcrumbs } from "../nav/Breadcrumbs";
 import { useTripStore } from "@/stores/tripStore";
 import { useLocationStore } from "@/stores/locationStore";
-import { Navigate, Outlet, useNavigate, useParams } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { getStatusColor } from "@/constants/status";
-import dayjs from "dayjs";
 import { TripCostPanel } from "../ui/TripCostPanel";
 import { calcNights } from "@/utils/calcNights";
 import {
@@ -28,6 +33,7 @@ import { useEffect, useState } from "react";
 import { ViewOnlyBanner } from "../auth/ViewOnlyBanner";
 import { LocationCostPanel } from "../ui/LocationCostPanel";
 import { useActivityStore } from "@/stores/activityStore";
+import { formatDate } from "@/utils/date";
 
 export default function TripLayout() {
   const {
@@ -42,12 +48,17 @@ export default function TripLayout() {
     loading: locationsLoading,
   } = useLocationStore();
   const byLocation = useActivityStore((s) => s.byLocation);
+  const [searchParams] = useSearchParams();
+
+  const defaultTab = searchParams.get("tab");
 
   // Tracks whether the initial fetch has completed at least once.
   // Without this, the component redirects on refresh before the
   // fetch even starts (loading defaults to false, summary is null).
   const [initialized, setInitialized] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>("Stays & itinerary");
+  const [activeTab, setActiveTab] = useState<string>(
+    defaultTab ?? "Stays & itinerary",
+  );
   const [costPanelExpanded, setCostPanelExpanded] = useState(true);
 
   const navigate = useNavigate();
@@ -137,7 +148,7 @@ export default function TripLayout() {
             <Text fz="sm">
               {!currentTripSummary.start_date || !currentTripSummary.end_date
                 ? "Just created"
-                : `${dayjs(currentTripSummary.start_date).format("D")} - ${dayjs(currentTripSummary.end_date).format("D MMM, YYYY")}`}
+                : `${formatDate(currentTripSummary.start_date, "D")} - ${formatDate(currentTripSummary.end_date, "D MMM, YYYY")}`}
             </Text>
             <PiDotBold />
             {locations.length > 0 ? (
@@ -196,7 +207,7 @@ export default function TripLayout() {
               </Tabs.Tab>
             </Tabs.List>
             <ScrollArea
-              h="calc(100dvh - 215px)"
+              h="calc(100dvh - 217px)"
               type="auto"
               offsetScrollbars
               classNames={{ scrollbar: "scrollbar", thumb: "thumb" }}

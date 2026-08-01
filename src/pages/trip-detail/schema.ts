@@ -68,6 +68,46 @@ export const LocationSchema = z
     },
   );
 
+export const TransportSchema = z
+  .object({
+    name: z
+      .string()
+      .trim()
+      .min(1, "Give the transport a name")
+      .max(120, "Keep the name under 120 characters"),
+    type: z.enum(Constants.public.Enums.transport_type, {
+      message: "Pick a transport type",
+    }),
+    cost: z
+      .number({ message: "Enter a number" })
+      .min(0, "Cost can't be negative")
+      .default(0),
+    duration_minutes: z
+      .number()
+      .min(0, "Duration can't be negative")
+      .nullable()
+      .optional(),
+    start_date: z
+      .string()
+      .min(1, "Pick a start date/time")
+      .nullable()
+      .optional(),
+    end_date: z.string().min(1, "Pick an end date/time").nullable().optional(),
+    start_location_id: z.string().nullable().optional(),
+    end_location_id: z.string().nullable().optional(),
+  })
+  .refine(
+    (data) => {
+      if (!data.start_date || !data.end_date) return true;
+      return data.end_date >= data.start_date;
+    },
+    {
+      message: "End must be on or after the start",
+      path: ["end_date"],
+    },
+  );
+
+export type TransportFormValues = z.infer<typeof TransportSchema>;
 export type LocationFormValues = z.infer<typeof LocationSchema>;
 export type AccommodationFormValues = z.infer<typeof AccommodationSchema>;
 

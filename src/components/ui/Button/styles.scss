@@ -24,9 +24,16 @@ button.button {
     border: 2px solid var(--mantine-primary-color-7);
   }
 
+  &--secondary {
+    background-color: var(--mantine-color-peach-5);
+    color: var(--mantine-primary-color-9);
+    box-shadow: 0 4px 0 var(--mantine-color-peach-6);
+    border: 2px solid var(--mantine-color-peach-6);
+  }
+
   &--tertiary {
     background-color: var(--mantine-color-mint-5);
-    color: var(--mantine-color-mint-9);
+    color: var(--mantine-primary-color-9);
     box-shadow: 0 4px 0 var(--mantine-color-mint-7);
     border: 2px solid var(--mantine-color-mint-7);
   }

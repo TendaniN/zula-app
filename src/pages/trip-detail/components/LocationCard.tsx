@@ -25,12 +25,12 @@ import { getCountryFlag } from "@/utils/getCountryFlag";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import type { Location, Accommodation } from "@/types/models";
-import dayjs from "dayjs";
 import { LocationModal } from "./LocationModal";
 import { useLocationStore } from "@/stores/locationStore";
 import { useDisclosure } from "@mantine/hooks";
 import { Link } from "react-router-dom";
 import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import { formatDate } from "@/utils/date";
 
 const TYPE_COLOR: Record<Accommodation["type"], string> = {
   hotel: "lavender",
@@ -67,12 +67,6 @@ export const LocationCard = ({
   // Controlled edit modal + delete confirm state.
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
-
-  // Edit modal is rendered OUTSIDE the Menu below. Menu.Item closes (and
-  // unmounts) its Menu.Dropdown on click by default, so a modal nested
-  // inside it — like the old <LocationModal trigger={...}> here — gets torn
-  // down before it can show. Lifting the opened state here and rendering the
-  // modal as a sibling of the Menu (not a child) avoids that.
   const [editOpened, { open: openEdit, close: closeEdit }] =
     useDisclosure(false);
 
@@ -87,8 +81,9 @@ export const LocationCard = ({
 
   const dateRange =
     location.start_date && location.end_date
-      ? `${dayjs(location.start_date).format("D")} - ${dayjs(location.end_date).format("D MMM")}`
+      ? `${formatDate(location.start_date, "D")} - ${formatDate(location.end_date, "D MMM")}`
       : "Dates TBC";
+
   const confirmDelete = async () => {
     await deleteLocation(location.id);
     closeDelete();

@@ -1,8 +1,8 @@
 import {
   Alert,
   Divider,
+  Group,
   PasswordInput,
-  SimpleGrid,
   Stack,
   Text,
   TextInput,
@@ -69,7 +69,7 @@ export default function RegisterPage() {
           }}
         >
           <Stack gap="md">
-            <SimpleGrid cols={{ base: 1, sm: 2 }}>
+            <Group grow>
               <Field name="firstName">
                 {(field) => (
                   <TextInput
@@ -100,7 +100,7 @@ export default function RegisterPage() {
                   />
                 )}
               </Field>
-            </SimpleGrid>
+            </Group>
 
             <Field name="email">
               {(field) => (
@@ -132,7 +132,7 @@ export default function RegisterPage() {
                 />
               )}
             </Field>
-            <SimpleGrid cols={{ base: 1, sm: 2 }}>
+            <Group grow>
               <Field name="password">
                 {(field) => (
                   <PasswordInput
@@ -161,7 +161,7 @@ export default function RegisterPage() {
                   />
                 )}
               </Field>
-            </SimpleGrid>
+            </Group>
 
             <Button type="submit" fluid>
               Create account
