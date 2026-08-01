@@ -107,6 +107,23 @@ export const TransportSchema = z
     },
   );
 
+export const TodoSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(1, "Give the to-do a title")
+    .max(120, "Keep the title under 120 characters"),
+  description: z
+    .string()
+    .trim()
+    .max(500, "Keep the description under 500 characters")
+    .nullable()
+    .optional()
+    .or(z.literal("")),
+  due_date: z.string().min(1, "Pick a due date").nullable().optional(),
+});
+
+export type TodoFormValues = z.infer<typeof TodoSchema>;
 export type TransportFormValues = z.infer<typeof TransportSchema>;
 export type LocationFormValues = z.infer<typeof LocationSchema>;
 export type AccommodationFormValues = z.infer<typeof AccommodationSchema>;

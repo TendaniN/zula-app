@@ -41,4 +41,11 @@
       var(--mantine-color-peach-7)
     );
   }
+
+  &.todo {
+    --empty-card-border: light-dark(
+      var(--mantine-color-mint-2),
+      var(--mantine-color-mint-7)
+    );
+  }
 }

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui";
 import { LocationPanel } from "./components/LocationPanel";
 import { CanEditTrip } from "@/components/auth/CanEditTrip";
 import { TransportPanel } from "./components/TransportPanel";
+import { TodoPanel } from "./components/ToDoPanel";
 
 export default function TripDetailPage() {
   const { currentTripSummary } = useTripStore();
@@ -76,6 +77,9 @@ export default function TripDetailPage() {
   switch (activeTab) {
     case "Transport": {
       return <TransportPanel tripId={tripId} />;
+    }
+    case "To-dos": {
+      return <TodoPanel tripId={tripId} />;
     }
     default: {
       return <LocationPanel tripId={tripId} />;
