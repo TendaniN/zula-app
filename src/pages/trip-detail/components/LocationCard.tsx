@@ -67,12 +67,6 @@ export const LocationCard = ({
   // Controlled edit modal + delete confirm state.
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
-
-  // Edit modal is rendered OUTSIDE the Menu below. Menu.Item closes (and
-  // unmounts) its Menu.Dropdown on click by default, so a modal nested
-  // inside it — like the old <LocationModal trigger={...}> here — gets torn
-  // down before it can show. Lifting the opened state here and rendering the
-  // modal as a sibling of the Menu (not a child) avoids that.
   const [editOpened, { open: openEdit, close: closeEdit }] =
     useDisclosure(false);
 
@@ -89,6 +83,7 @@ export const LocationCard = ({
     location.start_date && location.end_date
       ? `${formatDate(location.start_date, "D")} - ${formatDate(location.end_date, "D MMM")}`
       : "Dates TBC";
+
   const confirmDelete = async () => {
     await deleteLocation(location.id);
     closeDelete();
