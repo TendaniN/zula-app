@@ -162,6 +162,7 @@ export const TransportModal = ({
               <form.Field name="name">
                 {(field) => (
                   <TextInput
+                    required
                     label="Name"
                     placeholder="e.g. CPT → Rome (FCO)"
                     value={field.state.value}
@@ -169,7 +170,6 @@ export const TransportModal = ({
                     onBlur={field.handleBlur}
                     error={field.state.meta.errors[0]}
                     data-autofocus
-                    withAsterisk
                   />
                 )}
               </form.Field>
@@ -177,6 +177,7 @@ export const TransportModal = ({
               <form.Field name="type">
                 {(field) => (
                   <Select
+                    required
                     label="Type"
                     data={TYPE_OPTIONS}
                     value={field.state.value}
@@ -188,7 +189,6 @@ export const TransportModal = ({
                     onBlur={field.handleBlur}
                     error={field.state.meta.errors[0]}
                     allowDeselect={false}
-                    withAsterisk
                   />
                 )}
               </form.Field>

@@ -28,6 +28,7 @@ import {
 } from "react-icons/pi";
 import { TransportModal } from "./TransportModal";
 import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import { useTransportStore } from "@/stores/transportStore";
 
 const TYPE_COLOR: Record<Transport["type"], string> = {
   flight: "lavender",
@@ -74,6 +75,7 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
     transport;
 
   const currency = useCurrencyStore((s) => s.symbol);
+  const deleteTransport = useTransportStore((s) => s.deleteTransport);
 
   const dateRange =
     start_date && end_date
@@ -81,7 +83,7 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
       : "Dates TBC";
 
   const confirmDelete = async () => {
-    // await deleteLocation(location.id);
+    await deleteTransport(transport.id);
     closeDelete();
   };
 

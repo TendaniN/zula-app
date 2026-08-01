@@ -50,7 +50,7 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
     );
   }
 
-  if (transports.length === 0) {
+  if (initialized && transports.length === 0) {
     return (
       <Stack
         p="xl"
