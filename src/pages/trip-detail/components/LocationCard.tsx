@@ -25,12 +25,12 @@ import { getCountryFlag } from "@/utils/getCountryFlag";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import type { Location, Accommodation } from "@/types/models";
-import dayjs from "dayjs";
 import { LocationModal } from "./LocationModal";
 import { useLocationStore } from "@/stores/locationStore";
 import { useDisclosure } from "@mantine/hooks";
 import { Link } from "react-router-dom";
 import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import { formatDate } from "@/utils/date";
 
 const TYPE_COLOR: Record<Accommodation["type"], string> = {
   hotel: "lavender",
@@ -87,7 +87,7 @@ export const LocationCard = ({
 
   const dateRange =
     location.start_date && location.end_date
-      ? `${dayjs(location.start_date).format("D")} - ${dayjs(location.end_date).format("D MMM")}`
+      ? `${formatDate(location.start_date, "D")} - ${formatDate(location.end_date, "D MMM")}`
       : "Dates TBC";
   const confirmDelete = async () => {
     await deleteLocation(location.id);

@@ -9,7 +9,6 @@ import {
   NumberInput,
   Rating,
   Select,
-  SimpleGrid,
   Stack,
   Switch,
   Text,
@@ -42,6 +41,7 @@ import {
 } from "../schema";
 import type { Location, Accommodation } from "@/types/models";
 import dayjs from "dayjs";
+import { formatDate, translateDate } from "@/utils/date";
 
 /* ------------------------------------------------------------------ */
 /* Select data                                                         */
@@ -57,14 +57,6 @@ const ACCOMMODATION_TYPE_OPTIONS =
     value: t,
     label: t.charAt(0).toUpperCase() + t.slice(1),
   }));
-
-/** Convert a Date to YYYY-MM-DD string, or null. */
-const toDateStr = (value: Date | string | null): string | null =>
-  value ? dayjs(value).format("YYYY-MM-DD") : null;
-
-/** Parse a YYYY-MM-DD string into a Date for DatePickerInput's `value` prop. */
-const fromDateStr = (s: string | null | undefined): Date | null =>
-  s ? dayjs(s, "YYYY-MM-DD").toDate() : null;
 
 /* ------------------------------------------------------------------ */
 /* Props                                                               */
@@ -235,7 +227,7 @@ export const LocationModal = ({
           }}
         >
           <Stack gap="md" p="lg">
-            <SimpleGrid cols={{ base: 1, md: 2 }}>
+            <Group grow>
               <form.Field name="city">
                 {(field) => (
                   <Select
@@ -269,10 +261,10 @@ export const LocationModal = ({
                   ) : null;
                 }}
               </form.Subscribe>
-            </SimpleGrid>
+            </Group>
 
             {/* ── Dates ───────────────────────────────────────── */}
-            <SimpleGrid cols={{ base: 1, md: 2 }}>
+            <Group grow>
               <form.Field name="start_date">
                 {(field) => (
                   <DatePickerInput
@@ -281,8 +273,8 @@ export const LocationModal = ({
                     placeholder="Pick a date"
                     clearable
                     minDate={dayjs().format("YYYY-MM-DD")}
-                    value={fromDateStr(field.state.value)}
-                    onChange={(value) => field.handleChange(toDateStr(value))}
+                    value={translateDate(field.state.value)}
+                    onChange={(value) => field.handleChange(formatDate(value))}
                     onBlur={field.handleBlur}
                     error={field.state.meta.errors[0]}
                   />
@@ -297,16 +289,16 @@ export const LocationModal = ({
                     placeholder="Pick a date"
                     clearable
                     minDate={dayjs().format("YYYY-MM-DD")}
-                    value={toDateStr(field.state.value)}
+                    value={formatDate(field.state.value)}
                     onChange={(d) =>
-                      field.handleChange(toDateStr(d as Date | null))
+                      field.handleChange(formatDate(d as Date | null))
                     }
                     onBlur={field.handleBlur}
                     error={field.state.meta.errors[0]}
                   />
                 )}
               </form.Field>
-            </SimpleGrid>
+            </Group>
 
             {/* ── Accommodation toggle ────────────────────────── */}
             <Divider variant="dashed" color="var(--border-color)" size="sm" />
@@ -425,11 +417,7 @@ export const LocationModal = ({
                   <form.Field name="accommodation.rating">
                     {(field) => (
                       <Stack gap={4}>
-                        <Text
-                          size="sm"
-                          fw={500}
-                          c="var(--mantine-color-dimmed)"
-                        >
+                        <Text size="sm" fw={500} c="dimmed">
                           Rating · optional
                         </Text>
                         <Rating

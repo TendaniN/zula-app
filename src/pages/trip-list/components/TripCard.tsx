@@ -12,9 +12,9 @@ import {
 import { PiDotBold } from "react-icons/pi";
 import { getCountryFlag } from "@/utils/getCountryFlag";
 import { calcNights } from "@/utils/calcNights";
-import dayjs from "dayjs";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import { Link } from "react-router-dom";
+import { formatDate } from "@/utils/date";
 
 const GRADIENT_COLORS = ["aurora", "bloom", "meadow", "seaform"] as const;
 
@@ -55,7 +55,7 @@ export const TripCard = ({ trip, index }: TripCardProps) => {
         </Text>
         {trip.start_date && trip.end_date && (
           <Group gap={2} c="dimmed" mx="sm">
-            <Text fz="sm">{`${dayjs(trip.start_date).format("D")} - ${dayjs(trip.end_date).format("D MMM YYYY")}`}</Text>
+            <Text fz="sm">{`${formatDate(trip.start_date, "D")} - ${formatDate(trip.end_date, "D MMM YYYY")}`}</Text>
             <PiDotBold />
             <Text fz="sm">{`${calcNights(trip.start_date, trip.end_date)} nights`}</Text>
           </Group>

@@ -19,10 +19,10 @@ import { Button } from "@/components/ui";
 import { PiArrowLeft, PiPlus } from "react-icons/pi";
 import "./styles.scss";
 import { getCountryFlag } from "@/utils/getCountryFlag";
-import dayjs from "dayjs";
 import { calcNights } from "@/utils/calcNights";
 import { ActivitiesPanel } from "./components/ActivitiesPanel";
 import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import { formatDate } from "@/utils/date";
 
 export default function ItineraryListPage() {
   const { fetchByLocation, loading, activities } = useActivityStore();
@@ -121,7 +121,7 @@ export default function ItineraryListPage() {
 
   const infoLine = [
     location.start_date && location.end_date
-      ? `${dayjs(location.start_date).format("D")} – ${dayjs(location.end_date).format("D MMM")}`
+      ? `${formatDate(location.start_date, "D")} – ${formatDate(location.end_date, "D MMM")}`
       : null,
     nights > 0 ? `${nights} ${nights === 1 ? "night" : "nights"}` : null,
   ].join(" · ");
