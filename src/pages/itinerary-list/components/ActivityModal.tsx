@@ -152,6 +152,7 @@ export const ActivityModal = ({
             <form.Field name="name">
               {(field) => (
                 <TextInput
+                  required
                   label="Activity name"
                   placeholder="e.g. Colosseum guided tour"
                   value={field.state.value}
@@ -159,7 +160,6 @@ export const ActivityModal = ({
                   onBlur={field.handleBlur}
                   error={field.state.meta.errors[0]}
                   data-autofocus
-                  withAsterisk
                 />
               )}
             </form.Field>
