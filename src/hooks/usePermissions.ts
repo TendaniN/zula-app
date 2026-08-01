@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/authStore";
 import { useTripStore } from "@/stores/tripStore";
-import { isAdmin, isTripOwner } from "@/utils/permissions";
+import { isAdmin, isTripMember, isTripOwner } from "@/utils/permissions";
 import type { Trip } from "@/types/models";
 
 export interface UsePermissionsResult {
@@ -10,6 +10,7 @@ export interface UsePermissionsResult {
   isOwner: boolean;
   /** isAdmin || isOwner. What most call sites actually want to check. */
   canEdit: boolean;
+  canView: boolean;
 }
 
 /**
@@ -33,10 +34,12 @@ export const usePermissions = (trip?: Trip | null): UsePermissionsResult => {
 
   const admin = isAdmin(profile);
   const owner = isTripOwner(userId, targetTrip, members);
+  const member = isTripMember(userId, targetTrip, members);
 
   return {
     isAdmin: admin,
     isOwner: owner,
     canEdit: admin || owner,
+    canView: member,
   };
 };

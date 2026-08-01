@@ -3,6 +3,7 @@ import { usePermissions } from "@/hooks/usePermissions";
 import type { Trip } from "@/types/models";
 import { Flex, Group, Stack, Text } from "@mantine/core";
 import { FaRegEye } from "react-icons/fa6";
+import { Navigate } from "react-router-dom";
 
 interface ViewOnlyBannerProps {
   /** Trip to check against. Omit to use tripStore's currentTrip. */
@@ -19,22 +20,31 @@ export const ViewOnlyBanner = ({
   trip,
   fallback = null,
 }: ViewOnlyBannerProps) => {
-  const { canEdit } = usePermissions(trip);
+  const { canEdit, canView } = usePermissions(trip);
   return !canEdit ? (
-    <Group bdrs="lg" p="sm" bd="2px solid lavender.4" bg="var(--bg-secondary)">
-      <Flex bg="lavender.3" bdrs="md" p="xs" bd="2px solid lavender.4">
-        <FaRegEye />
-      </Flex>
-      <Stack gap={0}>
-        <Text fw={800} size="sm">
-          View-only access
-        </Text>
-        <Text size="xs" c="dimmed">
-          You can browse this whole trip but can’t make changes. Ask the owner
-          to invite you as an editor.
-        </Text>
-      </Stack>
-    </Group>
+    canView ? (
+      <Group
+        bdrs="lg"
+        p="sm"
+        bd="2px solid lavender.4"
+        bg="var(--bg-secondary)"
+      >
+        <Flex bg="lavender.3" bdrs="md" p="xs" bd="2px solid lavender.4">
+          <FaRegEye />
+        </Flex>
+        <Stack gap={0}>
+          <Text fw={800} size="sm">
+            View-only access
+          </Text>
+          <Text size="xs" c="dimmed">
+            You can browse this whole trip but can’t make changes. Ask the owner
+            to invite you as an editor.
+          </Text>
+        </Stack>
+      </Group>
+    ) : (
+      <Navigate to="/trips" replace />
+    )
   ) : (
     <>{fallback}</>
   );

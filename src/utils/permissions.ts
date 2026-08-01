@@ -28,6 +28,18 @@ export const isTripOwner = (
   );
 };
 
+export const isTripMember = (
+  userId: string | null | undefined,
+  trip: Pick<Trip, "owner_id"> | null | undefined,
+  members?: TripMember[] | null,
+): boolean => {
+  if (!userId) return false;
+  if (trip?.owner_id === userId) return true;
+  return (members ?? []).some(
+    (m) => m.user_id === userId && m.role === "member",
+  );
+};
+
 /**
  * True if the user has unfiltered editing access to the given trip: either
  * an app admin (edits any trip) or that trip's owner (edits their own).
