@@ -27,6 +27,7 @@ import {
   PiDotsThreeOutlineFill,
 } from "react-icons/pi";
 import { TransportModal } from "./TransportModal";
+import { CanEditTrip } from "@/components/auth/CanEditTrip";
 
 const TYPE_COLOR: Record<Transport["type"], string> = {
   flight: "lavender",
@@ -140,29 +141,31 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
               {currency}
               {cost.toLocaleString()}
             </Text>
-            <Menu position="bottom-end" withinPortal shadow="md">
-              <Menu.Target>
-                <IconButton
-                  icon={<PiDotsThreeOutlineFill />}
-                  variant="ghost"
-                  size="sm"
-                  aria-label="Location options"
-                />
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item leftSection={<FaPencil />} onClick={openEdit}>
-                  Edit
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item
-                  color="red"
-                  leftSection={<FaRegTrashCan />}
-                  onClick={openDelete}
-                >
-                  Delete
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
+            <CanEditTrip>
+              <Menu position="bottom-end" withinPortal shadow="md">
+                <Menu.Target>
+                  <IconButton
+                    icon={<PiDotsThreeOutlineFill />}
+                    variant="ghost"
+                    size="sm"
+                    aria-label="Location options"
+                  />
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item leftSection={<FaPencil />} onClick={openEdit}>
+                    Edit
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item
+                    color="red"
+                    leftSection={<FaRegTrashCan />}
+                    onClick={openDelete}
+                  >
+                    Delete
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </CanEditTrip>
           </Group>
         </Group>
         <TransportModal
