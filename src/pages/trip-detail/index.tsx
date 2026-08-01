@@ -1,7 +1,7 @@
 import { useLocationStore } from "@/stores/locationStore";
 import { useTripStore } from "@/stores/tripStore";
 import { Center, Image, Stack, Text, Title } from "@mantine/core";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams, useSearchParams } from "react-router-dom";
 import { PiPlus } from "react-icons/pi";
 import "./styles.scss";
 import noLocationsImg from "@/assets/icons/empty-no-locations.svg";
@@ -9,12 +9,15 @@ import { LocationModal } from "./components/LocationModal";
 import { Button } from "@/components/ui";
 import { LocationPanel } from "./components/LocationPanel";
 import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import { TransportPanel } from "./components/TransportPanel";
 
 export default function TripDetailPage() {
   const { currentTripSummary } = useTripStore();
   const { locations } = useLocationStore();
 
   const { tripId } = useParams();
+  const [searchParams] = useSearchParams();
+  const activeTab = searchParams.get("tab");
 
   if (!tripId) {
     return <Navigate to="/trips" replace />;
@@ -30,7 +33,8 @@ export default function TripDetailPage() {
       <Stack
         p="xl"
         bdrs="lg"
-        bd="2px dashed var(--muted)"
+        className="empty-state"
+        bd="2px dashed var(--empty-card-border)"
         style={{
           backgroundColor:
             "light-dark(var(--mantine-color-white), var(--mantine-color-black))",
@@ -69,5 +73,12 @@ export default function TripDetailPage() {
     );
   }
 
-  return <LocationPanel tripId={tripId} />;
+  switch (activeTab) {
+    case "Transport": {
+      return <TransportPanel tripId={tripId} />;
+    }
+    default: {
+      return <LocationPanel tripId={tripId} />;
+    }
+  }
 }
