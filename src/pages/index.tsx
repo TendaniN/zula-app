@@ -12,8 +12,6 @@ export default function Pages() {
       <Route path="*" element={<Navigate to="/trips" replace />} />
 
       <Route element={<DefaultLayout />}>
-        <Route path="/" element={<div>Pages</div>} />
-
         <Route element={<AppLayout />}>
           <Route path="trips" element={<TripListPage />} />
 
