@@ -16,7 +16,7 @@ import { Button, IconButton } from "@/components/ui";
 import { PiPlus, PiDotsThreeBold } from "react-icons/pi";
 import { FaPencil, FaRegTrashCan, FaTrash, FaLink } from "react-icons/fa6";
 import dayjs from "dayjs";
-import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import { CanEditTrip } from "@/components/auth";
 import type { Activity, Location } from "@/types/models";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";

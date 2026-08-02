@@ -21,7 +21,7 @@ import "./styles.scss";
 import { getCountryFlag } from "@/utils/getCountryFlag";
 import { calcNights } from "@/utils/calcNights";
 import { ActivitiesPanel } from "./components/ActivitiesPanel";
-import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import { CanEditTrip } from "@/components/auth";
 import { formatDate } from "@/utils/date";
 
 export default function ItineraryListPage() {

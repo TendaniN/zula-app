@@ -7,20 +7,19 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import noTodosImg from "@/assets/icons/empty-todos.svg";
-import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import noTransportsImg from "@/assets/icons/empty-transport.svg";
+import { CanEditTrip } from "@/components/auth";
+import { useTransportStore } from "@/stores/transportStore";
 import { useEffect, useState } from "react";
-import { useTodoStore } from "@/stores/todoStore";
-import { TodoModal } from "./TodoModal";
-import { TodoCard } from "./TodoCard";
-import dayjs from "dayjs";
+import { TransportModal } from "./TransportModal";
+import { TransportCard } from "./TransportCard";
 
-interface TodoPanelProps {
+interface TransportPanelProps {
   tripId: string;
 }
 
-export const TodoPanel = ({ tripId }: TodoPanelProps) => {
-  const { todos, fetchByTrip } = useTodoStore();
+export const TransportPanel = ({ tripId }: TransportPanelProps) => {
+  const { transports, fetchByTrip } = useTransportStore();
 
   const [initialized, setInitialized] = useState(false);
 
@@ -51,12 +50,12 @@ export const TodoPanel = ({ tripId }: TodoPanelProps) => {
     );
   }
 
-  if (initialized && todos.length === 0) {
+  if (initialized && transports.length === 0) {
     return (
       <Stack
         p="xl"
         bdrs="lg"
-        className="empty-state todo"
+        className="empty-state transport"
         bd="2px dashed var(--empty-card-border)"
         style={{
           backgroundColor:
@@ -73,16 +72,17 @@ export const TodoPanel = ({ tripId }: TodoPanelProps) => {
           }}
           p="xl"
         >
-          <Image src={noTodosImg} w="8rem" h="6.5rem" />
+          <Image src={noTransportsImg} w="8rem" h="6.5rem" />
           <Title order={3} ta="center" fw="semibold">
-            Nothing left to sort out - yet
+            No journeys plans yet
           </Title>
           <Text c="dimmed" ta="center">
-            Keep visas, bookings and packing in one list. Anyone you’ve shared
-            the trip with can tick items of.
+            Flights, trains, ferries, transfers, day trips - anything you travel
+            on, between stops or out and back from one. Fares count toward the
+            trip budget.
           </Text>
           <CanEditTrip>
-            <TodoModal tripId={tripId} />
+            <TransportModal tripId={tripId} />
           </CanEditTrip>
         </Center>
       </Stack>
@@ -93,16 +93,12 @@ export const TodoPanel = ({ tripId }: TodoPanelProps) => {
     <Stack gap="md" flex={1} miw={0}>
       <Group justify="flex-end">
         <CanEditTrip>
-          <TodoModal tripId={tripId} />
+          <TransportModal tripId={tripId} />
         </CanEditTrip>
       </Group>
-      {todos
-        .sort(function compare(a, b) {
-          return dayjs(a.due_date).diff(dayjs(b.due_date));
-        })
-        .map((todo) => (
-          <TodoCard tripId={tripId} todo={todo} />
-        ))}
+      {transports.map((transport) => (
+        <TransportCard tripId={tripId} transport={transport} />
+      ))}
     </Stack>
   );
 };

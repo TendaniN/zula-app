@@ -27,7 +27,7 @@ import {
   PiDotsThreeOutlineFill,
 } from "react-icons/pi";
 import { TransportModal } from "./TransportModal";
-import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import { CanEditTrip } from "@/components/auth";
 import { useTransportStore } from "@/stores/transportStore";
 
 const TYPE_COLOR: Record<Transport["type"], string> = {

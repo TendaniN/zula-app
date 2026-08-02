@@ -5,12 +5,14 @@ import { Navigate, useParams, useSearchParams } from "react-router-dom";
 import { PiPlus } from "react-icons/pi";
 import "./styles.scss";
 import noLocationsImg from "@/assets/icons/empty-no-locations.svg";
-import { LocationModal } from "./components/LocationModal";
+import {
+  LocationModal,
+  LocationPanel,
+  TodoPanel,
+  TransportPanel,
+} from "./components";
 import { Button } from "@/components/ui";
-import { LocationPanel } from "./components/LocationPanel";
-import { CanEditTrip } from "@/components/auth/CanEditTrip";
-import { TransportPanel } from "./components/TransportPanel";
-import { TodoPanel } from "./components/ToDoPanel";
+import { CanEditTrip } from "@/components/auth";
 
 export default function TripDetailPage() {
   const { currentTripSummary } = useTripStore();

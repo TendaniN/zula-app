@@ -17,7 +17,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { FaPencil, FaRegTrashCan, FaTrash } from "react-icons/fa6";
 import { PiDotsThreeOutlineFill } from "react-icons/pi";
-import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import { CanEditTrip } from "@/components/auth";
 import dayjs from "dayjs";
 import { TodoModal } from "./TodoModal";
 import { useTodoStore } from "@/stores/todoStore";
