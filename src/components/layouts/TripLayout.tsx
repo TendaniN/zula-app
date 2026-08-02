@@ -148,7 +148,7 @@ export default function TripLayout() {
             <Text fz="sm">
               {!currentTripSummary.start_date || !currentTripSummary.end_date
                 ? "Just created"
-                : `${formatDate(currentTripSummary.start_date, "D")} - ${formatDate(currentTripSummary.end_date, "D MMM, YYYY")}`}
+                : `${formatDate(currentTripSummary.start_date, "D MMM")} - ${formatDate(currentTripSummary.end_date, "D MMM, YYYY")}`}
             </Text>
             <PiDotBold />
             {locations.length > 0 ? (

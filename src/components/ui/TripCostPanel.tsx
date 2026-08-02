@@ -11,7 +11,7 @@ const FADE_MS = 150;
 const FADE_IN_DELAY_MS = 120; // let the width shrink/grow before fading in
 
 interface TripCostPanelProps {
-  summary: TripSummaryRow | null;
+  summary: TripSummaryRow;
   expanded: boolean;
   onToggle: () => void;
 }
@@ -47,38 +47,38 @@ export const TripCostPanel = ({
   const format = (v: number) =>
     `${currency}${v.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
 
-  const accommodation = summary?.accommodation_cost ?? 0;
-  const activities = summary?.activities_cost ?? 0;
-  const travel = summary?.travel_cost ?? 0;
-  const total = summary?.total_cost ?? 0;
+  const accommodation = summary.accommodation_cost ?? 0;
+  const activities = summary.activities_cost ?? 0;
+  const travel = summary.travel_cost ?? 0;
+  const total = summary.total_cost ?? 0;
+  const buffer = summary.buffer_cost ?? 0;
 
   return (
     <Stack
       component="aside"
       aria-label="Trip cost"
       gap={0}
+      w={expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH}
+      miw={expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH}
+      pos="relative"
+      bdrs="lg"
+      bd="2px solid var(--border-color)"
+      bg="var(--surface-color)"
       style={{
-        width: expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
-        minWidth: expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
         flexShrink: 0,
-        position: "relative",
         overflow: "hidden",
         alignSelf: "flex-start",
-        borderRadius: "var(--mantine-radius-lg)",
-        border: "2px solid var(--border-color)",
-        background: "var(--surface-color)",
         transition: `width ${WIDTH_MS}ms cubic-bezier(0.4, 0, 0.2, 1), min-width ${WIDTH_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
       }}
     >
       {/* ── Expanded content ─────────────────────────────────────── */}
       <Stack
         gap="md"
-
+        w={EXPANDED_WIDTH}
+        opacity={expanded ? 1 : 0}
+        pos={expanded ? "static" : "absolute"}
         style={{
-          width: EXPANDED_WIDTH,
-          opacity: expanded ? 1 : 0,
           pointerEvents: expanded ? "auto" : "none",
-          position: expanded ? "static" : "absolute",
           inset: 0,
           transition: `opacity ${FADE_MS}ms ease`,
           transitionDelay: expanded ? `${FADE_IN_DELAY_MS}ms` : "0ms",
@@ -122,6 +122,7 @@ export const TripCostPanel = ({
           />
           <CostRow label="Activities" value={activities} format={format} />
           <CostRow label="Transport" value={travel} format={format} />
+          <CostRow label="Buffer" value={buffer} format={format} />
         </Stack>
 
         <Stack gap={4} px="md" pt={0} pb="md">
@@ -140,15 +141,15 @@ export const TripCostPanel = ({
         role="button"
         tabIndex={expanded ? -1 : 0}
         onKeyDown={(e) => e.key === "Enter" && onToggle()}
+        h="100%"
+        w={COLLAPSED_WIDTH}
+        opacity={expanded ? 0 : 1}
+        pos={expanded ? "absolute" : "static"}
         style={{
-          width: COLLAPSED_WIDTH,
-          height: "100%",
           backgroundColor:
             "light-dark(var(--mantine-primary-color-1), var(--mantine-color-dark-9))",
           cursor: "pointer",
-          opacity: expanded ? 0 : 1,
           pointerEvents: expanded ? "none" : "auto",
-          position: expanded ? "absolute" : "static",
           inset: 0,
           transition: `opacity ${FADE_MS}ms ease`,
           transitionDelay: expanded ? "0ms" : `${FADE_IN_DELAY_MS}ms`,
