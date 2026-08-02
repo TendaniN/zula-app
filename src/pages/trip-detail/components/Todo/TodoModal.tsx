@@ -18,7 +18,7 @@ import { LuInfo, LuPencil, LuPlus, LuX } from "react-icons/lu";
 
 import { Button, IconButton } from "@/components/ui";
 import { useTodoStore } from "@/stores/todoStore";
-import { TodoSchema, type TodoFormValues } from "../schema";
+import { TodoSchema, type TodoFormValues } from "../../schema";
 import type { Todo } from "@/types/models";
 import { formatDate, translateDate } from "@/utils/date";
 
