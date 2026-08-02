@@ -38,7 +38,7 @@ import {
   LocationSchema,
   countryForCity,
   type LocationFormValues,
-} from "../schema";
+} from "../../schema";
 import type { Location, Accommodation } from "@/types/models";
 import dayjs from "dayjs";
 import { formatDate, translateDate } from "@/utils/date";

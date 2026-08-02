@@ -7,19 +7,20 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import noTransportsImg from "@/assets/icons/empty-transport.svg";
-import { CanEditTrip } from "@/components/auth/CanEditTrip";
-import { useTransportStore } from "@/stores/transportStore";
+import noTodosImg from "@/assets/icons/empty-todos.svg";
+import { CanEditTrip } from "@/components/auth";
 import { useEffect, useState } from "react";
-import { TransportModal } from "./TransportModal";
-import { TransportCard } from "./TransportCard";
+import { useTodoStore } from "@/stores/todoStore";
+import { TodoModal } from "./TodoModal";
+import { TodoCard } from "./TodoCard";
+import dayjs from "dayjs";
 
-interface TransportPanelProps {
+interface TodoPanelProps {
   tripId: string;
 }
 
-export const TransportPanel = ({ tripId }: TransportPanelProps) => {
-  const { transports, fetchByTrip } = useTransportStore();
+export const TodoPanel = ({ tripId }: TodoPanelProps) => {
+  const { todos, fetchByTrip } = useTodoStore();
 
   const [initialized, setInitialized] = useState(false);
 
@@ -50,12 +51,12 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
     );
   }
 
-  if (initialized && transports.length === 0) {
+  if (initialized && todos.length === 0) {
     return (
       <Stack
         p="xl"
         bdrs="lg"
-        className="empty-state transport"
+        className="empty-state todo"
         bd="2px dashed var(--empty-card-border)"
         style={{
           backgroundColor:
@@ -72,17 +73,16 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
           }}
           p="xl"
         >
-          <Image src={noTransportsImg} w="8rem" h="6.5rem" />
+          <Image src={noTodosImg} w="8rem" h="6.5rem" />
           <Title order={3} ta="center" fw="semibold">
-            No journeys plans yet
+            Nothing left to sort out - yet
           </Title>
           <Text c="dimmed" ta="center">
-            Flights, trains, ferries, transfers, day trips - anything you travel
-            on, between stops or out and back from one. Fares count toward the
-            trip budget.
+            Keep visas, bookings and packing in one list. Anyone you’ve shared
+            the trip with can tick items of.
           </Text>
           <CanEditTrip>
-            <TransportModal tripId={tripId} />
+            <TodoModal tripId={tripId} />
           </CanEditTrip>
         </Center>
       </Stack>
@@ -91,14 +91,21 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
 
   return (
     <Stack gap="md" flex={1} miw={0}>
-      <Group justify="flex-end">
+      <Group justify="space-between">
+        <Text size="sm" c="dimmed" fw="bold">
+          {`${todos.filter((s) => s.is_complete).length} of ${todos.length} done`}
+        </Text>
         <CanEditTrip>
-          <TransportModal tripId={tripId} />
+          <TodoModal tripId={tripId} />
         </CanEditTrip>
       </Group>
-      {transports.map((transport) => (
-        <TransportCard tripId={tripId} transport={transport} />
-      ))}
+      {todos
+        .sort(function compare(a, b) {
+          return dayjs(a.due_date).diff(dayjs(b.due_date));
+        })
+        .map((todo) => (
+          <TodoCard tripId={tripId} todo={todo} />
+        ))}
     </Stack>
   );
 };

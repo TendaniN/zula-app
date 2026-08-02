@@ -29,7 +29,7 @@ import { LocationModal } from "./LocationModal";
 import { useLocationStore } from "@/stores/locationStore";
 import { useDisclosure } from "@mantine/hooks";
 import { Link } from "react-router-dom";
-import { CanEditTrip } from "@/components/auth/CanEditTrip";
+import { CanEditTrip } from "@/components/auth";
 import { formatDate } from "@/utils/date";
 
 const TYPE_COLOR: Record<Accommodation["type"], string> = {

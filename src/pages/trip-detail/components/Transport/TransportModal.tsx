@@ -21,7 +21,7 @@ import { Constants } from "@/types/database.types";
 import { Button, IconButton } from "@/components/ui";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import { useTransportStore } from "@/stores/transportStore";
-import { TransportSchema, type TransportFormValues } from "../schema";
+import { TransportSchema, type TransportFormValues } from "../../schema";
 import type { Transport, Location } from "@/types/models";
 import { translateDate, formatDate } from "@/utils/date";
 import { useLocationStore } from "@/stores/locationStore";
