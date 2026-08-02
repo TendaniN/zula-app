@@ -24,11 +24,9 @@ import { useEffect, useState } from "react";
 import { TRIP_STATUS_FILTERS, type TripFilter } from "@/constants/status";
 import { FilterChip } from "./components/FilterChip";
 import { TripCard } from "./components/TripCard";
-import mockDb from "@/mocks/mockData";
 
 export default function TripsPage() {
-  const { loading, fetchTrips } = useTripStore();
-  const { tripSummaries } = mockDb;
+  const { loading, fetchTrips, tripSummaries } = useTripStore();
 
   const [search, setSearch] = useState("");
   const [filterTrips, setFilterTrips] = useState<TripFilter>("all");
