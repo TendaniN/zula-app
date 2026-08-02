@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.0.0-4A9DD4.svg" alt="Version" />
+  <img src="https://img.shields.io/badge/version-0.1.0-4A9DD4.svg" alt="Version" />
   <img src="https://img.shields.io/badge/status-active%20development-F082A0.svg" alt="Status" />
   <img src="https://img.shields.io/badge/react-19.x-61dafb.svg" alt="React" />
   <img src="https://img.shields.io/badge/typescript-strict-3285BB.svg" alt="TypeScript" />
@@ -125,10 +125,6 @@ npm run gen:types   # writes src/types/database.types.ts
 npm run dev
 ```
 
-> **Building UI before wiring the backend?** The app can run entirely on
-> [`mockData.ts`](./mockData.ts) during early development — see
-> [Mock data](#mock-data) below.
-
 ---
 
 ## Project structure
@@ -145,7 +141,6 @@ src/
 ├── hooks/        useAuth, useTripAccess (RBAC)
 ├── components/   layout, guards, form field adapters, shared UI
 ├── features/     auth · trips · locations · activities · transport · todos · budget
-├── mocks/        mockData.ts (removed once Supabase is live)
 └── utils/        formatting, error handling, export (pdf/pptx/xlsx)
 ```
 
@@ -173,14 +168,6 @@ trips    ─1─* todos
 - `trip_monthly_budget` *(optional)* — server-side monthly split; the export
   utilities also compute this client-side
 
-## Mock data
-
-`src/mocks/mockData.ts` provides a fully-linked dataset for every model, plus
-`selectors` that mimic the Supabase queries the real feature stores will make
-(including an RLS-like `visibleTrips`). Swap `currentUser` to preview the app as
-an admin, owner, or member. The mock layer is deleted in milestone **0.2.0**
-once Supabase flows are working.
-
 ---
 
 ## Scripts
@@ -203,9 +190,6 @@ once Supabase flows are working.
 | **0.3.0** | Theme toggling (light/dark/auto) and full responsiveness complete   |
 | **0.4.0** | Beta-ready: feedback mechanism, help pages, tooltips, onboarding, published to GitHub Pages |
 | **1.0.0** | Beta feedback implemented; ready to expand the user base            |
-
-Detailed milestones and issue checklists are in
-[`zula_github_plan.md`](./zula_github_plan.md).
 
 ## Deployment
 
