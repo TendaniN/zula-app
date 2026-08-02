@@ -1,7 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AppLayout, DefaultLayout, AuthLayout } from "@/components/layouts";
 import { LoginPage, RegisterPage } from "./auth";
-import TripsPage from "./trips";
+import TripListPage from "./trip-list";
+import TripDetailPage from "./trip-detail";
+import TripLayout from "@/components/layouts/TripLayout";
+import ItineraryListPage from "./itinerary-list";
 
 export default function Pages() {
   return (
@@ -9,10 +12,16 @@ export default function Pages() {
       <Route path="*" element={<Navigate to="/trips" replace />} />
 
       <Route element={<DefaultLayout />}>
-        <Route path="/" element={<div>Pages</div>} />
-
         <Route element={<AppLayout />}>
-          <Route path="/trips" element={<TripsPage />} />
+          <Route path="trips" element={<TripListPage />} />
+
+          <Route path="trips/:tripId" element={<TripLayout />}>
+            <Route index element={<TripDetailPage />} />
+            <Route
+              path="locations/:locationId"
+              element={<ItineraryListPage />}
+            />
+          </Route>
         </Route>
       </Route>
 

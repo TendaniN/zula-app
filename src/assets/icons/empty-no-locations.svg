@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Where are you headed?" width="130" height="106" viewBox="0 0 130 106" fill="none">
+                  <ellipse cx="65" cy="94" rx="46" ry="7" fill="var(--surf2,#efeaf7)"></ellipse>
+                  <path d="M45 30a20 20 0 0 1 40 0c0 14-20 34-20 34S45 44 45 30Z" fill="#b8a4e0" stroke="var(--border,#4a3d63)" stroke-width="3.5"></path>
+                  <circle cx="65" cy="30" r="7.5" fill="#fff" stroke="var(--border,#4a3d63)" stroke-width="3.5"></circle>
+                  <path d="M100 58l2.2 4.6 5 .7-3.6 3.5.8 5-4.4-2.3-4.4 2.3.8-5-3.6-3.5 5-.7z" fill="#f6c6a4" stroke="var(--border,#4a3d63)" stroke-width="2"></path>
+                  <circle cx="24" cy="52" r="4.5" fill="#a8ddc9" stroke="var(--border,#4a3d63)" stroke-width="2.5"></circle>
+                  <path d="M20 78c5 0 5 5 10 5" stroke="#a8ddc9" stroke-width="3" stroke-linecap="round"></path>
+                </svg>
