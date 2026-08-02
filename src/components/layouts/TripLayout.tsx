@@ -28,12 +28,15 @@ import {
   PiDotBold,
   PiMapPin,
   PiPaperPlaneTilt,
+  PiDownloadSimpleBold,
 } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { ViewOnlyBanner } from "../auth/ViewOnlyBanner";
 import { LocationCostPanel } from "../ui/LocationCostPanel";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDate } from "@/utils/date";
+import { ExportModal } from "../ExportModal";
+import { Button } from "../ui";
 
 export default function TripLayout() {
   const {
@@ -133,16 +136,30 @@ export default function TripLayout() {
       <Breadcrumbs trip={currentTripSummary} tab="Stays & itinerary" />
       <Group justify="space-between">
         <Stack px="xl" pt="sm" w="100%">
-          <Group>
-            <Title fw="bold">{currentTripSummary.name}</Title>
-            <Badge
-              color={`${statusColor.color}.2`}
-              c="var(--text-color)"
-              bd={`2px solid ${statusColor.color}.6`}
-              py="sm"
-            >
-              {currentTripSummary.status}
-            </Badge>
+          <Group justify="space-between">
+            <Group>
+              <Title fw="bold">{currentTripSummary.name}</Title>
+              <Badge
+                color={`${statusColor.color}.2`}
+                c="var(--text-color)"
+                bd={`2px solid ${statusColor.color}.6`}
+                py="sm"
+              >
+                {currentTripSummary.status}
+              </Badge>
+            </Group>
+            <ExportModal
+              trip={currentTripSummary}
+              trigger={(open) => (
+                <Button
+                  variant="ghost"
+                  leftSection={<PiDownloadSimpleBold />}
+                  onClick={open}
+                >
+                  Export
+                </Button>
+              )}
+            />
           </Group>
           <Group gap={2} c="dimmed">
             <Text fz="sm">
