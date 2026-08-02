@@ -224,7 +224,7 @@ export default function TripLayout() {
               </Tabs.Tab>
             </Tabs.List>
             <ScrollArea
-              h="calc(100dvh - 217px)"
+              h="calc(100dvh - 220px)"
               type="auto"
               offsetScrollbars
               classNames={{ scrollbar: "scrollbar", thumb: "thumb" }}
