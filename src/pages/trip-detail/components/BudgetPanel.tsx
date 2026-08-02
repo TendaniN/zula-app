@@ -71,7 +71,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
       locations.map((s) => s.id),
       currentTripSummary.id,
     );
-  }, [locations]);
+  }, [locations, currentTripSummary]);
 
   if (!initialized) {
     return (
