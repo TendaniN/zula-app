@@ -61,8 +61,11 @@ export const LocationCard = ({
   accommodation,
   tripId,
 }: LocationCardProps) => {
-  const { accommodationFor, deleteLocation } = useLocationStore();
+  const { accommodationFor, deleteLocation, locationSummaries } =
+    useLocationStore();
   const currency = useCurrencyStore((s) => s.symbol);
+
+  const summary = locationSummaries.find((s) => s.location_id === location.id);
 
   // Controlled edit modal + delete confirm state.
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
@@ -78,6 +81,8 @@ export const LocationCard = ({
   const accommodationTotal = accommodation
     ? accommodation.cost_per_night * nights
     : 0;
+
+  const total = summary ? (summary.location_total ?? 0) : accommodationTotal;
 
   const dateRange =
     location.start_date && location.end_date
@@ -128,7 +133,7 @@ export const LocationCard = ({
               </Text>
               <Text fw={800} size="lg">
                 {currency}
-                {accommodationTotal.toLocaleString()}
+                {total.toLocaleString()}
               </Text>
             </Stack>
             <CanEditTrip>

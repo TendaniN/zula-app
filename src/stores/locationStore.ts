@@ -1,7 +1,9 @@
 /**
  * Locations for the active trip, plus each location's 0..1 accommodation
- * (a location has at most one). Scoped by trip: call fetchByTrip(tripId) when a
- * trip opens. Accommodation helpers use upsert since it's a 1:0..1 relationship.
+ * (a location has at most one) and its cost summary (location_cost_summary
+ * view — accommodation_total, activities_total, location_total). Scoped by
+ * trip: call fetchByTrip(tripId) when a trip opens. Accommodation helpers
+ * use upsert since it's a 1:0..1 relationship.
  */
 
 import { create } from "zustand";
@@ -13,6 +15,7 @@ import type {
   Accommodation,
   AccommodationInsert,
   AccommodationUpdate,
+  LocationCostSummary,
 } from "@/types/models";
 
 export type NewLocationInput = Omit<LocationInsert, "trip_id">;
@@ -20,6 +23,7 @@ export type NewLocationInput = Omit<LocationInsert, "trip_id">;
 interface LocationState {
   locations: Location[];
   accommodations: Accommodation[];
+  locationSummaries: LocationCostSummary[];
   loading: boolean;
   error: string | null;
 
@@ -32,6 +36,7 @@ interface LocationState {
   deleteLocation: (id: string) => Promise<void>;
 
   accommodationFor: (locationId: string) => Accommodation | undefined;
+  summaryFor: (locationId: string) => LocationCostSummary | undefined;
   saveAccommodation: (
     input:
       | AccommodationInsert
@@ -45,23 +50,38 @@ interface LocationState {
 export const useLocationStore = create<LocationState>((set, get) => ({
   locations: [],
   accommodations: [],
+  locationSummaries: [],
   loading: false,
   error: null,
 
   fetchByTrip: async (tripId) => {
     set({ loading: true, error: null });
-    const { data: locations, error: locErr } = await supabase
-      .from("locations")
-      .select("*")
-      .eq("trip_id", tripId)
-      .order("sort_order", { ascending: true });
 
-    if (locErr) {
-      set({ error: locErr.message, loading: false });
+    // Locations and the cost-summary view are both keyed by trip_id, so
+    // they can be fetched in parallel. Accommodations depend on the
+    // resulting location ids, so that fetch has to happen after.
+    const [locResult, summaryResult] = await Promise.all([
+      supabase
+        .from("locations")
+        .select("*")
+        .eq("trip_id", tripId)
+        .order("sort_order", { ascending: true }),
+      supabase.from("location_cost_summary").select("*").eq("trip_id", tripId),
+    ]);
+
+    if (locResult.error) {
+      set({ error: locResult.error.message, loading: false });
+      return;
+    }
+    if (summaryResult.error) {
+      set({ error: summaryResult.error.message, loading: false });
       return;
     }
 
-    const locationIds = (locations ?? []).map((l) => l.id);
+    const locations = locResult.data ?? [];
+    const locationSummaries = summaryResult.data ?? [];
+
+    const locationIds = locations.map((l) => l.id);
     let accommodations: Accommodation[] = [];
     if (locationIds.length) {
       const { data, error } = await supabase
@@ -75,7 +95,7 @@ export const useLocationStore = create<LocationState>((set, get) => ({
       accommodations = data ?? [];
     }
 
-    set({ locations: locations ?? [], accommodations, loading: false });
+    set({ locations, accommodations, locationSummaries, loading: false });
   },
 
   createLocation: async (tripId, input) => {
@@ -119,11 +139,17 @@ export const useLocationStore = create<LocationState>((set, get) => ({
       locations: state.locations.filter((l) => l.id !== id),
       // Cascade in the DB removes the accommodation; mirror that locally.
       accommodations: state.accommodations.filter((a) => a.location_id !== id),
+      locationSummaries: state.locationSummaries.filter(
+        (s) => s.location_id !== id,
+      ),
     }));
   },
 
   accommodationFor: (locationId) =>
     get().accommodations.find((a) => a.location_id === locationId),
+
+  summaryFor: (locationId) =>
+    get().locationSummaries.find((s) => s.location_id === locationId),
 
   saveAccommodation: async (
     input:
@@ -164,5 +190,6 @@ export const useLocationStore = create<LocationState>((set, get) => ({
     }));
   },
 
-  clear: () => set({ locations: [], accommodations: [] }),
+  clear: () =>
+    set({ locations: [], accommodations: [], locationSummaries: [] }),
 }));
