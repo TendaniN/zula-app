@@ -91,7 +91,10 @@ export const TodoPanel = ({ tripId }: TodoPanelProps) => {
 
   return (
     <Stack gap="md" flex={1} miw={0}>
-      <Group justify="flex-end">
+      <Group justify="space-between">
+        <Text size="sm" c="dimmed" fw="bold">
+          {`${todos.filter((s) => s.is_complete).length} of ${todos.length} done`}
+        </Text>
         <CanEditTrip>
           <TodoModal tripId={tripId} />
         </CanEditTrip>

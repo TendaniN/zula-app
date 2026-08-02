@@ -6,6 +6,7 @@ import { PiPlus } from "react-icons/pi";
 import "./styles.scss";
 import noLocationsImg from "@/assets/icons/empty-no-locations.svg";
 import {
+  BudgetPanel,
   LocationModal,
   LocationPanel,
   TodoPanel,
@@ -77,6 +78,9 @@ export default function TripDetailPage() {
   }
 
   switch (activeTab) {
+    case "Budget": {
+      return <BudgetPanel currentTripSummary={currentTripSummary} />;
+    }
     case "Transport": {
       return <TransportPanel tripId={tripId} />;
     }
