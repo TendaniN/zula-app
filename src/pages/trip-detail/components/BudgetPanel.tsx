@@ -26,13 +26,15 @@ import { useLocationStore } from "@/stores/locationStore";
 import { useTransportStore } from "@/stores/transportStore";
 import dayjs from "dayjs";
 import { useActivityStore } from "@/stores/activityStore";
+import { useBudgetStore } from "@/stores/budgetStore";
+import type { BudgetMonths } from "@/constants/budget";
 
 interface BudgetPanelProps {
   currentTripSummary: TripSummaryRow;
 }
 
 interface CategoryConfig {
-  key: "accommodation" | "activities" | "transport" | "buffer";
+  key: keyof BudgetMonths;
   label: string;
   color: string;
   icon: React.ReactNode;
@@ -51,19 +53,17 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
   const transportCount = transports.length;
   const { activities: locActivities, fetchByLocations } = useActivityStore();
   const activityCount = locActivities.length;
+  const { months, fetchByTrip: fetchBudget, adjustMonth } = useBudgetStore();
 
   const [initialized, setInitialized] = useState(false);
-  const [months, setMonths] = useState({
-    accommodation: 5,
-    activities: 5,
-    transport: 6,
-    buffer: 6,
-  });
 
   useEffect(() => {
     const load = async (ids: string[], tripId: string | null) => {
       await fetchByLocations(ids);
-      if (tripId) await fetchByTrip(tripId);
+      if (tripId) {
+        await fetchByTrip(tripId);
+        await fetchBudget(tripId);
+      }
       setInitialized(true);
     };
 
@@ -91,11 +91,9 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
     );
   }
 
-  const adjustMonths = (key: keyof typeof months, delta: number) =>
-    setMonths((prev) => ({
-      ...prev,
-      [key]: Math.min(MAX_MONTHS, Math.max(MIN_MONTHS, prev[key] + delta)),
-    }));
+  const handleAdjust = (key: keyof BudgetMonths, delta: number) => {
+    if (currentTripSummary.id) adjustMonth(currentTripSummary.id, key, delta);
+  };
 
   const {
     accommodation_cost,
@@ -158,7 +156,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
     },
   ];
 
-  const monthlyFor = (cost: number, key: keyof typeof months) =>
+  const monthlyFor = (cost: number, key: keyof BudgetMonths) =>
     months[key] > 0 ? Math.round(cost / months[key]) : 0;
 
   const monthlyTotal = categories.reduce(
@@ -166,7 +164,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
     0,
   );
 
-  const monthsSavedFor = (key: keyof typeof months): number => {
+  const monthsSavedFor = (key: keyof BudgetMonths): number => {
     if (!start_date) return 0;
     const savingWindowOpens = dayjs(start_date).subtract(months[key], "month");
     const elapsed = dayjs().diff(savingWindowOpens, "month");
@@ -351,7 +349,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
                 size="xs"
                 aria-label={`Decrease ${c.label} timespan`}
                 disabled={months[c.key] <= MIN_MONTHS}
-                onClick={() => adjustMonths(c.key, -1)}
+                onClick={() => handleAdjust(c.key, -1)}
               />
               <Text size="sm" fw={600} miw={64} ta="center">
                 {`${months[c.key]} ${months[c.key] === 1 ? "month" : "months"}`}
@@ -362,7 +360,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
                 size="xs"
                 aria-label={`Increase ${c.label} timespan`}
                 disabled={months[c.key] >= MAX_MONTHS}
-                onClick={() => adjustMonths(c.key, 1)}
+                onClick={() => handleAdjust(c.key, 1)}
               />
             </Group>
             <Text size="sm" fw={700} ta="right" flex={1 / 5}>
