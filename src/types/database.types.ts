@@ -122,6 +122,82 @@ export type Database = {
           },
         ]
       }
+      budget_configs: {
+        Row: {
+          accommodation_months: number
+          activities_months: number
+          buffer_months: number
+          created_at: string
+          id: string
+          transport_months: number
+          trip_id: string
+          updated_at: string
+        }
+        Insert: {
+          accommodation_months?: number
+          activities_months?: number
+          buffer_months?: number
+          created_at?: string
+          id?: string
+          transport_months?: number
+          trip_id: string
+          updated_at?: string
+        }
+        Update: {
+          accommodation_months?: number
+          activities_months?: number
+          buffer_months?: number
+          created_at?: string
+          id?: string
+          transport_months?: number
+          trip_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "budget_configs_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: true
+            referencedRelation: "trip_budget_plan"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "budget_configs_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: true
+            referencedRelation: "trip_budget_summary"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "budget_configs_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: true
+            referencedRelation: "trip_cost_summary"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "budget_configs_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: true
+            referencedRelation: "trip_monthly_budget"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "budget_configs_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: true
+            referencedRelation: "trip_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "budget_configs_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: true
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       locations: {
         Row: {
           city: string
@@ -157,6 +233,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "locations_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_budget_plan"
+            referencedColumns: ["trip_id"]
+          },
           {
             foreignKeyName: "locations_trip_id_fkey"
             columns: ["trip_id"]
@@ -262,6 +345,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "todos_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_budget_plan"
+            referencedColumns: ["trip_id"]
+          },
           {
             foreignKeyName: "todos_trip_id_fkey"
             columns: ["trip_id"]
@@ -375,6 +465,13 @@ export type Database = {
             foreignKeyName: "transports_trip_id_fkey"
             columns: ["trip_id"]
             isOneToOne: false
+            referencedRelation: "trip_budget_plan"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "transports_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
             referencedRelation: "trip_budget_summary"
             referencedColumns: ["trip_id"]
           },
@@ -428,6 +525,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "trip_members_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_budget_plan"
+            referencedColumns: ["trip_id"]
+          },
           {
             foreignKeyName: "trip_members_trip_id_fkey"
             columns: ["trip_id"]
@@ -540,6 +644,13 @@ export type Database = {
             foreignKeyName: "locations_trip_id_fkey"
             columns: ["trip_id"]
             isOneToOne: false
+            referencedRelation: "trip_budget_plan"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "locations_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
             referencedRelation: "trip_budget_summary"
             referencedColumns: ["trip_id"]
           },
@@ -572,6 +683,22 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      trip_budget_plan: {
+        Row: {
+          accommodation_cost: number | null
+          accommodation_months: number | null
+          activities_cost: number | null
+          activities_months: number | null
+          buffer_cost: number | null
+          buffer_months: number | null
+          start_date: string | null
+          total_cost: number | null
+          transport_months: number | null
+          travel_cost: number | null
+          trip_id: string | null
+        }
+        Relationships: []
       }
       trip_budget_summary: {
         Row: {

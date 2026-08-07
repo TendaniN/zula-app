@@ -62,7 +62,7 @@ button.button {
     align-items: center;
     justify-content: center;
     aspect-ratio: 1;
-    padding: 0;
+    padding: 0 !important;
 
     &.button--xs {
       width: 1.75rem;

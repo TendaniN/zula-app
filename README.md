@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.0.0-4A9DD4.svg" alt="Version" />
+  <img src="https://img.shields.io/badge/version-0.2.0-4A9DD4.svg" alt="Version" />
   <img src="https://img.shields.io/badge/status-active%20development-F082A0.svg" alt="Status" />
   <img src="https://img.shields.io/badge/react-19.x-61dafb.svg" alt="React" />
   <img src="https://img.shields.io/badge/typescript-strict-3285BB.svg" alt="TypeScript" />
@@ -19,26 +19,21 @@
 
 > **Packed bags. Packed itinerary.**
 
-Zula (from the Zulu *izula*, "to wander") is a trip-planning app. Build a trip
-out of stays, plan what you'll do in each city, track how you'll get around,
-tick off a pre-trip checklist, and watch the costs add up automatically — then
-share it with fellow travellers.
+Zula (from the Zulu *izula*, "to wander") is a trip-planning app. Build a trip out of stays, plan what you'll do in each city, track how you'll get around, tick off a pre-trip checklist, and watch the costs add up automatically, then share it with fellow travellers.
 
 ---
 
 ## Features
 
 - **Trips** with three access roles — admin, owner, and member.
-- **Stays (locations)** — each has a city (required), country, dates, and an
-  **optional accommodation** (name, cost/night, rating, type, link, room).
-- **Itinerary** — activities per stay (name, cost, date, time, duration, link).
-- **Transport** — trip-level travel between stays (flight, train, metro, …).
-- **To-dos** — a pre-trip checklist with due dates and completion state.
-- **Automatic cost & budget summaries** — read-only totals per stay and per
-  trip, plus a per-category budget breakdown you can plan monthly.
+- **Stays (locations):** each has a city (required), country, dates, and an  **optional accommodation** (name, cost/night, rating, type, link, room).
+- **Itinerary:** activities per stay (name, cost, date, time, duration, link).
+- **Transport:** trip-level travel between stays (flight, train, metro, …).
+- **To-dos:** a pre-trip checklist with due dates and completion state.
+- **Automatic cost & budget summaries:** read-only totals per stay and per trip, all derived server-side.
+- **Savings plan:** a per-category breakdown (accommodation, activities, transport, buffer) where you set a savings window in months per category; the monthly target, amount saved so far, and progress are worked out automatically from the trip's start date. The chosen windows are saved per trip, so they persist and feed the exports.
 - **Export** a trip to PDF, PowerPoint, or Excel (itinerary / transport / budget).
-- **Search & filter** trips by name/destination and status; archived trips are
-  hidden by default.
+- **Search & filter** trips by name/destination and status (`planning` · `active` · `completed` · `archived`); archived trips are hidden by default.
 
 ## Roles & permissions
 
@@ -48,34 +43,25 @@ share it with fellow travellers.
 | **Owner**  | Trips they created            | Editable while `active`; read-only if `completed` |
 | **Member** | Trips they belong to          | Always read-only, regardless of status        |
 
-The `admin` / `user` distinction is a global role on the user's profile; the
-`owner` / `member` distinction is per-trip. Access is enforced in the database
-via Row Level Security — the frontend mirrors the same rules only to decide
-which controls to render.
+The `admin` / `user` distinction is a global role on the user's profile; the `owner` / `member` distinction is per-trip. Access is enforced in the database via Row Level Security, the frontend mirrors the same rules only to decide which controls to render.
 
 ## Tech stack
 
 | Layer         | Choice                                                    |
 |---------------|-----------------------------------------------------------|
 | Language      | TypeScript                                                |
-| UI            | React + [Mantine](https://mantine.dev)                    |
+| UI            | React 19 + [Mantine](https://mantine.dev) v7               |
 | Build/dev     | Vite                                                      |
 | Routing       | React Router — **Declarative mode** (`<BrowserRouter>` + `<Routes>`) |
 | State         | [Zustand](https://zustand.docs.pmnd.rs) (client/UI **and** server data via feature stores) |
-| Forms         | [TanStack Form](https://tanstack.com/form) + [Zod](https://zod.dev) |
+| Forms         | [TanStack Form](https://tanstack.com/form) + [Zod](https://zod.dev) 4 |
 | Dates         | Day.js                                                    |
 | Exports       | pdfmake (PDF) · pptxgenjs (PPTX) · [ExcelJS](https://github.com/exceljs/exceljs) (XLSX) |
 | Backend       | [Supabase](https://supabase.com) (Postgres + Auth + RLS)  |
 
-> **On data fetching:** Zula does not use TanStack Query. Server rows are read
-> and cached in per-feature **Zustand** stores (`locationStore`, `activityStore`,
-> `travelStore`, …) that call `supabase-js` directly. Forms are owned by
-> **TanStack Form** with Zod schemas as the single source of truth for values
-> and validation.
+> **On data fetching:** Zula does not use TanStack Query. Server rows are read and cached in per-feature **Zustand** stores (`tripStore`, `locationStore`, `activityStore`, `transportStore`, `budgetStore`, …) that call `supabase-js` directly. Forms are owned by **TanStack Form** with Zod schemas as the single source of truth for values and validation.
 
-> **On XLSX export:** the old `xlsx` (SheetJS) dependency is unmaintained, so
-> Excel export uses **ExcelJS**. It writes a Buffer, which the export utility
-> turns into a Blob download in the browser.
+> **On XLSX export:** the old `xlsx` (SheetJS) dependency is unmaintained, so Excel export uses **ExcelJS**. It writes a Buffer, which the export utility turns into a Blob download in the browser.
 
 ---
 
@@ -108,10 +94,7 @@ VITE_SUPABASE_ANON_KEY=<anon-key>
 
 ### 3. Set up the database
 
-Open the Supabase SQL editor and run [`zula_schema.sql`](./zula_schema.sql).
-It creates the enums, tables, RLS policies, cost & budget views, triggers, and
-indexes. A profile row is created automatically on signup, and the trip owner
-is auto-added to `trip_members`.
+Open the Supabase SQL editor and run [`zula_schema.sql`](./zula_schema.sql). It creates the enums, tables, RLS policies, cost & budget views, triggers, and indexes. A profile row is created automatically on signup, and the trip owner is auto-added to `trip_members`.
 
 ### 4. Generate types
 
@@ -125,17 +108,11 @@ npm run gen:types   # writes src/types/database.types.ts
 npm run dev
 ```
 
-> **Building UI before wiring the backend?** The app can run entirely on
-> [`mockData.ts`](./mockData.ts) during early development — see
-> [Mock data](#mock-data) below.
-
 ---
 
 ## Project structure
 
-Feature-first: shared plumbing lives at the top of `src/`, and each domain is a
-self-contained `features/<domain>/` folder (`api.ts` → `store.ts` →
-`components/` → `pages/`).
+Feature-first: shared plumbing lives at the top of `src/`, and each domain is a self-contained `features/<domain>/` folder (`api.ts` → `store.ts` → `components/` → `pages/`).
 
 ```
 src/
@@ -145,12 +122,8 @@ src/
 ├── hooks/        useAuth, useTripAccess (RBAC)
 ├── components/   layout, guards, form field adapters, shared UI
 ├── features/     auth · trips · locations · activities · transport · todos · budget
-├── mocks/        mockData.ts (removed once Supabase is live)
 └── utils/        formatting, error handling, export (pdf/pptx/xlsx)
 ```
-
-The full breakdown, including key file implementations, is in
-[`zula_project_structure.md`](./zula_project_structure.md).
 
 ## Data model
 
@@ -160,26 +133,20 @@ trips    ─1─* locations ─(0..1) accommodations
 locations ─1─* activities
 trips    ─1─* transports
 trips    ─1─* todos
+trips    ─1─(0..1) budget_configs          (per-trip savings-plan config)
 ```
+
+**`budget_configs`** is the one piece of *stored* budget state: the savings window (in months) for each category — `accommodation_months`, `activities_months`, `transport_months`, `buffer_months` — one row per trip. It intentionally stores no costs; those come from the views below. Monthly targets and "saved so far" are computed from these months + the view costs + the trip's start date. Writes are owner/admin only via RLS; any trip member can read.
 
 **Cost & budget summaries** are read-only Postgres views, not stored data:
 
-- `location_cost_summary` — `cost_per_night × nights + Σ activity costs`
-- `trip_cost_summary` — `Σ location totals + Σ transport costs`
-- `trip_budget_summary` — the budget table: `buffer + accommodation + activities
+- `location_cost_summary`: `cost_per_night × nights + Σ activity costs`
+- `trip_cost_summary`: `Σ location totals + Σ transport costs`
+- `trip_budget_summary`: the budget table: `buffer + accommodation + activities
   + travel`, split by category, per trip
-- `trip_summary` — derived trip start/end dates, distinct `countries[]`, and the
-  budget totals (the row the app maps to its `TripSummary` type)
-- `trip_monthly_budget` *(optional)* — server-side monthly split; the export
-  utilities also compute this client-side
-
-## Mock data
-
-`src/mocks/mockData.ts` provides a fully-linked dataset for every model, plus
-`selectors` that mimic the Supabase queries the real feature stores will make
-(including an RLS-like `visibleTrips`). Swap `currentUser` to preview the app as
-an admin, owner, or member. The mock layer is deleted in milestone **0.2.0**
-once Supabase flows are working.
+- `trip_summary`: derived trip start/end dates, distinct `countries[]`, and the budget totals (the row the app maps to its `TripSummary` type)
+- `trip_monthly_budget` *(optional)*: server-side monthly split; the export utilities also compute this client-side
+- `trip_budget_plan` *(optional)*: joins the saved per-category months from `budget_configs` onto the `trip_summary` costs, so one query returns everything the Budget panel needs
 
 ---
 
@@ -204,16 +171,9 @@ once Supabase flows are working.
 | **0.4.0** | Beta-ready: feedback mechanism, help pages, tooltips, onboarding, published to GitHub Pages |
 | **1.0.0** | Beta feedback implemented; ready to expand the user base            |
 
-Detailed milestones and issue checklists are in
-[`zula_github_plan.md`](./zula_github_plan.md).
-
 ## Deployment
 
-The app deploys as a static SPA to **GitHub Pages** (milestone 0.4.0). Because
-it's served from a sub-path, the router runs with `basename="/zula"` and Vite's
-`base` is set to `/zula/`. This also needs a client-routing 404 fallback, a
-GitHub Actions build/deploy workflow, and the Pages URL added to Supabase's
-allowed auth redirect URLs.
+The app deploys as a static SPA to **GitHub Pages** (milestone 0.4.0). Because it's served from a sub-path, the router runs with `basename="/zula"` and Vite's `base` is set to `/zula/`. This also needs a client-routing 404 fallback, a GitHub Actions build/deploy workflow, and the Pages URL added to Supabase's allowed auth redirect URLs.
 
 ```tsx
 <MantineProvider theme={theme}>
