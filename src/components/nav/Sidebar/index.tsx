@@ -83,13 +83,20 @@ export const Sidebar = () => {
         style={{ borderTop: "2px dashed var(--border-color)" }}
         pt="md"
       >
-        <Menu position="top" withArrow>
+        <Menu position="top">
           <Menu.Target>
-            <Group gap="xs">
+            <Group
+              gap="xs"
+              bd="2px solid var(--border-color)"
+              bdrs="md"
+              className="sidebar__menu"
+              p="0.3rem"
+              style={{ cursor: "pointer" }}
+            >
               <Flex
                 bdrs="xl"
                 bd="2px solid var(--border-color)"
-                className="sidebar__avatar"
+                className="sidebar__menu--avatar"
                 data-role={profile.app_role}
               />
               <Stack gap={2}>
@@ -107,12 +114,22 @@ export const Sidebar = () => {
               </Stack>
             </Group>
           </Menu.Target>
-          <Menu.Dropdown>
+          <Menu.Dropdown
+            styles={{ dropdown: { border: "2px solid var(--border-color)" } }}
+            maw="12rem"
+          >
             <Stack px={12} py={10} gap={0}>
               <Text size="xs" fw={600} tt="uppercase" c="dimmed">
                 Signed in as
               </Text>
-              <Text size="sm">{profile.email}</Text>
+              <Text size="sm" textWrap="wrap">
+                {profile.username}
+                <Text
+                  size="xs"
+                  textWrap="wrap"
+                  component="span"
+                >{` (${profile.email})`}</Text>
+              </Text>
             </Stack>
             <Menu.Divider />
             <Menu.Item
