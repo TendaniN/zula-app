@@ -57,10 +57,7 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
         bdrs="lg"
         className="empty-state transport"
         bd="2px dashed var(--empty-card-border)"
-        style={{
-          backgroundColor:
-            "light-dark(var(--mantine-color-white), var(--mantine-color-black))",
-        }}
+        bg="var(--surface-color)"
         flex={1}
       >
         <Center

@@ -77,42 +77,54 @@ export default function ItineraryListPage() {
 
   if (activities.length === 0) {
     return (
-      <Stack
-        p="xl"
-        bdrs="lg"
-        bd="2px dashed var(--muted)"
-        flex={1}
-        style={{
-          backgroundColor:
-            "light-dark(var(--mantine-color-white), var(--mantine-color-black))",
-        }}
-      >
-        <Center
-          display="flex"
-          style={{
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: "0.75rem",
-          }}
+      <Stack p={0} flex={1}>
+        <Group justify="space-between">
+          <Link
+            to={`/trips/${tripId}/?tab=Stays & itinerary`}
+            className="back-button"
+          >
+            <PiArrowLeft />
+            {location.country && getCountryFlag(location.country, 24)}
+            <Text component="span" fw="bold">
+              {location.city}
+              {location.country ? `, ${location.country}` : ""}
+            </Text>
+          </Link>
+        </Group>
+        <Stack
           p="xl"
+          bdrs="lg"
+          bd="2px dashed var(--muted)"
+          flex={1}
+          bg="var(--surface-color)"
         >
-          <Image src={noActivitiesImg} w="8rem" h="6.5rem" />
-          <Title order={3} ta="center" fw="semibold">
-            Three days, wide open
-          </Title>
-          <Text c="dimmed" ta="center">
-            Add activities, meals or notes to your {location.city} days.
-            Anything with a price rolls into the budget.
-          </Text>
-          <ActivityModal
-            locationId={locationId}
-            trigger={(open) => (
-              <Button leftSection={<PiPlus />} onClick={open}>
-                Add your activity
-              </Button>
-            )}
-          />
-        </Center>
+          <Center
+            display="flex"
+            style={{
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: "0.75rem",
+            }}
+            p="xl"
+          >
+            <Image src={noActivitiesImg} w="8rem" h="6.5rem" />
+            <Title order={3} ta="center" fw="semibold">
+              Three days, wide open
+            </Title>
+            <Text c="dimmed" ta="center">
+              Add activities, meals or notes to your {location.city} days.
+              Anything with a price rolls into the budget.
+            </Text>
+            <ActivityModal
+              locationId={locationId}
+              trigger={(open) => (
+                <Button leftSection={<PiPlus />} onClick={open}>
+                  Add your activity
+                </Button>
+              )}
+            />
+          </Center>
+        </Stack>
       </Stack>
     );
   }
@@ -136,7 +148,7 @@ export default function ItineraryListPage() {
               className="back-button"
             >
               <PiArrowLeft />
-              {location.country && getCountryFlag(location.country, 22)}
+              {location.country && getCountryFlag(location.country, 24)}
               <Text component="span" fw="bold">
                 {location.city}
                 {location.country ? `, ${location.country}` : ""}
@@ -145,19 +157,25 @@ export default function ItineraryListPage() {
 
             <Badge
               variant="filled"
-              color="mint.3"
-              c="var(--text-color)"
+              color="mint"
+              c="var(--border-color)"
               bd="2px solid mint.5"
             >
               Itinerary
             </Badge>
           </Group>
-          <Card p={0}>
+          <Card
+            p={0}
+            shadow="xl"
+            style={{
+              boxShadow: `0 4px 0 var(--bg-secondary)`,
+            }}
+          >
             <Group
               justify="space-between"
               wrap="nowrap"
               p="md"
-              bg="lavender.1"
+              bg="var(--bg-secondary)"
               style={{
                 borderBottom: "2px solid var(--border-color)",
               }}

@@ -6,6 +6,7 @@ import {
   Stack,
   Title,
   Text,
+  ThemeIcon,
   Badge,
   Divider,
   Menu,
@@ -114,7 +115,16 @@ export const ActivitiesPanel = ({
                 {formatDate(day.date, "ddd D MMM")}
               </Text>
             </Group>
-            <Divider flex={1} size="md" color="mint.1" />
+            <Divider
+              flex={1}
+              size="md"
+              styles={{
+                root: {
+                  "--divider-color":
+                    "light-dark(var(--mantine-color-mint-1), var(--mantine-color-mint-9))",
+                },
+              }}
+            />
             {day.total > 0 && (
               <Text fw="bold" c="dimmed" size="sm" style={{ flexShrink: 0 }}>
                 {currency}
@@ -178,15 +188,17 @@ export const ActivitiesPanel = ({
                         </Text>
                         {activity.link && (
                           <Anchor href={activity.link} target="_blank">
-                            <Group
-                              p={2}
-                              bdrs="sm"
-                              bd="2px solid peach.3"
-                              bg="peach.1"
+                            <ThemeIcon
+                              variant="filled"
+                              color="peach.3"
                               c="peach.8"
+                              radius="sm"
+                              size="sm"
+                              bd="2px solid peach.8"
+                              p={2}
                             >
                               <FaLink size="1rem" />
-                            </Group>
+                            </ThemeIcon>
                           </Anchor>
                         )}
                       </Group>
@@ -245,7 +257,11 @@ export const ActivitiesPanel = ({
                       onClick={open}
                       size="xs"
                       fluid
-                      leftSection={<PiPlus />}
+                      leftSection={
+                        <PiPlus
+                          style={{ color: "var(--mantine-color-dimmed)" }}
+                        />
+                      }
                     >
                       <Text c="dimmed" size="xs">
                         {`Add to Day ${day.index}`}
