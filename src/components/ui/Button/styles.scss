@@ -33,14 +33,14 @@ button.button {
 
   &--tertiary {
     background-color: var(--mantine-color-mint-5);
-    color: var(--mantine-primary-color-9);
+    color: var(--mantine-color-black);
     box-shadow: 0 4px 0 var(--mantine-color-mint-7);
     border: 2px solid var(--mantine-color-mint-7);
   }
 
   &--ghost {
     background-color: transparent;
-    color: var(--mantine-primary-color-9);
+    color: var(--text-color);
     border: 2px solid var(--mantine-primary-color-7);
   }
 

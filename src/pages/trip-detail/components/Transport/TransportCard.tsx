@@ -91,8 +91,9 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
     <Card
       radius="lg"
       p="md"
+      shadow="xl"
       style={{
-        boxShadow: `0 4px 0 var(--mantine-primary-color-1)`,
+        boxShadow: `0 4px 0 var(--bg-secondary)`,
       }}
     >
       <Group>
@@ -107,6 +108,7 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
           radius="sm"
           variant="light"
           color={TYPE_COLOR[type]}
+          bd="2px solid var(--border-color)"
         >
           {TYPE_ICON[type]}
         </ThemeIcon>
@@ -119,7 +121,7 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
               <Badge
                 variant="filled"
                 color={`${TYPE_COLOR[type]}.3`}
-                c="var(--text-color)"
+                c="var(--border-color)"
                 tt="capitalize"
                 bd={`2px solid ${TYPE_COLOR[type]}.5`}
               >

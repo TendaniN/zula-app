@@ -141,7 +141,7 @@ export default function TripLayout() {
               <Title fw="bold">{currentTripSummary.name}</Title>
               <Badge
                 color={`${statusColor.color}.2`}
-                c="var(--text-color)"
+                c="var(--border-color)"
                 bd={`2px solid ${statusColor.color}.6`}
                 py="sm"
               >

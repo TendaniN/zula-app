@@ -198,8 +198,9 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
         p="lg"
         bg="lavender.6"
         display="flex"
-        shadow="sm"
+        shadow="xl"
         style={{
+          boxShadow: `0 4px 0 var(--bg-secondary)`,
           flexDirection: "row",
           justifyContent: "space-between",
         }}
@@ -237,9 +238,10 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
             <Card
               key={c.key}
               display="flex"
-              shadow="sm"
               p="md"
+              shadow="xl"
               style={{
+                boxShadow: `0 4px 0 var(--bg-secondary)`,
                 flexDirection: "row",
                 flexWrap: "nowrap",
                 gap: "0.5rem",
@@ -289,7 +291,13 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
       </Progress.Root>
 
       {/* Category / timespan table */}
-      <Card p={0} shadow="sm">
+      <Card
+        p={0}
+        shadow="xl"
+        style={{
+          boxShadow: `0 4px 0 var(--bg-secondary)`,
+        }}
+      >
         <Group
           justify="space-between"
           c="dimmed"

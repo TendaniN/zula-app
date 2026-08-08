@@ -67,6 +67,7 @@ export const LocationCostPanel = ({
       aria-label={`${city} cost breakdown`}
       gap={0}
       style={{
+        boxShadow: `0 4px 0 var(--bg-secondary)`,
         width: expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
         minWidth: expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
         flexShrink: 0,

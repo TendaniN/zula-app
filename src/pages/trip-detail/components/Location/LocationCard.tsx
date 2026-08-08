@@ -97,8 +97,9 @@ export const LocationCard = ({
     <Card
       radius="lg"
       p={0}
+      shadow="xl"
       style={{
-        boxShadow: `0 4px 0 var(--mantine-primary-color-1)`,
+        boxShadow: `0 4px 0 var(--bg-secondary)`,
       }}
     >
       <Stack gap={0} p={0}>
@@ -165,7 +166,12 @@ export const LocationCard = ({
         </Group>
 
         {accommodation ? (
-          <Stack justify="space-between" p="md" gap={0} bg="lavender.0">
+          <Stack
+            justify="space-between"
+            p="md"
+            gap={0}
+            bg="var(--bg-secondary)"
+          >
             <Group gap="xs" wrap="nowrap">
               <Text fw="bold" size="sm">
                 {accommodation.name}
@@ -184,8 +190,8 @@ export const LocationCard = ({
               <Group gap="xs">
                 {accommodation.rating != null && (
                   <Group gap={4} wrap="nowrap" c="dimmed">
-                    <FaStar />
-                    <Text size="xs" fw={600}>
+                    <Text size="xs" fw={600} c="dimmed">
+                      <FaStar size="0.65rem" />{" "}
                       {accommodation.rating.toFixed(1)}
                     </Text>
                   </Group>
@@ -205,7 +211,12 @@ export const LocationCard = ({
             </Group>
           </Stack>
         ) : (
-          <Group justify="space-between" p="md" gap={0} bg="lavender.0">
+          <Group
+            justify="space-between"
+            p="md"
+            gap={0}
+            bg="var(--bg-secondary)"
+          >
             <Text c="dimmed" fs="italic">
               No accommodation yet.
             </Text>
