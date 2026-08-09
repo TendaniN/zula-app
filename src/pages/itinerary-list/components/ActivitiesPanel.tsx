@@ -1,5 +1,4 @@
 import {
-  Box,
   Group,
   Modal,
   SimpleGrid,
@@ -18,7 +17,7 @@ import { PiPlus, PiDotsThreeBold } from "react-icons/pi";
 import { FaPencil, FaRegTrashCan, FaTrash, FaLink } from "react-icons/fa6";
 import dayjs from "dayjs";
 import { CanEditTrip } from "@/components/auth";
-import type { Activity, Location } from "@/types/models";
+import type { Activity, ActivityType, Location } from "@/types/models";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import { useDisclosure } from "@mantine/hooks";
@@ -26,6 +25,26 @@ import { useState } from "react";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDuration } from "@/utils/formatDuration";
 import { formatDate } from "@/utils/date";
+
+const ACTIVITY_TYPE_COLOR: Record<ActivityType, string> = {
+  breakfast: "lavender",
+  brunch: "lavender",
+  lunch: "lavender",
+  dinner: "lavender",
+  cafe: "lavender",
+  drinks: "lavender",
+  tour: "mint",
+  sightseeing: "mint",
+  museum: "mint",
+  attraction: "mint",
+  hike: "peach",
+  outdoor: "peach",
+  beach: "peach",
+  shopping: "indigo",
+  entertainment: "indigo",
+  wellness: "indigo",
+  other: "gray",
+};
 
 interface DayGroup {
   date: string; // YYYY-MM-DD
@@ -184,7 +203,15 @@ export const ActivitiesPanel = ({
                           </Badge>
                         )}
                         <Text fw={600} size="sm" truncate>
-                          {activity.name}
+                          <Text
+                            fw="bold"
+                            component="span"
+                            c={ACTIVITY_TYPE_COLOR[activity.type]}
+                            tt="capitalize"
+                          >
+                            {activity.type}
+                          </Text>{" "}
+                          - {activity.name}
                         </Text>
                         {activity.link && (
                           <Anchor href={activity.link} target="_blank">
@@ -292,16 +319,9 @@ export const ActivitiesPanel = ({
         size="sm"
         title={
           <Stack gap="xs">
-            <Box
-              p="sm"
-              bdrs="md"
-              bd="2px solid red.3"
-              bg="red.1"
-              w="2.75rem"
-              c="red.8"
-            >
+            <ThemeIcon color="red" radius="md">
               <FaTrash />
-            </Box>
+            </ThemeIcon>
             <Title order={4} lh={1} fw="bold">
               Delete this activity?
             </Title>

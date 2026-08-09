@@ -1,5 +1,4 @@
 /**
- * src/types/models.ts
  *
  * Friendly aliases over the generated Supabase types (src/types/database.types.ts).
  * Everything here is derived — never hand-edit the shapes; regenerate the base
@@ -48,6 +47,7 @@ export type ProfileUpdate = TablesUpdate<"profiles">;
 // ── Enum aliases ─────────────────────────────────────────────────────────────
 export type TripStatus = Enums<"trip_status">;
 export type AccommodationType = Enums<"accommodation_type">;
+export type ActivityType = Enums<"activity_type">;
 export type TransportType = Enums<"transport_type">;
 export type MemberRole = Enums<"member_role">;
 export type AppRole = Enums<"app_role">;
