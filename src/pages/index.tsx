@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AppLayout, DefaultLayout, AuthLayout } from "@/components/layouts";
-import { LoginPage, RegisterPage } from "./auth";
+import { LoginPage, RegisterPage, LogoutPage } from "./auth";
 import TripListPage from "./trip-list";
 import TripDetailPage from "./trip-detail";
 import TripLayout from "@/components/layouts/TripLayout";
@@ -23,6 +23,7 @@ export default function Pages() {
             />
           </Route>
         </Route>
+        <Route path="logout" element={<LogoutPage />} />
       </Route>
 
       <Route element={<AuthLayout />}>

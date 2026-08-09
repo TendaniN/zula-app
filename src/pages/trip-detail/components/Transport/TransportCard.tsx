@@ -16,7 +16,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { FaPencil, FaRegTrashCan, FaTrash } from "react-icons/fa6";
+import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
 import {
   PiSubway,
   PiBus,
@@ -91,8 +91,9 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
     <Card
       radius="lg"
       p="md"
+      shadow="xl"
       style={{
-        boxShadow: `0 4px 0 var(--mantine-primary-color-1)`,
+        boxShadow: `0 4px 0 var(--bg-secondary)`,
       }}
     >
       <Group>
@@ -107,6 +108,7 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
           radius="sm"
           variant="light"
           color={TYPE_COLOR[type]}
+          bd="2px solid var(--border-color)"
         >
           {TYPE_ICON[type]}
         </ThemeIcon>
@@ -119,7 +121,7 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
               <Badge
                 variant="filled"
                 color={`${TYPE_COLOR[type]}.3`}
-                c="var(--text-color)"
+                c="var(--border-color)"
                 tt="capitalize"
                 bd={`2px solid ${TYPE_COLOR[type]}.5`}
               >
@@ -183,8 +185,8 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
           size="sm"
           title={
             <Stack gap="xs">
-              <ThemeIcon bd="2px solid red.3" color="red" radius="md">
-                <FaTrash />
+              <ThemeIcon color="red" radius="md">
+                <FaRegTrashCan />
               </ThemeIcon>
               <Title order={4} lh={1} fw="bold">
                 Delete this transport?

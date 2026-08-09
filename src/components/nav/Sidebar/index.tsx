@@ -1,4 +1,13 @@
-import { Badge, Flex, Group, Image, Stack, Text, Title } from "@mantine/core";
+import {
+  Badge,
+  Flex,
+  Group,
+  Image,
+  Menu,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import logoImg from "@/assets/logo.svg";
 import "./styles.scss";
 import { Link, useLocation } from "react-router-dom";
@@ -6,6 +15,7 @@ import {
   PiQuestionBold,
   PiPaperPlaneTiltBold,
   PiUserBold,
+  PiSignOutBold,
 } from "react-icons/pi";
 import clsx from "clsx";
 import { useAuthStore } from "@/stores/authStore";
@@ -73,27 +83,65 @@ export const Sidebar = () => {
         style={{ borderTop: "2px dashed var(--border-color)" }}
         pt="md"
       >
-        <Group gap="xs">
-          <Flex
-            bdrs="xl"
-            bd="2px solid var(--border-color)"
-            className="sidebar__avatar"
-            data-role={profile.app_role}
-          />
-          <Stack gap={2}>
-            <Text
-              fw="bold"
-              fz="sm"
-            >{`${profile.first_name} ${profile.last_name}`}</Text>
-            <Badge
-              size="xs"
-              bd={`2px solid ${profile.app_role === "admin" ? "peach.6" : "mint.6"}`}
-              color={profile.app_role === "admin" ? "peach" : "mint"}
+        <Menu position="top">
+          <Menu.Target>
+            <Group
+              gap="xs"
+              bd="2px solid var(--border-color)"
+              bdrs="md"
+              className="sidebar__menu"
+              p="0.3rem"
+              style={{ cursor: "pointer" }}
             >
-              {profile.app_role}
-            </Badge>
-          </Stack>
-        </Group>
+              <Flex
+                bdrs="xl"
+                bd="2px solid var(--border-color)"
+                className="sidebar__menu--avatar"
+                data-role={profile.app_role}
+              />
+              <Stack gap={2}>
+                <Text
+                  fw="bold"
+                  fz="sm"
+                >{`${profile.first_name} ${profile.last_name}`}</Text>
+                <Badge
+                  size="xs"
+                  bd={`2px solid ${profile.app_role === "admin" ? "peach.6" : "mint.6"}`}
+                  color={profile.app_role === "admin" ? "peach" : "mint"}
+                >
+                  {profile.app_role}
+                </Badge>
+              </Stack>
+            </Group>
+          </Menu.Target>
+          <Menu.Dropdown
+            styles={{ dropdown: { border: "2px solid var(--border-color)" } }}
+            maw="12rem"
+          >
+            <Stack px={12} py={10} gap={0}>
+              <Text size="xs" fw={600} tt="uppercase" c="dimmed">
+                Signed in as
+              </Text>
+              <Text size="sm" textWrap="wrap">
+                {profile.username}
+                <Text
+                  size="xs"
+                  textWrap="wrap"
+                  component="span"
+                >{` (${profile.email})`}</Text>
+              </Text>
+            </Stack>
+            <Menu.Divider />
+            <Menu.Item
+              leftSection={<PiSignOutBold />}
+              component={Link}
+              to="/logout"
+            >
+              Logout
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+
         <CurrencySelect />
         <Group>
           <Text fw="bold" fz="sm">

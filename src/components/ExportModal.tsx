@@ -124,7 +124,7 @@ export const ExportModal = ({
             borderBottom: "2px solid var(--border-color)",
           }}
         >
-          <Title order={3} fw="bold" c="var(--text-color)">
+          <Title order={3} fw="bold" c="var(--border-color)">
             Export trip
           </Title>
           <IconButton

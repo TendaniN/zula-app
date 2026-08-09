@@ -15,7 +15,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { FaPencil, FaRegTrashCan, FaTrash } from "react-icons/fa6";
+import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
 import { PiDotsThreeOutlineFill } from "react-icons/pi";
 import { CanEditTrip } from "@/components/auth";
 import dayjs from "dayjs";
@@ -86,8 +86,9 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
       radius="lg"
       p="md"
       bg="var(--surface-color)"
+      shadow="xl"
       style={{
-        boxShadow: `0 2px 0 var(--mantine-primary-color-1)`,
+        boxShadow: `0 4px 0 var(--bg-secondary)`,
       }}
     >
       <Group>
@@ -99,8 +100,9 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
         />
         <Checkbox.Indicator
           style={{ cursor: "pointer" }}
-          variant="outline"
+          variant="filled"
           size="md"
+          iconColor="var(--border-color)"
           bd="2px solid var(--border-color)"
           onClick={() => toggleCheckbox()}
           checked={is_complete}
@@ -120,7 +122,7 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
                 <Badge
                   variant="filled"
                   color={`${TYPE_COLOR[getTodoType()]}.3`}
-                  c="var(--text-color)"
+                  c="var(--border-color)"
                   tt="capitalize"
                   bd={`2px solid ${TYPE_COLOR[getTodoType()]}.5`}
                 >
@@ -176,8 +178,8 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
           size="sm"
           title={
             <Stack gap="xs">
-              <ThemeIcon bd="2px solid red.3" color="red" radius="md">
-                <FaTrash />
+              <ThemeIcon color="red" radius="md">
+                <FaRegTrashCan />
               </ThemeIcon>
               <Title order={4} lh={1} fw="bold">
                 Delete this to-do?

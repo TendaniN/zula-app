@@ -158,7 +158,7 @@ export default function TripListPage() {
               onChange={(e) => setSearch(e.currentTarget.value)}
             />
           </Group>
-          <Group>
+          <Group wrap="wrap">
             {TRIP_STATUS_FILTERS.map(({ label, id }) => (
               <FilterChip
                 key={`filter-chip-${id}`}

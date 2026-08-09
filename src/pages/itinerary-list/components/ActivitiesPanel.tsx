@@ -1,11 +1,11 @@
 import {
-  Box,
   Group,
   Modal,
   SimpleGrid,
   Stack,
   Title,
   Text,
+  ThemeIcon,
   Badge,
   Divider,
   Menu,
@@ -14,10 +14,10 @@ import {
 import { ActivityModal } from "./ActivityModal";
 import { Button, IconButton } from "@/components/ui";
 import { PiPlus, PiDotsThreeBold } from "react-icons/pi";
-import { FaPencil, FaRegTrashCan, FaTrash, FaLink } from "react-icons/fa6";
+import { FaPencil, FaRegTrashCan, FaLink } from "react-icons/fa6";
 import dayjs from "dayjs";
 import { CanEditTrip } from "@/components/auth";
-import type { Activity, Location } from "@/types/models";
+import type { Activity, ActivityType, Location } from "@/types/models";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import { useDisclosure } from "@mantine/hooks";
@@ -25,6 +25,26 @@ import { useState } from "react";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDuration } from "@/utils/formatDuration";
 import { formatDate } from "@/utils/date";
+
+const ACTIVITY_TYPE_COLOR: Record<ActivityType, string> = {
+  breakfast: "lavender",
+  brunch: "lavender",
+  lunch: "lavender",
+  dinner: "lavender",
+  cafe: "lavender",
+  drinks: "lavender",
+  tour: "mint",
+  sightseeing: "mint",
+  museum: "mint",
+  attraction: "mint",
+  hike: "peach",
+  outdoor: "peach",
+  beach: "peach",
+  shopping: "indigo",
+  entertainment: "indigo",
+  wellness: "indigo",
+  other: "gray",
+};
 
 interface DayGroup {
   date: string; // YYYY-MM-DD
@@ -114,7 +134,16 @@ export const ActivitiesPanel = ({
                 {formatDate(day.date, "ddd D MMM")}
               </Text>
             </Group>
-            <Divider flex={1} size="md" color="mint.1" />
+            <Divider
+              flex={1}
+              size="md"
+              styles={{
+                root: {
+                  "--divider-color":
+                    "light-dark(var(--mantine-color-mint-1), var(--mantine-color-mint-9))",
+                },
+              }}
+            />
             {day.total > 0 && (
               <Text fw="bold" c="dimmed" size="sm" style={{ flexShrink: 0 }}>
                 {currency}
@@ -174,19 +203,29 @@ export const ActivitiesPanel = ({
                           </Badge>
                         )}
                         <Text fw={600} size="sm" truncate>
-                          {activity.name}
+                          <Text
+                            fw="bold"
+                            component="span"
+                            c={ACTIVITY_TYPE_COLOR[activity.type]}
+                            tt="capitalize"
+                          >
+                            {activity.type}
+                          </Text>{" "}
+                          - {activity.name}
                         </Text>
                         {activity.link && (
                           <Anchor href={activity.link} target="_blank">
-                            <Group
-                              p={2}
-                              bdrs="sm"
-                              bd="2px solid peach.3"
-                              bg="peach.1"
+                            <ThemeIcon
+                              variant="filled"
+                              color="peach.3"
                               c="peach.8"
+                              radius="sm"
+                              size="sm"
+                              bd="2px solid peach.8"
+                              p={2}
                             >
                               <FaLink size="1rem" />
-                            </Group>
+                            </ThemeIcon>
                           </Anchor>
                         )}
                       </Group>
@@ -245,7 +284,11 @@ export const ActivitiesPanel = ({
                       onClick={open}
                       size="xs"
                       fluid
-                      leftSection={<PiPlus />}
+                      leftSection={
+                        <PiPlus
+                          style={{ color: "var(--mantine-color-dimmed)" }}
+                        />
+                      }
                     >
                       <Text c="dimmed" size="xs">
                         {`Add to Day ${day.index}`}
@@ -276,16 +319,9 @@ export const ActivitiesPanel = ({
         size="sm"
         title={
           <Stack gap="xs">
-            <Box
-              p="sm"
-              bdrs="md"
-              bd="2px solid red.3"
-              bg="red.1"
-              w="2.75rem"
-              c="red.8"
-            >
-              <FaTrash />
-            </Box>
+            <ThemeIcon color="red" radius="md">
+              <FaRegTrashCan />
+            </ThemeIcon>
             <Title order={4} lh={1} fw="bold">
               Delete this activity?
             </Title>

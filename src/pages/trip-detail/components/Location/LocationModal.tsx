@@ -207,7 +207,7 @@ export const LocationModal = ({
         >
           <Group gap="xs">
             <LuMapPin />
-            <Title order={3} fw="bold" c="var(--text-color)">
+            <Title order={3} fw="bold" c="var(--border-color)">
               {isEdit ? "Edit Stay" : "Add Stay"}
             </Title>
           </Group>

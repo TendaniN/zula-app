@@ -1,22 +1,16 @@
 import {
   Badge,
   Card,
-  Box,
   Group,
   Menu,
   Modal,
   SimpleGrid,
   Stack,
   Text,
+  ThemeIcon,
   Title,
 } from "@mantine/core";
-import {
-  FaPencil,
-  FaPlus,
-  FaRegTrashCan,
-  FaStar,
-  FaTrash,
-} from "react-icons/fa6";
+import { FaPencil, FaPlus, FaRegTrashCan, FaStar } from "react-icons/fa6";
 import { TbDots } from "react-icons/tb";
 import { LuMoveRight } from "react-icons/lu";
 
@@ -97,8 +91,9 @@ export const LocationCard = ({
     <Card
       radius="lg"
       p={0}
+      shadow="xl"
       style={{
-        boxShadow: `0 4px 0 var(--mantine-primary-color-1)`,
+        boxShadow: `0 4px 0 var(--bg-secondary)`,
       }}
     >
       <Stack gap={0} p={0}>
@@ -165,7 +160,12 @@ export const LocationCard = ({
         </Group>
 
         {accommodation ? (
-          <Stack justify="space-between" p="md" gap={0} bg="lavender.0">
+          <Stack
+            justify="space-between"
+            p="md"
+            gap={0}
+            bg="var(--bg-secondary)"
+          >
             <Group gap="xs" wrap="nowrap">
               <Text fw="bold" size="sm">
                 {accommodation.name}
@@ -184,8 +184,8 @@ export const LocationCard = ({
               <Group gap="xs">
                 {accommodation.rating != null && (
                   <Group gap={4} wrap="nowrap" c="dimmed">
-                    <FaStar />
-                    <Text size="xs" fw={600}>
+                    <Text size="xs" fw={600} c="dimmed">
+                      <FaStar size="0.65rem" />{" "}
                       {accommodation.rating.toFixed(1)}
                     </Text>
                   </Group>
@@ -205,7 +205,12 @@ export const LocationCard = ({
             </Group>
           </Stack>
         ) : (
-          <Group justify="space-between" p="md" gap={0} bg="lavender.0">
+          <Group
+            justify="space-between"
+            p="md"
+            gap={0}
+            bg="var(--bg-secondary)"
+          >
             <Text c="dimmed" fs="italic">
               No accommodation yet.
             </Text>
@@ -255,16 +260,9 @@ export const LocationCard = ({
           size="sm"
           title={
             <Stack gap="xs">
-              <Box
-                p="sm"
-                bdrs="md"
-                bd="2px solid red.3"
-                bg="red.1"
-                w="2.75rem"
-                c="red.8"
-              >
-                <FaTrash />
-              </Box>
+              <ThemeIcon color="red" radius="md">
+                <FaRegTrashCan />
+              </ThemeIcon>
               <Title order={4} lh={1} fw="bold">
                 Delete this location?
               </Title>

@@ -79,6 +79,7 @@ export type Database = {
           link: string | null
           location_id: string
           name: string
+          type: Database["public"]["Enums"]["activity_type"]
           updated_at: string
         }
         Insert: {
@@ -91,6 +92,7 @@ export type Database = {
           link?: string | null
           location_id: string
           name: string
+          type?: Database["public"]["Enums"]["activity_type"]
           updated_at?: string
         }
         Update: {
@@ -103,6 +105,7 @@ export type Database = {
           link?: string | null
           location_id?: string
           name?: string
+          type?: Database["public"]["Enums"]["activity_type"]
           updated_at?: string
         }
         Relationships: [
@@ -801,6 +804,24 @@ export type Database = {
         | "guesthouse"
         | "resort"
         | "other"
+      activity_type:
+        | "breakfast"
+        | "brunch"
+        | "lunch"
+        | "dinner"
+        | "cafe"
+        | "drinks"
+        | "tour"
+        | "sightseeing"
+        | "museum"
+        | "attraction"
+        | "hike"
+        | "outdoor"
+        | "beach"
+        | "shopping"
+        | "entertainment"
+        | "wellness"
+        | "other"
       app_role: "admin" | "user"
       member_role: "owner" | "member"
       transport_type:
@@ -945,6 +966,25 @@ export const Constants = {
         "airbnb",
         "guesthouse",
         "resort",
+        "other",
+      ],
+      activity_type: [
+        "breakfast",
+        "brunch",
+        "lunch",
+        "dinner",
+        "cafe",
+        "drinks",
+        "tour",
+        "sightseeing",
+        "museum",
+        "attraction",
+        "hike",
+        "outdoor",
+        "beach",
+        "shopping",
+        "entertainment",
+        "wellness",
         "other",
       ],
       app_role: ["admin", "user"],

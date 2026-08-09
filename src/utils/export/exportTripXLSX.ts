@@ -207,8 +207,6 @@ const budgetSheet = (
     start_date,
   } = trip;
 
-  console.log(trip);
-
   // TripSummaryRow's numeric columns are nullable (it's a view).
   const accommodationCost = accommodation_cost ?? 0;
   const activitiesCost = activities_cost ?? 0;

@@ -36,7 +36,7 @@ export const TripCard = ({ trip, index }: TripCardProps) => {
         >
           <Badge
             color={`${statusColor.color}.2`}
-            c="var(--text-color)"
+            c="var(--border-color)"
             bd={`2px solid ${statusColor.color}.6`}
             tt="capitalize"
             py="sm"

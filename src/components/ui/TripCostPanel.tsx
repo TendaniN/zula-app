@@ -65,6 +65,7 @@ export const TripCostPanel = ({
       bd="2px solid var(--border-color)"
       bg="var(--surface-color)"
       style={{
+        boxShadow: `0 4px 0 var(--bg-secondary)`,
         flexShrink: 0,
         overflow: "hidden",
         alignSelf: "flex-start",
