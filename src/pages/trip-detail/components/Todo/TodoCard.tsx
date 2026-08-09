@@ -178,7 +178,7 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
           size="sm"
           title={
             <Stack gap="xs">
-              <ThemeIcon bd="2px solid red.3" color="red" radius="md">
+              <ThemeIcon color="red" radius="md">
                 <FaTrash />
               </ThemeIcon>
               <Title order={4} lh={1} fw="bold">

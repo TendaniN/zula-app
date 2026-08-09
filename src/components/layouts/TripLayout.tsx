@@ -50,14 +50,11 @@ export default function TripLayout() {
     accommodationFor,
     loading: locationsLoading,
   } = useLocationStore();
-  const byLocation = useActivityStore((s) => s.byLocation);
+  const activities = useActivityStore((s) => s.activities);
   const [searchParams] = useSearchParams();
 
   const defaultTab = searchParams.get("tab");
 
-  // Tracks whether the initial fetch has completed at least once.
-  // Without this, the component redirects on refresh before the
-  // fetch even starts (loading defaults to false, summary is null).
   const [initialized, setInitialized] = useState(false);
   const [activeTab, setActiveTab] = useState<string>(
     defaultTab ?? "Stays & itinerary",
@@ -112,8 +109,6 @@ export default function TripLayout() {
     ? accommodationFor(locationId)
     : undefined;
 
-  const activeActivities = locationId ? byLocation(locationId) : [];
-
   const stopNights =
     activeLocation?.start_date && activeLocation?.end_date
       ? calcNights(activeLocation.start_date, activeLocation.end_date)
@@ -121,7 +116,7 @@ export default function TripLayout() {
   const stopAccommodationCost = activeAccommodation
     ? activeAccommodation.cost_per_night * stopNights
     : 0;
-  const stopActivitiesCost = activeActivities.reduce(
+  const stopActivitiesCost = activities.reduce(
     (sum, a) => sum + (a.cost ?? 0),
     0,
   );

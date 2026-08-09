@@ -1,13 +1,13 @@
 import {
   Badge,
   Card,
-  Box,
   Group,
   Menu,
   Modal,
   SimpleGrid,
   Stack,
   Text,
+  ThemeIcon,
   Title,
 } from "@mantine/core";
 import {
@@ -266,16 +266,9 @@ export const LocationCard = ({
           size="sm"
           title={
             <Stack gap="xs">
-              <Box
-                p="sm"
-                bdrs="md"
-                bd="2px solid red.3"
-                bg="red.1"
-                w="2.75rem"
-                c="red.8"
-              >
+              <ThemeIcon color="red" radius="md">
                 <FaTrash />
-              </Box>
+              </ThemeIcon>
               <Title order={4} lh={1} fw="bold">
                 Delete this location?
               </Title>

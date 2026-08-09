@@ -102,7 +102,7 @@ export const LocationCostPanel = ({
             borderBottom: "2px solid var(--border-color)",
           }}
         >
-          <Text fw={800} size="sm" c="var(--text-color)">
+          <Text fw={800} size="sm" c="var(--border-color)">
             {city}
           </Text>
           <Badge variant="filled" color="mint.7" size="sm" radius="xl">
