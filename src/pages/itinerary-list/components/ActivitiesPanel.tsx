@@ -14,7 +14,7 @@ import {
 import { ActivityModal } from "./ActivityModal";
 import { Button, IconButton } from "@/components/ui";
 import { PiPlus, PiDotsThreeBold } from "react-icons/pi";
-import { FaPencil, FaRegTrashCan, FaTrash, FaLink } from "react-icons/fa6";
+import { FaPencil, FaRegTrashCan, FaLink } from "react-icons/fa6";
 import dayjs from "dayjs";
 import { CanEditTrip } from "@/components/auth";
 import type { Activity, ActivityType, Location } from "@/types/models";
@@ -320,7 +320,7 @@ export const ActivitiesPanel = ({
         title={
           <Stack gap="xs">
             <ThemeIcon color="red" radius="md">
-              <FaTrash />
+              <FaRegTrashCan />
             </ThemeIcon>
             <Title order={4} lh={1} fw="bold">
               Delete this activity?

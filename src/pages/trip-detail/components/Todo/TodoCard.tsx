@@ -15,7 +15,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { FaPencil, FaRegTrashCan, FaTrash } from "react-icons/fa6";
+import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
 import { PiDotsThreeOutlineFill } from "react-icons/pi";
 import { CanEditTrip } from "@/components/auth";
 import dayjs from "dayjs";
@@ -179,7 +179,7 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
           title={
             <Stack gap="xs">
               <ThemeIcon color="red" radius="md">
-                <FaTrash />
+                <FaRegTrashCan />
               </ThemeIcon>
               <Title order={4} lh={1} fw="bold">
                 Delete this to-do?

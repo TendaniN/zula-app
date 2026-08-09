@@ -3,10 +3,14 @@ import {
   Center,
   Group,
   Loader,
+  Menu,
+  Modal,
   ScrollArea,
+  SimpleGrid,
   Stack,
   Tabs,
   Text,
+  ThemeIcon,
   Title,
 } from "@mantine/core";
 import { Breadcrumbs } from "../nav/Breadcrumbs";
@@ -22,6 +26,7 @@ import {
 import { getStatusColor } from "@/constants/status";
 import { TripCostPanel } from "../ui/TripCostPanel";
 import { calcNights } from "@/utils/calcNights";
+import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
 import {
   PiCheckSquare,
   PiCreditCard,
@@ -29,6 +34,7 @@ import {
   PiMapPin,
   PiPaperPlaneTilt,
   PiDownloadSimpleBold,
+  PiDotsThreeBold,
 } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { ViewOnlyBanner } from "../auth/ViewOnlyBanner";
@@ -36,13 +42,18 @@ import { LocationCostPanel } from "../ui/LocationCostPanel";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDate } from "@/utils/date";
 import { ExportModal } from "../ExportModal";
-import { Button } from "../ui";
+import { Button, IconButton } from "../ui";
+import { TripModal } from "@/pages/trip-list/components/TripModal";
+import { CanEditTrip } from "../auth";
+import { useDisclosure } from "@mantine/hooks";
 
 export default function TripLayout() {
   const {
     currentTripSummary,
+    currentTrip,
     fetchTrip,
     loading: tripLoading,
+    deleteTrip,
   } = useTripStore();
   const {
     locations,
@@ -60,6 +71,11 @@ export default function TripLayout() {
     defaultTab ?? "Stays & itinerary",
   );
   const [costPanelExpanded, setCostPanelExpanded] = useState(true);
+
+  const [deleteOpened, { open: openDelete, close: closeDelete }] =
+    useDisclosure(false);
+  const [editOpened, { open: openEdit, close: closeEdit }] =
+    useDisclosure(false);
 
   const navigate = useNavigate();
   const { tripId, locationId } = useParams();
@@ -96,7 +112,7 @@ export default function TripLayout() {
   }
 
   // Only redirect after the fetch has completed and genuinely returned nothing.
-  if (!currentTripSummary) {
+  if (!currentTripSummary || !currentTrip) {
     return <Navigate to="/trips" replace />;
   }
 
@@ -126,6 +142,11 @@ export default function TripLayout() {
     navigate(`/trips/${tripId}?tab=${tab}`);
   };
 
+  const confirmDelete = async () => {
+    await deleteTrip(currentTrip.id);
+    closeDelete();
+  };
+
   return (
     <Stack p={0}>
       <Breadcrumbs trip={currentTripSummary} tab="Stays & itinerary" />
@@ -143,18 +164,48 @@ export default function TripLayout() {
                 {currentTripSummary.status}
               </Badge>
             </Group>
-            <ExportModal
-              trip={currentTripSummary}
-              trigger={(open) => (
-                <Button
-                  variant="ghost"
-                  leftSection={<PiDownloadSimpleBold />}
-                  onClick={open}
-                >
-                  Export
-                </Button>
-              )}
-            />
+            <Group>
+              <ExportModal
+                trip={currentTripSummary}
+                trigger={(open) => (
+                  <Button
+                    variant="ghost"
+                    leftSection={<PiDownloadSimpleBold />}
+                    onClick={open}
+                  >
+                    Export
+                  </Button>
+                )}
+              />
+              <CanEditTrip>
+                <Menu position="bottom-end" withinPortal shadow="md">
+                  <Menu.Target>
+                    <IconButton
+                      icon={<PiDotsThreeBold />}
+                      variant="ghost"
+                      size="lg"
+                      aria-label="Activity options"
+                    />
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item
+                      leftSection={<FaPencil />}
+                      onClick={() => openEdit()}
+                    >
+                      Edit trip
+                    </Menu.Item>
+                    <Menu.Divider />
+                    <Menu.Item
+                      color="red"
+                      leftSection={<FaRegTrashCan />}
+                      onClick={() => openDelete()}
+                    >
+                      Delete trip
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </CanEditTrip>
+            </Group>
           </Group>
           <Group gap={2} c="dimmed">
             <Text fz="sm">
@@ -251,6 +302,44 @@ export default function TripLayout() {
           </Tabs>
         </Stack>
       </Group>
+      <TripModal trip={currentTrip} opened={editOpened} onClose={closeEdit} />
+
+      <Modal
+        opened={deleteOpened}
+        onClose={closeDelete}
+        centered
+        size="sm"
+        title={
+          <Stack gap="xs">
+            <ThemeIcon color="red" radius="md" c="var(--border-color)">
+              <FaRegTrashCan />
+            </ThemeIcon>
+            <Title order={4} lh={1} fw="bold">
+              Delete this trip?
+            </Title>
+          </Stack>
+        }
+      >
+        <Stack gap="md">
+          <Stack gap="xs">
+            <Text size="sm" c="dimmed">
+              {`"${currentTrip.name}" and all its stays, transport and to-dos will be permanently removed. This can't be undone.`}
+            </Text>
+            <Text fs="italic" size="sm" c="dimmed" ta="center">
+              Rather keep it? Archive it instead.
+            </Text>
+          </Stack>
+
+          <SimpleGrid cols={2}>
+            <Button fluid variant="ghost" onClick={closeDelete}>
+              Cancel
+            </Button>
+            <Button fluid variant="danger" onClick={confirmDelete}>
+              Delete
+            </Button>
+          </SimpleGrid>
+        </Stack>
+      </Modal>
     </Stack>
   );
 }

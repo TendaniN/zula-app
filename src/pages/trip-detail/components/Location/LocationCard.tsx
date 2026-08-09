@@ -10,13 +10,7 @@ import {
   ThemeIcon,
   Title,
 } from "@mantine/core";
-import {
-  FaPencil,
-  FaPlus,
-  FaRegTrashCan,
-  FaStar,
-  FaTrash,
-} from "react-icons/fa6";
+import { FaPencil, FaPlus, FaRegTrashCan, FaStar } from "react-icons/fa6";
 import { TbDots } from "react-icons/tb";
 import { LuMoveRight } from "react-icons/lu";
 
@@ -267,7 +261,7 @@ export const LocationCard = ({
           title={
             <Stack gap="xs">
               <ThemeIcon color="red" radius="md">
-                <FaTrash />
+                <FaRegTrashCan />
               </ThemeIcon>
               <Title order={4} lh={1} fw="bold">
                 Delete this location?

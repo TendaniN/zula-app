@@ -16,7 +16,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { FaPencil, FaRegTrashCan, FaTrash } from "react-icons/fa6";
+import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
 import {
   PiSubway,
   PiBus,
@@ -186,7 +186,7 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
           title={
             <Stack gap="xs">
               <ThemeIcon color="red" radius="md">
-                <FaTrash />
+                <FaRegTrashCan />
               </ThemeIcon>
               <Title order={4} lh={1} fw="bold">
                 Delete this transport?
