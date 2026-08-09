@@ -93,7 +93,7 @@ export const theme = createTheme({
           fontSize: "var(--mantine-font-size-sm)",
         },
         label: {
-          color: "var(--border-color)",
+          color: "var(--text-color)",
           fontSize: "var(--mantine-font-size-sm)",
         },
       },
@@ -107,7 +107,7 @@ export const theme = createTheme({
           fontSize: "var(--mantine-font-size-sm)",
         },
         label: {
-          color: "var(--border-color)",
+          color: "var(--text-color)",
           fontSize: "var(--mantine-font-size-sm)",
         },
       },
@@ -121,7 +121,7 @@ export const theme = createTheme({
           fontSize: "var(--mantine-font-size-sm)",
         },
         label: {
-          color: "var(--border-color)",
+          color: "var(--text-color)",
           fontSize: "var(--mantine-font-size-sm)",
         },
       },
@@ -135,7 +135,7 @@ export const theme = createTheme({
           fontSize: "var(--mantine-font-size-sm)",
         },
         label: {
-          color: "var(--border-color)",
+          color: "var(--text-color)",
           fontSize: "var(--mantine-font-size-sm)",
         },
       },
@@ -149,7 +149,7 @@ export const theme = createTheme({
           fontSize: "var(--mantine-font-size-sm)",
         },
         label: {
-          color: "var(--border-color)",
+          color: "var(--text-color)",
           fontSize: "var(--mantine-font-size-sm)",
         },
         description: {
@@ -166,7 +166,7 @@ export const theme = createTheme({
           fontSize: "var(--mantine-font-size-sm)",
         },
         label: {
-          color: "var(--border-color)",
+          color: "var(--text-color)",
           fontSize: "var(--mantine-font-size-sm)",
         },
 
@@ -184,7 +184,7 @@ export const theme = createTheme({
           fontSize: "var(--mantine-font-size-sm)",
         },
         label: {
-          color: "var(--border-color)",
+          color: "var(--text-color)",
           fontSize: "var(--mantine-font-size-sm)",
         },
         description: {
@@ -201,7 +201,7 @@ export const theme = createTheme({
           fontSize: "var(--mantine-font-size-sm)",
         },
         label: {
-          color: "var(--border-color)",
+          color: "var(--text-color)",
           fontSize: "var(--mantine-font-size-sm)",
         },
       },
