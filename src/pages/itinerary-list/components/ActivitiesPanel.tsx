@@ -123,7 +123,7 @@ export const ActivitiesPanel = ({
   return (
     <Stack gap="lg" p="md">
       {days.map((day) => (
-        <Stack key={day.date} gap="xs">
+        <Stack key={`activity-day-${day.date}`} gap="xs">
           <Group justify="space-between" wrap="nowrap" gap="sm">
             <Group gap={6} wrap="nowrap" style={{ flexShrink: 0 }}>
               <Text fw="bold">{`Day ${day.index}`}</Text>
@@ -181,7 +181,7 @@ export const ActivitiesPanel = ({
                 {day.activities.map((activity) => (
                   <>
                     <Group
-                      key={activity.id}
+                      key={`activity-${activity.id}`}
                       justify="space-between"
                       wrap="nowrap"
                       gap="sm"

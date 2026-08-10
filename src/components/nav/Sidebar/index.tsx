@@ -68,7 +68,7 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
         {MENU_ITEMS.map(({ to, label, icon }) => (
           <Link
             to={to}
-            key={`nav-item-${label}`}
+            key={`sidebar-item-${label}`}
             onClick={onNavigate}
             className={clsx("sidebar__nav--item", {
               active: to === location.pathname,

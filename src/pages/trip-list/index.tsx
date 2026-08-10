@@ -210,7 +210,7 @@ export default function TripListPage() {
               ({ status }) => filterTrips === "all" || status === filterTrips,
             )
             .map((trip, index) => (
-              <TripCard index={index} trip={trip} />
+              <TripCard key={`trip-${trip.id}`} index={index} trip={trip} />
             ))}
         </SimpleGrid>
       )}

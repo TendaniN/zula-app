@@ -35,7 +35,7 @@ export const LocationPanel = ({ tripId }: LocationPanelProps) => {
       ) : (
         locations.map((location) => (
           <LocationCard
-            key={location.id}
+            key={`location-${location.id}`}
             location={location}
             accommodation={accommodationFor(location.id)}
             tripId={tripId}

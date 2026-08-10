@@ -19,7 +19,7 @@ export const getCountryFlag = (
 
   return (
     <Flag
-      key={country}
+      key={`flag-${country}`}
       width={size}
       style={{
         border,
