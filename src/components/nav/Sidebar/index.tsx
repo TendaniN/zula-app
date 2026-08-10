@@ -1,5 +1,7 @@
 import {
   Badge,
+  Burger,
+  Drawer,
   Flex,
   Group,
   Image,
@@ -8,6 +10,8 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { useEffect } from "react";
 import logoImg from "@/assets/logo.svg";
 import "./styles.scss";
 import { Link, useLocation } from "react-router-dom";
@@ -39,7 +43,12 @@ const MENU_ITEMS = [
   },
 ] as const;
 
-export const Sidebar = () => {
+/**
+ * The sidebar's actual content — nav + account menu + settings. Rendered
+ * inline in the fixed rail on md+ screens, and inside the Drawer on smaller
+ * ones. `onNavigate` lets the drawer close itself when a link is tapped.
+ */
+const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
   const location = useLocation();
   const profile = useAuthStore((s) => s.profile);
 
@@ -48,14 +57,7 @@ export const Sidebar = () => {
   }
 
   return (
-    <Stack
-      style={{ borderRight: "2px solid var(--border-color)" }}
-      w="15rem"
-      h="100%"
-      p="md"
-      className="sidebar"
-      gap="xl"
-    >
+    <Stack h="100%" p="md" className="sidebar" gap="xl">
       <Group gap="xs">
         <Image w={24} src={logoImg} />
         <Title order={3} fw="bold">
@@ -67,6 +69,7 @@ export const Sidebar = () => {
           <Link
             to={to}
             key={`nav-item-${label}`}
+            onClick={onNavigate}
             className={clsx("sidebar__nav--item", {
               active: to === location.pathname,
             })}
@@ -136,6 +139,7 @@ export const Sidebar = () => {
               leftSection={<PiSignOutBold />}
               component={Link}
               to="/logout"
+              onClick={onNavigate}
             >
               Logout
             </Menu.Item>
@@ -151,5 +155,70 @@ export const Sidebar = () => {
         </Group>
       </Stack>
     </Stack>
+  );
+};
+
+/**
+ * Fixed sidebar rail for md+ screens. AppLayout only renders this when the
+ * viewport is wide enough (see AppLayout), so it's always the full-width rail.
+ */
+export const Sidebar = () => {
+  const profile = useAuthStore((s) => s.profile);
+  if (!profile) return null;
+
+  return (
+    <Stack
+      style={{ borderRight: "2px solid var(--border-color)" }}
+      w="15rem"
+      h="100%"
+      gap={0}
+    >
+      <SidebarContent />
+    </Stack>
+  );
+};
+
+/**
+ * The small-screen entry point: a Burger button that opens the sidebar as a
+ * Drawer. Closes automatically when the route changes (so tapping a nav item
+ * dismisses it) and when a link fires onNavigate.
+ */
+export const SidebarDrawer = () => {
+  const profile = useAuthStore((s) => s.profile);
+  const [opened, { open, close }] = useDisclosure(false);
+  const location = useLocation();
+
+  // Close on route change — covers nav taps, back/forward, and programmatic
+  // navigation alike.
+  useEffect(() => {
+    close();
+  }, [location.pathname]);
+
+  if (!profile) return null;
+
+  return (
+    <Group py="xs">
+      <Burger
+        opened={opened}
+        onClick={open}
+        aria-label="Open navigation"
+        size="sm"
+        lineSize={2}
+      />
+      <Drawer
+        opened={opened}
+        onClose={close}
+        size="15rem"
+        padding={0}
+        withCloseButton={false}
+        overlayProps={{ blur: 2 }}
+        styles={{
+          body: { height: "100%" },
+          content: { display: "flex", flexDirection: "column" },
+        }}
+      >
+        <SidebarContent onNavigate={close} />
+      </Drawer>
+    </Group>
   );
 };

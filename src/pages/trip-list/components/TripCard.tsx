@@ -27,7 +27,11 @@ export const TripCard = ({ trip, index }: TripCardProps) => {
   const statusColor = getStatusColor(trip.status ?? "planning");
   const currency = useCurrencyStore((s) => s.symbol);
   return (
-    <Card p={0} component={Link} to={`/trips/${trip.id}`}>
+    <Card
+      p={0}
+      component={Link}
+      to={`/trips/${trip.id}?tab=${encodeURIComponent("Stays & itinerary")}`}
+    >
       <Stack>
         <Flex
           bg={`var(--${GRADIENT_COLORS[index % GRADIENT_COLORS.length]})`}

@@ -204,7 +204,7 @@ export default function TripListPage() {
           </Center>
         </Stack>
       ) : (
-        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }}>
+        <SimpleGrid cols={{ base: 1, sm: 3, xl: 4 }}>
           {tripSummaries
             .filter(
               ({ status }) => filterTrips === "all" || status === filterTrips,

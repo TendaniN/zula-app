@@ -9,6 +9,7 @@ import {
   Tabs,
   Text,
   Title,
+  useMantineTheme,
 } from "@mantine/core";
 import { Breadcrumbs } from "../nav/Breadcrumbs";
 import { useTripStore } from "@/stores/tripStore";
@@ -42,7 +43,7 @@ import { ExportModal } from "../ExportModal";
 import { Button, IconButton, DeleteModal } from "../ui";
 import { TripModal } from "@/pages/trip-list/components/TripModal";
 import { CanEditTrip } from "../auth";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 
 export default function TripLayout() {
   const {
@@ -74,8 +75,11 @@ export default function TripLayout() {
   const [editOpened, { open: openEdit, close: closeEdit }] =
     useDisclosure(false);
 
+  const theme = useMantineTheme();
   const navigate = useNavigate();
   const { tripId, locationId } = useParams();
+
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   useEffect(() => {
     const load = async (id: string) => {
@@ -267,7 +271,7 @@ export default function TripLayout() {
               </Tabs.Tab>
             </Tabs.List>
             <ScrollArea
-              h="calc(100dvh - 220px)"
+              h={isMobile ? "calc(100dvh - 270px)" : "calc(100dvh - 220px)"}
               type="auto"
               offsetScrollbars
               classNames={{ scrollbar: "scrollbar", thumb: "thumb" }}

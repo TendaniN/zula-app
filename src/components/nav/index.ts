@@ -1,3 +1,3 @@
-import { Sidebar } from "./Sidebar";
+import { Sidebar, SidebarDrawer } from "./Sidebar";
 
-export { Sidebar };
+export { Sidebar, SidebarDrawer };
