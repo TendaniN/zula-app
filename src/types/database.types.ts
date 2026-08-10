@@ -637,6 +637,7 @@ export type Database = {
       location_cost_summary: {
         Row: {
           accommodation_total: number | null
+          activities_count: number | null
           activities_total: number | null
           location_id: string | null
           location_total: number | null

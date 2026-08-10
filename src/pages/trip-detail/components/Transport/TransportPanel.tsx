@@ -94,7 +94,11 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
         </CanEditTrip>
       </Group>
       {transports.map((transport) => (
-        <TransportCard tripId={tripId} transport={transport} />
+        <TransportCard
+          key={`transport-${transport.id}`}
+          tripId={tripId}
+          transport={transport}
+        />
       ))}
     </Stack>
   );

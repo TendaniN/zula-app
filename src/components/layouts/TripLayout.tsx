@@ -134,9 +134,11 @@ export default function TripLayout() {
     0,
   );
 
-  const handleTabSelect = (tab: string) => {
-    setActiveTab(tab);
-    navigate(`/trips/${tripId}?tab=${tab}`);
+  const handleTabSelect = (tab: string | null) => {
+    if (tab) {
+      setActiveTab(tab);
+      navigate(`/trips/${tripId}?tab=${tab}`);
+    }
   };
 
   const confirmDelete = async () => {
@@ -145,160 +147,163 @@ export default function TripLayout() {
   };
 
   return (
-    <Stack p={0}>
+    // Fills AppLayout's Container (which is h="100%" inside its 100dvh Group).
+    <Stack p={0} gap={0} h="100%" style={{ minHeight: 0 }}>
       <Breadcrumbs trip={currentTripSummary} tab="Stays & itinerary" />
-      <Group justify="space-between">
-        <Stack px="xl" pt="sm" w="100%">
-          <Group justify="space-between">
-            <Group>
-              <Title fw="bold">{currentTripSummary.name}</Title>
-              <Badge
-                color={`${statusColor.color}.2`}
-                c="var(--border-color)"
-                bd={`2px solid ${statusColor.color}.6`}
-                py="sm"
-              >
-                {currentTripSummary.status}
-              </Badge>
-            </Group>
-            <Group>
-              <ExportModal
-                trip={currentTripSummary}
-                trigger={(open) => (
-                  <Button
-                    variant="ghost"
-                    leftSection={<PiDownloadSimpleBold />}
-                    onClick={open}
-                  >
-                    Export
-                  </Button>
-                )}
-              />
-              <CanEditTrip>
-                <Menu position="bottom-end" withinPortal shadow="md">
-                  <Menu.Target>
-                    <IconButton
-                      icon={<PiDotsThreeBold />}
-                      variant="ghost"
-                      size="lg"
-                      aria-label="Activity options"
-                    />
-                  </Menu.Target>
-                  <Menu.Dropdown>
-                    <Menu.Item
-                      leftSection={<FaPencil />}
-                      onClick={() => openEdit()}
-                    >
-                      Edit trip
-                    </Menu.Item>
-                    <Menu.Divider />
-                    <Menu.Item
-                      color="red"
-                      leftSection={<FaRegTrashCan />}
-                      onClick={() => openDelete()}
-                    >
-                      Delete trip
-                    </Menu.Item>
-                  </Menu.Dropdown>
-                </Menu>
-              </CanEditTrip>
-            </Group>
-          </Group>
-          <Group gap={2} c="dimmed">
-            <Text fz="sm">
-              {!currentTripSummary.start_date || !currentTripSummary.end_date
-                ? "Just created"
-                : `${formatDate(currentTripSummary.start_date, "D MMM")} - ${formatDate(currentTripSummary.end_date, "D MMM, YYYY")}`}
-            </Text>
-            <PiDotBold />
-            {locations.length > 0 ? (
-              <>
-                <Text fz="sm">{`${locations.length} stays`}</Text>
-                {currentTripSummary.start_date &&
-                  currentTripSummary.end_date && (
-                    <>
-                      <PiDotBold />
-                      <Text fz="sm">{`${calcNights(currentTripSummary.start_date, currentTripSummary.end_date)} nights`}</Text>
-                    </>
-                  )}
-              </>
-            ) : (
-              <Text fz="sm">
-                no locations yet - dates set once you add stays
-              </Text>
-            )}
-          </Group>
-          <ViewOnlyBanner />
-          <Tabs value={activeTab}>
-            <Tabs.List
-              fw="bold"
-              style={{ borderBottom: "2px solid var(--border-color)" }}
-            >
-              <Tabs.Tab
-                value="Stays & itinerary"
-                leftSection={<PiMapPin />}
-                onClick={() => handleTabSelect("Stays & itinerary")}
-              >
-                Stays & itinerary
-              </Tabs.Tab>
-              <Tabs.Tab
-                value="Transport"
-                leftSection={<PiPaperPlaneTilt />}
-                onClick={() => handleTabSelect("Transport")}
-                disabled={locations.length === 0}
-              >
-                Transport
-              </Tabs.Tab>
-              <Tabs.Tab
-                value="To-dos"
-                leftSection={<PiCheckSquare />}
-                onClick={() => handleTabSelect("To-dos")}
-                disabled={locations.length === 0}
-              >
-                To-dos
-              </Tabs.Tab>
-              <Tabs.Tab
-                value="Budget"
-                leftSection={<PiCreditCard />}
-                onClick={() => handleTabSelect("Budget")}
-                disabled={locations.length === 0}
-              >
-                Budget
-              </Tabs.Tab>
-            </Tabs.List>
-            <ScrollArea
-              h="calc(100dvh - 220px)"
-              type="auto"
-              offsetScrollbars
-              classNames={{ scrollbar: "scrollbar", thumb: "thumb" }}
-            >
-              <Stack p="lg" gap="lg">
-                <Group align="flex-start" gap="lg" wrap="nowrap">
-                  <Outlet />
 
-                  {locations.length > 0 && (
-                    <Stack gap="lg" style={{ flexShrink: 0 }}>
-                      <TripCostPanel
-                        summary={currentTripSummary}
+      {/* was wrapped in a pointless <Group> — removed. This column owns the
+        remaining height and hands it down to Tabs → ScrollArea. */}
+      <Stack px="xl" pt="sm" w="100%" style={{ flex: 1, minHeight: 0 }}>
+        <Group justify="space-between">
+          <Group>
+            <Title fw="bold">{currentTripSummary.name}</Title>
+            <Badge
+              color={`${statusColor.color}.2`}
+              c="var(--border-color)"
+              bd={`2px solid ${statusColor.color}.6`}
+              py="sm"
+            >
+              {currentTripSummary.status}
+            </Badge>
+          </Group>
+          <Group>
+            <ExportModal
+              trip={currentTripSummary}
+              trigger={(open) => (
+                <Button
+                  variant="ghost"
+                  leftSection={<PiDownloadSimpleBold />}
+                  onClick={open}
+                >
+                  Export
+                </Button>
+              )}
+            />
+            <CanEditTrip>
+              <Menu position="bottom-end" withinPortal shadow="md">
+                <Menu.Target>
+                  <IconButton
+                    icon={<PiDotsThreeBold />}
+                    variant="ghost"
+                    size="lg"
+                    aria-label="Activity options"
+                  />
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item
+                    leftSection={<FaPencil />}
+                    onClick={() => openEdit()}
+                  >
+                    Edit trip
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item
+                    color="red"
+                    leftSection={<FaRegTrashCan />}
+                    onClick={() => openDelete()}
+                  >
+                    Delete trip
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </CanEditTrip>
+          </Group>
+        </Group>
+
+        <Group gap={2} c="dimmed">
+          <Text fz="sm">
+            {!currentTripSummary.start_date || !currentTripSummary.end_date
+              ? "Just created"
+              : `${formatDate(currentTripSummary.start_date, "D MMM")} - ${formatDate(currentTripSummary.end_date, "D MMM, YYYY")}`}
+          </Text>
+          <PiDotBold />
+          {locations.length > 0 ? (
+            <>
+              <Text fz="sm">{`${locations.length} stays`}</Text>
+              {currentTripSummary.start_date && currentTripSummary.end_date && (
+                <>
+                  <PiDotBold />
+                  <Text fz="sm">{`${calcNights(currentTripSummary.start_date, currentTripSummary.end_date)} nights`}</Text>
+                </>
+              )}
+            </>
+          ) : (
+            <Text fz="sm">no locations yet - dates set once you add stays</Text>
+          )}
+        </Group>
+
+        <ViewOnlyBanner />
+
+        <Tabs
+          value={activeTab}
+          onChange={handleTabSelect}
+          flex={1}
+          mih={0}
+          defaultValue="Stays & itinerary"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Tabs.List style={{ borderBottom: "2px solid var(--border-color)" }}>
+            <Tabs.Tab value="Stays & itinerary" leftSection={<PiMapPin />}>
+              Stays & itinerary
+            </Tabs.Tab>
+            <Tabs.Tab
+              value="Transport"
+              leftSection={<PiPaperPlaneTilt />}
+              disabled={locations.length === 0}
+            >
+              Transport
+            </Tabs.Tab>
+            <Tabs.Tab
+              value="To-dos"
+              leftSection={<PiCheckSquare />}
+              disabled={locations.length === 0}
+            >
+              To-dos
+            </Tabs.Tab>
+            <Tabs.Tab
+              value="Budget"
+              leftSection={<PiCreditCard />}
+              disabled={locations.length === 0}
+            >
+              Budget
+            </Tabs.Tab>
+          </Tabs.List>
+
+          <ScrollArea
+            flex={1}
+            mih={0}
+            type="auto"
+            offsetScrollbars
+            classNames={{ scrollbar: "scrollbar", thumb: "thumb" }}
+          >
+            <Stack p="lg" gap="lg">
+              <Group align="flex-start" gap="lg" wrap="nowrap">
+                <Outlet />
+                {locations.length > 0 && (
+                  <Stack gap="lg" style={{ flexShrink: 0 }}>
+                    <TripCostPanel
+                      summary={currentTripSummary}
+                      expanded={costPanelExpanded}
+                      onToggle={() => setCostPanelExpanded((v) => !v)}
+                    />
+                    {activeLocation && (
+                      <LocationCostPanel
+                        city={activeLocation.city}
+                        accommodationCost={stopAccommodationCost}
+                        activitiesCost={stopActivitiesCost}
                         expanded={costPanelExpanded}
-                        onToggle={() => setCostPanelExpanded((v) => !v)}
                       />
-                      {activeLocation && (
-                        <LocationCostPanel
-                          city={activeLocation.city}
-                          accommodationCost={stopAccommodationCost}
-                          activitiesCost={stopActivitiesCost}
-                          expanded={costPanelExpanded}
-                        />
-                      )}
-                    </Stack>
-                  )}
-                </Group>
-              </Stack>
-            </ScrollArea>
-          </Tabs>
-        </Stack>
-      </Group>
+                    )}
+                  </Stack>
+                )}
+              </Group>
+            </Stack>
+          </ScrollArea>
+        </Tabs>
+      </Stack>
       <TripModal trip={currentTrip} opened={editOpened} onClose={closeEdit} />
       <DeleteModal
         opened={deleteOpened}

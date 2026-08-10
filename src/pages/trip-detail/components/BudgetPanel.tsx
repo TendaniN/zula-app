@@ -236,7 +236,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
           const pct = total > 0 ? Math.round((c.cost / total) * 100) : 0;
           return (
             <Card
-              key={c.key}
+              key={`category-card-${c.key}`}
               display="flex"
               p="md"
               shadow="xl"
@@ -281,7 +281,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
           const pct = total > 0 ? (c.cost / total) * 100 : 0;
           return pct > 0 ? (
             <Progress.Section
-              key={c.key}
+              key={`category-progress-${c.key}`}
               value={pct}
               color={c.color}
               aria-label={`${c.label} ${Math.round(pct)}%`}
@@ -324,7 +324,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
         </Group>
         {categories.map((c) => (
           <Group
-            key={c.key}
+            key={`category-row-${c.key}`}
             p="sm"
             gap={0}
             justify="space-between"

@@ -101,7 +101,7 @@ export const TodoPanel = ({ tripId }: TodoPanelProps) => {
           return dayjs(a.due_date).diff(dayjs(b.due_date));
         })
         .map((todo) => (
-          <TodoCard tripId={tripId} todo={todo} />
+          <TodoCard key={`todo-${todo.id}`} tripId={tripId} todo={todo} />
         ))}
     </Stack>
   );

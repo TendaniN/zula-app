@@ -113,7 +113,7 @@ export const ExportModal = ({
           <Stack gap="sm">
             {EXPORT_OPTIONS.map((option) => (
               <Group
-                key={option.type}
+                key={`export-${option.type}`}
                 justify="space-between"
                 wrap="nowrap"
                 p="sm"

@@ -184,13 +184,27 @@ export const LocationCard = ({
                   {accommodation.cost_per_night} / night
                 </Text>
               </Group>
-              <Link
-                to={`/trips/${tripId}/locations/${location.id}?tab=Stays & itinerary`}
-                className="link-button"
-              >
-                View itinerary
-                <LuMoveRight />
-              </Link>
+              <Group>
+                {summary && summary.activities_count && (
+                  <Badge
+                    variant="outline"
+                    bd="2px solid var(--border-color)"
+                    c="var(--text-color)"
+                    bg="var(--surface-color)"
+                    radius="sm"
+                    p="md"
+                    my="auto"
+                    tt="initial"
+                  >{`${summary.activities_count} activities · ${currency}${summary.activities_total}`}</Badge>
+                )}
+                <Link
+                  to={`/trips/${tripId}/locations/${location.id}?tab=Stays & itinerary`}
+                  className="link-button"
+                >
+                  View itinerary
+                  <LuMoveRight />
+                </Link>
+              </Group>
             </Group>
           </Stack>
         ) : (
@@ -221,6 +235,18 @@ export const LocationCard = ({
                   )}
                 />
               </CanEditTrip>
+              {summary && summary.activities_count && (
+                <Badge
+                  variant="outline"
+                  bd="2px solid var(--border-color)"
+                  c="var(--text-color)"
+                  bg="var(--surface-color)"
+                  radius="sm"
+                  p="md"
+                  my="auto"
+                  tt="initial"
+                >{`${summary.activities_count} activities · ${currency}${summary.activities_total}`}</Badge>
+              )}
               <Link
                 to={`/trips/${tripId}/locations/${location.id}?tab=Stays & itinerary`}
                 className="link-button"
