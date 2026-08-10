@@ -138,9 +138,11 @@ export default function TripLayout() {
     0,
   );
 
-  const handleTabSelect = (tab: string) => {
-    setActiveTab(tab);
-    navigate(`/trips/${tripId}?tab=${tab}`);
+  const handleTabSelect = (tab: string | null) => {
+    if (tab) {
+      setActiveTab(tab);
+      navigate(`/trips/${tripId}?tab=${tab}`);
+    }
   };
 
   const confirmDelete = async () => {
@@ -233,22 +235,17 @@ export default function TripLayout() {
             )}
           </Group>
           <ViewOnlyBanner />
-          <Tabs value={activeTab}>
+          <Tabs value={activeTab} onChange={handleTabSelect}>
             <Tabs.List
               fw="bold"
               style={{ borderBottom: "2px solid var(--border-color)" }}
             >
-              <Tabs.Tab
-                value="Stays & itinerary"
-                leftSection={<PiMapPin />}
-                onClick={() => handleTabSelect("Stays & itinerary")}
-              >
+              <Tabs.Tab value="Stays & itinerary" leftSection={<PiMapPin />}>
                 Stays & itinerary
               </Tabs.Tab>
               <Tabs.Tab
                 value="Transport"
                 leftSection={<PiPaperPlaneTilt />}
-                onClick={() => handleTabSelect("Transport")}
                 disabled={locations.length === 0}
               >
                 Transport
@@ -256,7 +253,6 @@ export default function TripLayout() {
               <Tabs.Tab
                 value="To-dos"
                 leftSection={<PiCheckSquare />}
-                onClick={() => handleTabSelect("To-dos")}
                 disabled={locations.length === 0}
               >
                 To-dos
@@ -264,7 +260,6 @@ export default function TripLayout() {
               <Tabs.Tab
                 value="Budget"
                 leftSection={<PiCreditCard />}
-                onClick={() => handleTabSelect("Budget")}
                 disabled={locations.length === 0}
               >
                 Budget
