@@ -4,13 +4,10 @@ import {
   Group,
   Loader,
   Menu,
-  Modal,
   ScrollArea,
-  SimpleGrid,
   Stack,
   Tabs,
   Text,
-  ThemeIcon,
   Title,
 } from "@mantine/core";
 import { Breadcrumbs } from "../nav/Breadcrumbs";
@@ -42,7 +39,7 @@ import { LocationCostPanel } from "../ui/LocationCostPanel";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDate } from "@/utils/date";
 import { ExportModal } from "../ExportModal";
-import { Button, IconButton } from "../ui";
+import { Button, IconButton, DeleteModal } from "../ui";
 import { TripModal } from "@/pages/trip-list/components/TripModal";
 import { CanEditTrip } from "../auth";
 import { useDisclosure } from "@mantine/hooks";
@@ -303,43 +300,13 @@ export default function TripLayout() {
         </Stack>
       </Group>
       <TripModal trip={currentTrip} opened={editOpened} onClose={closeEdit} />
-
-      <Modal
+      <DeleteModal
         opened={deleteOpened}
-        onClose={closeDelete}
-        centered
-        size="sm"
-        title={
-          <Stack gap="xs">
-            <ThemeIcon color="red" radius="md" c="var(--border-color)">
-              <FaRegTrashCan />
-            </ThemeIcon>
-            <Title order={4} lh={1} fw="bold">
-              Delete this trip?
-            </Title>
-          </Stack>
-        }
-      >
-        <Stack gap="md">
-          <Stack gap="xs">
-            <Text size="sm" c="dimmed">
-              {`"${currentTrip.name}" and all its stays, transport and to-dos will be permanently removed. This can't be undone.`}
-            </Text>
-            <Text fs="italic" size="sm" c="dimmed" ta="center">
-              Rather keep it? Archive it instead.
-            </Text>
-          </Stack>
-
-          <SimpleGrid cols={2}>
-            <Button fluid variant="ghost" onClick={closeDelete}>
-              Cancel
-            </Button>
-            <Button fluid variant="danger" onClick={confirmDelete}>
-              Delete
-            </Button>
-          </SimpleGrid>
-        </Stack>
-      </Modal>
+        close={closeDelete}
+        confirm={confirmDelete}
+        item="trip"
+        name={currentTrip.name}
+      />
     </Stack>
   );
 }

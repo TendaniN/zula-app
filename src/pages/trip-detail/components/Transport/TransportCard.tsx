@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@/components/ui";
+import { IconButton, DeleteModal } from "@/components/ui";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import type { Transport } from "@/types/models";
 import { formatDate } from "@/utils/date";
@@ -9,11 +9,9 @@ import {
   Divider,
   Group,
   Menu,
-  Modal,
   Stack,
   Text,
   ThemeIcon,
-  Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
@@ -178,36 +176,13 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
           opened={editOpened}
           onClose={closeEdit}
         />
-        <Modal
+        <DeleteModal
           opened={deleteOpened}
-          onClose={closeDelete}
-          centered
-          size="sm"
-          title={
-            <Stack gap="xs">
-              <ThemeIcon color="red" radius="md">
-                <FaRegTrashCan />
-              </ThemeIcon>
-              <Title order={4} lh={1} fw="bold">
-                Delete this transport?
-              </Title>
-            </Stack>
-          }
-        >
-          <Stack gap="lg">
-            <Text size="sm" c="dimmed">
-              {`Delete "${name}"? This can't be undone.`}
-            </Text>
-            <Group grow>
-              <Button fluid variant="ghost" onClick={closeDelete}>
-                Cancel
-              </Button>
-              <Button fluid variant="danger" onClick={confirmDelete}>
-                Delete
-              </Button>
-            </Group>
-          </Stack>
-        </Modal>
+          close={closeDelete}
+          confirm={confirmDelete}
+          item="transport"
+          name={name}
+        />
       </Group>
     </Card>
   );

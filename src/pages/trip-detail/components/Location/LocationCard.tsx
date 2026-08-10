@@ -1,20 +1,9 @@
-import {
-  Badge,
-  Card,
-  Group,
-  Menu,
-  Modal,
-  SimpleGrid,
-  Stack,
-  Text,
-  ThemeIcon,
-  Title,
-} from "@mantine/core";
+import { Badge, Card, Group, Menu, Stack, Text } from "@mantine/core";
 import { FaPencil, FaPlus, FaRegTrashCan, FaStar } from "react-icons/fa6";
 import { TbDots } from "react-icons/tb";
 import { LuMoveRight } from "react-icons/lu";
 
-import { IconButton, Button } from "@/components/ui";
+import { IconButton, Button, DeleteModal } from "@/components/ui";
 import { getCountryFlag } from "@/utils/getCountryFlag";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";
@@ -253,36 +242,13 @@ export const LocationCard = ({
           onClose={closeEdit}
         />
 
-        <Modal
+        <DeleteModal
           opened={deleteOpened}
-          onClose={closeDelete}
-          centered
-          size="sm"
-          title={
-            <Stack gap="xs">
-              <ThemeIcon color="red" radius="md">
-                <FaRegTrashCan />
-              </ThemeIcon>
-              <Title order={4} lh={1} fw="bold">
-                Delete this location?
-              </Title>
-            </Stack>
-          }
-        >
-          <Stack gap="lg">
-            <Text size="sm" c="dimmed">
-              {`Delete "${location.city}"? This also removes its accommodation and activities. This can't be undone.`}
-            </Text>
-            <SimpleGrid cols={2}>
-              <Button fluid variant="ghost" onClick={closeDelete}>
-                Cancel
-              </Button>
-              <Button fluid variant="danger" onClick={confirmDelete}>
-                Delete
-              </Button>
-            </SimpleGrid>
-          </Stack>
-        </Modal>
+          close={closeDelete}
+          confirm={confirmDelete}
+          item="location"
+          name={location.city}
+        />
       </Stack>
     </Card>
   );
