@@ -3,21 +3,19 @@ import { type ReactNode } from "react";
 import {
   Divider,
   Group,
-  Modal,
   NumberInput,
   Select,
   Stack,
   Text,
   TextInput,
   ThemeIcon,
-  Title,
 } from "@mantine/core";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@tanstack/react-form";
-import { LuInfo, LuLink, LuPencil, LuPlus, LuX } from "react-icons/lu";
+import { LuInfo, LuLink, LuPencil, LuPlus } from "react-icons/lu";
 
-import { Button, IconButton } from "@/components/ui";
+import { Button, Modal } from "@/components/ui";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import { useActivityStore } from "@/stores/activityStore";
 import { ActivitySchema, type ActivityFormValues } from "../schema";
@@ -159,36 +157,9 @@ export const ActivityModal = ({
     <>
       <Modal
         opened={opened}
-        onClose={handleClose}
-        size="lg"
-        radius="lg"
-        padding={0}
-        title={null}
-        withCloseButton={false}
-        overlayProps={{ blur: 2 }}
-        withinPortal={true}
+        close={handleClose}
+        title={isEdit ? "Edit activity" : "Add activity"}
       >
-        {/* Banner header */}
-        <Group
-          justify="space-between"
-          px="lg"
-          py="md"
-          style={{
-            background: "var(--mantine-color-lavender-1)",
-            borderBottom: "2px solid var(--border-color)",
-          }}
-        >
-          <Title order={3} fw="bold" c="var(--border-color)">
-            {isEdit ? "Edit activity" : "Add activity"}
-          </Title>
-          <IconButton
-            icon={<LuX />}
-            variant="ghost"
-            aria-label="Close"
-            onClick={handleClose}
-          />
-        </Group>
-
         <form
           onSubmit={(e) => {
             e.preventDefault();

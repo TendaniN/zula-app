@@ -1,9 +1,6 @@
 import {
   Group,
-  Modal,
-  SimpleGrid,
   Stack,
-  Title,
   Text,
   ThemeIcon,
   Badge,
@@ -12,7 +9,7 @@ import {
   Anchor,
 } from "@mantine/core";
 import { ActivityModal } from "./ActivityModal";
-import { Button, IconButton } from "@/components/ui";
+import { Button, IconButton, DeleteModal } from "@/components/ui";
 import { PiPlus, PiDotsThreeBold } from "react-icons/pi";
 import { FaPencil, FaRegTrashCan, FaLink } from "react-icons/fa6";
 import dayjs from "dayjs";
@@ -312,38 +309,15 @@ export const ActivitiesPanel = ({
         onClose={closeEdit}
       />
 
-      <Modal
-        opened={deleteOpened}
-        onClose={closeDelete}
-        centered
-        size="sm"
-        title={
-          <Stack gap="xs">
-            <ThemeIcon color="red" radius="md">
-              <FaRegTrashCan />
-            </ThemeIcon>
-            <Title order={4} lh={1} fw="bold">
-              Delete this activity?
-            </Title>
-          </Stack>
-        }
-      >
-        <Stack gap="md">
-          <Text size="sm" c="dimmed">
-            {deleteTarget
-              ? `Delete "${deleteTarget.name}"? This can't be undone.`
-              : "This can't be undone."}
-          </Text>
-          <SimpleGrid cols={2}>
-            <Button fluid variant="ghost" onClick={closeDelete}>
-              Cancel
-            </Button>
-            <Button fluid variant="danger" onClick={confirmDelete}>
-              Delete
-            </Button>
-          </SimpleGrid>
-        </Stack>
-      </Modal>
+      {deleteTarget && (
+        <DeleteModal
+          opened={deleteOpened}
+          close={closeDelete}
+          confirm={confirmDelete}
+          item="activity"
+          name={deleteTarget.name}
+        />
+      )}
     </Stack>
   );
 };

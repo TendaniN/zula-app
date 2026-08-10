@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@/components/ui";
+import { IconButton, DeleteModal } from "@/components/ui";
 import type { Todo } from "@/types/models";
 import { formatDate } from "@/utils/date";
 import {
@@ -8,11 +8,8 @@ import {
   Divider,
   Group,
   Menu,
-  Modal,
   Stack,
   Text,
-  ThemeIcon,
-  Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
@@ -171,36 +168,13 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
           opened={editOpened}
           onClose={closeEdit}
         />
-        <Modal
+        <DeleteModal
           opened={deleteOpened}
-          onClose={closeDelete}
-          centered
-          size="sm"
-          title={
-            <Stack gap="xs">
-              <ThemeIcon color="red" radius="md">
-                <FaRegTrashCan />
-              </ThemeIcon>
-              <Title order={4} lh={1} fw="bold">
-                Delete this to-do?
-              </Title>
-            </Stack>
-          }
-        >
-          <Stack gap="lg">
-            <Text size="sm" c="dimmed">
-              {`Delete "${title}"? This can't be undone.`}
-            </Text>
-            <Group grow>
-              <Button fluid variant="ghost" onClick={closeDelete}>
-                Cancel
-              </Button>
-              <Button fluid variant="danger" onClick={confirmDelete}>
-                Delete
-              </Button>
-            </Group>
-          </Stack>
-        </Modal>
+          close={closeDelete}
+          confirm={confirmDelete}
+          item="to-do"
+          name={title}
+        />
       </Group>
     </Card>
   );

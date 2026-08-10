@@ -80,7 +80,7 @@ export default function ItineraryListPage() {
       <Stack p={0} flex={1}>
         <Group justify="space-between">
           <Link
-            to={`/trips/${tripId}/?tab=Stays & itinerary`}
+            to={`/trips/${tripId}?tab=Stays & itinerary`}
             className="back-button"
           >
             <PiArrowLeft />
@@ -144,7 +144,7 @@ export default function ItineraryListPage() {
         <Stack gap="md" w="100%">
           <Group justify="space-between">
             <Link
-              to={`/trips/${tripId}/?tab=Stays & itinerary`}
+              to={`/trips/${tripId}?tab=Stays & itinerary`}
               className="back-button"
             >
               <PiArrowLeft />
