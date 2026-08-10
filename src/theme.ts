@@ -218,7 +218,12 @@ export const theme = createTheme({
     Switch: { defaultProps: { color: "lavender" } },
     Tabs: { defaultProps: { color: "lavender" } },
     Modal: {
-      defaultProps: { radius: "lg", centered: true },
+      defaultProps: {
+        size: "lg",
+        radius: "lg",
+        centered: true,
+        withCloseButton: false,
+      },
       styles: {
         content: {
           borderWidth: rem(2),

@@ -1,15 +1,14 @@
 import { type ReactNode } from "react";
-import { Group, Modal, Stack, Text, Title } from "@mantine/core";
+import { Group, Stack, Text } from "@mantine/core";
 import {
   LuFileSpreadsheet,
   LuFileText,
   LuPresentation,
   LuDownload,
-  LuX,
 } from "react-icons/lu";
 import { useDisclosure } from "@mantine/hooks";
 
-import { IconButton } from "@/components/ui";
+import { IconButton, Modal } from "@/components/ui";
 import { exportTripXLSX, exportTripPDF, exportTripPPT } from "@/utils/export";
 import type { TripSummaryRow } from "@/types/models";
 
@@ -105,36 +104,7 @@ export const ExportModal = ({
 
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={close}
-        size="md"
-        radius="lg"
-        padding={0}
-        title={null}
-        withCloseButton={false}
-        overlayProps={{ blur: 2 }}
-      >
-        {/* Banner header */}
-        <Group
-          justify="space-between"
-          px="lg"
-          py="md"
-          style={{
-            borderBottom: "2px solid var(--border-color)",
-          }}
-        >
-          <Title order={3} fw="bold" c="var(--border-color)">
-            Export trip
-          </Title>
-          <IconButton
-            icon={<LuX />}
-            variant="ghost"
-            aria-label="Close"
-            onClick={close}
-          />
-        </Group>
-
+      <Modal opened={opened} close={close} title="Export trip" size="md">
         <Stack gap="md" p="lg">
           <Text size="sm" c="dimmed">
             Generated live from your stays, transport & budget.
