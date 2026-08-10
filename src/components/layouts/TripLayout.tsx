@@ -61,7 +61,7 @@ export default function TripLayout() {
   const activities = useActivityStore((s) => s.activities);
   const [searchParams] = useSearchParams();
 
-  const defaultTab = searchParams.get("tab");
+  const defaultTab = decodeURIComponent(searchParams.get("tab") ?? "");
 
   const [initialized, setInitialized] = useState(false);
   const [activeTab, setActiveTab] = useState<string>(
