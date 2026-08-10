@@ -1,6 +1,7 @@
 .mantine-Tabs-tab {
   color: var(--mantine-color-dimmed);
   font-size: var(--mantine-font-size-md);
+  font-weight: 600;
 
   &:hover,
   &[data-active] {
@@ -9,6 +10,10 @@
       var(--mantine-primary-color-1),
       var(--mantine-color-dark-4)
     );
+  }
+
+  &[data-active] {
+    font-weight: 700;
   }
 }
 

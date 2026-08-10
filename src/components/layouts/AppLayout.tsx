@@ -11,12 +11,7 @@ export default function AppLayout() {
 
   if (isMobile) {
     return (
-      <Stack
-        gap={0}
-        w="calc(100dvw - 4px)"
-        h="calc(100dvh - 4px)"
-        bg="var(--bg-color)"
-      >
+      <Stack gap={0} h="calc(100dvh - 4px)" bg="var(--bg-color)">
         {/* Top bar with the burger + brand, since there's no fixed rail here */}
         <Group
           h="3.25rem"
@@ -32,7 +27,7 @@ export default function AppLayout() {
             </Title>
           </Group>
         </Group>
-        <Container h="100%" w="100%" m={0} p={0}>
+        <Container flex={1} mih={0} m={0} p={0}>
           <Outlet />
         </Container>
       </Stack>
