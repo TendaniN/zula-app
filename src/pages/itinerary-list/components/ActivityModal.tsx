@@ -5,6 +5,7 @@ import {
   Group,
   NumberInput,
   Select,
+  SimpleGrid,
   Stack,
   Text,
   TextInput,
@@ -168,7 +169,7 @@ export const ActivityModal = ({
           }}
         >
           <Stack gap="md" p="lg">
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
               <form.Field name="type">
                 {(field) => (
                   <Select
@@ -202,9 +203,9 @@ export const ActivityModal = ({
                   />
                 )}
               </form.Field>
-            </Group>
+            </SimpleGrid>
 
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
               <form.Field name="activity_date">
                 {(field) => (
                   <DatePickerInput
@@ -232,9 +233,9 @@ export const ActivityModal = ({
                   />
                 )}
               </form.Field>
-            </Group>
+            </SimpleGrid>
 
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
               <form.Field name="cost">
                 {(field) => (
                   <NumberInput
@@ -268,7 +269,7 @@ export const ActivityModal = ({
                   />
                 )}
               </form.Field>
-            </Group>
+            </SimpleGrid>
 
             <form.Field name="link">
               {(field) => (

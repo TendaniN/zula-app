@@ -3,7 +3,6 @@ import { type ReactNode } from "react";
 import {
   Divider,
   Group,
-  Modal,
   NumberInput,
   Select,
   Stack,
@@ -11,13 +10,12 @@ import {
   Textarea,
   TextInput,
   ThemeIcon,
-  Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@tanstack/react-form";
-import { LuInfo, LuX, LuPlus, LuPencil } from "react-icons/lu";
+import { LuInfo, LuPlus, LuPencil } from "react-icons/lu";
 import { STATUS_SELECT_OPTIONS } from "@/constants/status";
-import { Button, IconButton } from "@/components/ui";
+import { Button, Modal } from "@/components/ui";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import { useTripStore } from "@/stores/tripStore";
 import { TripSchema, type TripFormValues } from "../schema";
@@ -108,36 +106,10 @@ export const TripModal = ({
     <>
       <Modal
         opened={opened}
-        onClose={handleClose}
-        size="md"
-        radius="lg"
-        // Keep the header flush with the peach/lavender banner in the mock.
-        padding={0}
-        title={null}
-        withCloseButton={false}
-        overlayProps={{ blur: 2 }}
+        close={handleClose}
+        size="lg"
+        title={isEdit ? "Edit trip" : "New trip"}
       >
-        {/* Banner header */}
-        <Group
-          justify="space-between"
-          px="lg"
-          py="md"
-          style={{
-            background: "var(--mantine-color-lavender-1)",
-            borderBottom: "2px solid var(--border-color)",
-          }}
-        >
-          <Title order={3} fw="bold" c="var(--border-color)">
-            {isEdit ? "Edit trip" : "New trip"}
-          </Title>
-          <IconButton
-            icon={<LuX color="var(--border-color)" />}
-            variant="ghost"
-            aria-label="Close"
-            onClick={handleClose}
-          />
-        </Group>
-
         <form
           onSubmit={(e) => {
             e.preventDefault();
