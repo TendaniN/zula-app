@@ -131,7 +131,7 @@ export const TripModal = ({
             {isEdit ? "Edit trip" : "New trip"}
           </Title>
           <IconButton
-            icon={<LuX />}
+            icon={<LuX color="var(--border-color)" />}
             variant="ghost"
             aria-label="Close"
             onClick={handleClose}

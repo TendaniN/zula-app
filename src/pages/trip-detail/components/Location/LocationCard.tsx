@@ -1,4 +1,13 @@
-import { Badge, Card, Group, Menu, Stack, Text } from "@mantine/core";
+import {
+  Badge,
+  Card,
+  Flex,
+  Group,
+  Menu,
+  Stack,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
 import { FaPencil, FaPlus, FaRegTrashCan, FaStar } from "react-icons/fa6";
 import { TbDots } from "react-icons/tb";
 import { LuMoveRight } from "react-icons/lu";
@@ -10,7 +19,7 @@ import { useCurrencyStore } from "@/stores/currencyStore";
 import type { Location, Accommodation } from "@/types/models";
 import { LocationModal } from "./LocationModal";
 import { useLocationStore } from "@/stores/locationStore";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Link } from "react-router-dom";
 import { CanEditTrip } from "@/components/auth";
 import { formatDate } from "@/utils/date";
@@ -47,6 +56,9 @@ export const LocationCard = ({
   const { accommodationFor, deleteLocation, locationSummaries } =
     useLocationStore();
   const currency = useCurrencyStore((s) => s.symbol);
+
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   const summary = locationSummaries.find((s) => s.location_id === location.id);
 
@@ -88,11 +100,12 @@ export const LocationCard = ({
       <Stack gap={0} p={0}>
         <Group
           justify="space-between"
-          wrap="nowrap"
-          p="md"
+          wrap="wrap"
+          p={{ base: "xs", sm: "md" }}
           style={{ borderBottom: "2px solid var(--border-color)" }}
+          flex={1}
         >
-          <Group gap="sm" wrap="nowrap">
+          <Group gap="sm" wrap="nowrap" mr="auto">
             {location.country &&
               getCountryFlag(
                 location.country,
@@ -110,7 +123,12 @@ export const LocationCard = ({
             </Stack>
           </Group>
 
-          <Group gap="xs" wrap="nowrap">
+          <Group
+            gap="xs"
+            wrap="nowrap"
+            flex={{ base: 1, sm: 0.5 }}
+            justify={isSmallScreen ? "space-between" : "flex-end"}
+          >
             <Stack gap={0} align="flex-end">
               <Text size="xs" c="dimmed">
                 Location total
@@ -151,7 +169,7 @@ export const LocationCard = ({
         {accommodation ? (
           <Stack
             justify="space-between"
-            p="md"
+            p={{ base: "sm", sm: "md" }}
             gap={0}
             bg="var(--bg-secondary)"
           >
@@ -169,7 +187,13 @@ export const LocationCard = ({
                 {TYPE_LABEL[accommodation.type]}
               </Badge>
             </Group>
-            <Group gap="md" wrap="nowrap" justify="space-between">
+            <Flex
+              gap="md"
+              direction={{ base: "column", sm: "row" }}
+              align={{ base: "stretch", sm: "normal" }}
+              wrap="nowrap"
+              justify="space-between"
+            >
               <Group gap="xs">
                 {accommodation.rating != null && (
                   <Group gap={4} wrap="nowrap" c="dimmed">
@@ -184,7 +208,11 @@ export const LocationCard = ({
                   {accommodation.cost_per_night} / night
                 </Text>
               </Group>
-              <Group>
+              <Flex
+                gap="xs"
+                direction={{ base: "column", sm: "row" }}
+                justify={isSmallScreen ? "space-between" : "flex-end"}
+              >
                 {summary && summary.activities_count && (
                   <Badge
                     variant="outline"
@@ -192,20 +220,20 @@ export const LocationCard = ({
                     c="var(--text-color)"
                     bg="var(--surface-color)"
                     radius="sm"
-                    p="md"
+                    p={{ base: "xs", sm: "md" }}
                     my="auto"
                     tt="initial"
                   >{`${summary.activities_count} activities · ${currency}${summary.activities_total}`}</Badge>
                 )}
                 <Link
-                  to={`/trips/${tripId}/locations/${location.id}?tab=Stays & itinerary`}
+                  to={`/trips/${tripId}/locations/${location.id}`}
                   className="link-button"
                 >
                   View itinerary
                   <LuMoveRight />
                 </Link>
-              </Group>
-            </Group>
+              </Flex>
+            </Flex>
           </Stack>
         ) : (
           <Group
@@ -248,7 +276,7 @@ export const LocationCard = ({
                 >{`${summary.activities_count} activities · ${currency}${summary.activities_total}`}</Badge>
               )}
               <Link
-                to={`/trips/${tripId}/locations/${location.id}?tab=Stays & itinerary`}
+                to={`/trips/${tripId}/locations/${location.id}`}
                 className="link-button"
               >
                 View itinerary

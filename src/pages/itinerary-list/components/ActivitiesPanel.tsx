@@ -7,6 +7,7 @@ import {
   Divider,
   Menu,
   Anchor,
+  useMantineTheme,
 } from "@mantine/core";
 import { ActivityModal } from "./ActivityModal";
 import { Button, IconButton, DeleteModal } from "@/components/ui";
@@ -17,7 +18,7 @@ import { CanEditTrip } from "@/components/auth";
 import type { Activity, ActivityType, Location } from "@/types/models";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { useState } from "react";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDuration } from "@/utils/formatDuration";
@@ -75,6 +76,9 @@ export const ActivitiesPanel = ({
   const deleteActivity = useActivityStore((s) => s.deleteActivity);
   const currency = useCurrencyStore((s) => s.symbol);
 
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+
   const nights = calcNights(location.start_date, location.end_date);
 
   const days: DayGroup[] = [];
@@ -126,14 +130,17 @@ export const ActivitiesPanel = ({
         <Stack key={`activity-day-${day.date}`} gap="xs">
           <Group justify="space-between" wrap="nowrap" gap="sm">
             <Group gap={6} wrap="nowrap" style={{ flexShrink: 0 }}>
-              <Text fw="bold">{`Day ${day.index}`}</Text>
-              <Text c="dimmed" size="sm">
+              <Text
+                fw="bold"
+                fz={{ base: "sm", sm: "md" }}
+              >{`Day ${day.index}`}</Text>
+              <Text c="dimmed" fz={{ base: "xs", sm: "sm" }}>
                 {formatDate(day.date, "ddd D MMM")}
               </Text>
             </Group>
             <Divider
               flex={1}
-              size="md"
+              size={isSmallScreen ? "sm" : "md"}
               styles={{
                 root: {
                   "--divider-color":
@@ -142,7 +149,12 @@ export const ActivitiesPanel = ({
               }}
             />
             {day.total > 0 && (
-              <Text fw="bold" c="dimmed" size="sm" style={{ flexShrink: 0 }}>
+              <Text
+                fw="bold"
+                c="dimmed"
+                style={{ flexShrink: 0 }}
+                fz={{ base: "xs", sm: "sm" }}
+              >
                 {currency}
                 {day.total}
               </Text>
@@ -178,7 +190,7 @@ export const ActivitiesPanel = ({
           ) : (
             <>
               <Stack gap="xs">
-                {day.activities.map((activity) => (
+                {day.activities.map((activity, idx) => (
                   <>
                     <Group
                       key={`activity-${activity.id}`}
@@ -193,18 +205,25 @@ export const ActivitiesPanel = ({
                             color="mint"
                             radius="sm"
                             p="xs"
-                            size="md"
+                            size={isSmallScreen ? "xs" : "md"}
                             bd="2px solid mint.4"
+                            miw="3.075rem"
                           >
                             {activity.activity_time.slice(0, 5)}
                           </Badge>
                         )}
-                        <Text fw={600} size="sm" truncate>
+                        <Text
+                          fw={600}
+                          size="sm"
+                          truncate
+                          fz={{ base: "xs", sm: "sm" }}
+                        >
                           <Text
                             fw="bold"
                             component="span"
                             c={ACTIVITY_TYPE_COLOR[activity.type]}
                             tt="capitalize"
+                            fz={{ base: "xs", sm: "sm" }}
                           >
                             {activity.type}
                           </Text>{" "}
@@ -229,21 +248,23 @@ export const ActivitiesPanel = ({
 
                       <Group gap="md" wrap="nowrap" style={{ flexShrink: 0 }}>
                         {activity.duration_minutes != null && (
-                          <Text size="sm" c="dimmed">
+                          <Text c="dimmed" fz={{ base: "xs", sm: "sm" }}>
                             {formatDuration(activity.duration_minutes)}
                           </Text>
                         )}
-                        <Text size="sm" fw="bold">
-                          {currency}
-                          {activity.cost}
-                        </Text>
+                        {activity.cost > 0 && (
+                          <Text fw="bold" fz={{ base: "xs", sm: "sm" }}>
+                            {currency}
+                            {activity.cost}
+                          </Text>
+                        )}
                         <CanEditTrip>
                           <Menu position="bottom-end" withinPortal shadow="md">
                             <Menu.Target>
                               <IconButton
                                 icon={<PiDotsThreeBold />}
                                 variant="ghost"
-                                size="sm"
+                                size={isSmallScreen ? "xs" : "sm"}
                                 aria-label="Activity options"
                               />
                             </Menu.Target>
@@ -267,7 +288,14 @@ export const ActivitiesPanel = ({
                         </CanEditTrip>
                       </Group>
                     </Group>
-                    <Divider flex={1} size="xs" />
+                    <Divider
+                      key={`divider-${activity.id}`}
+                      display={
+                        idx === day.activities.length - 1 ? "none" : "block"
+                      }
+                      flex={1}
+                      size="xs"
+                    />
                   </>
                 ))}
               </Stack>
@@ -294,6 +322,7 @@ export const ActivitiesPanel = ({
                   )}
                 />
               </CanEditTrip>
+              <Divider flex={1} size="xs" />
             </>
           )}
         </Stack>

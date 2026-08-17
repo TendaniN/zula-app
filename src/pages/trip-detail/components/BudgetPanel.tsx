@@ -10,6 +10,7 @@ import {
   Stack,
   Text,
   ThemeIcon,
+  useMantineTheme,
 } from "@mantine/core";
 import {
   PiHouseLineBold,
@@ -28,6 +29,7 @@ import dayjs from "dayjs";
 import { useActivityStore } from "@/stores/activityStore";
 import { useBudgetStore } from "@/stores/budgetStore";
 import type { BudgetMonths } from "@/constants/budget";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface BudgetPanelProps {
   currentTripSummary: TripSummaryRow;
@@ -54,6 +56,9 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
   const { activities: locActivities, fetchByLocations } = useActivityStore();
   const activityCount = locActivities.length;
   const { months, fetchByTrip: fetchBudget, adjustMonth } = useBudgetStore();
+
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   const [initialized, setInitialized] = useState(false);
 
@@ -231,7 +236,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
       </Card>
 
       {/* Category cards */}
-      <SimpleGrid cols={2} spacing="md">
+      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
         {categories.map((c) => {
           const pct = total > 0 ? Math.round((c.cost / total) * 100) : 0;
           return (
@@ -294,8 +299,11 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
       <Card
         p={0}
         shadow="xl"
+        flex={1}
+        miw="100%"
         style={{
           boxShadow: `0 4px 0 var(--bg-secondary)`,
+          overflowX: "auto",
         }}
       >
         <Group
@@ -303,8 +311,10 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
           c="dimmed"
           tt="uppercase"
           gap={0}
-          p="sm"
+          p={{ base: "xs", sm: "sm" }}
           style={{ borderBottom: "2px solid var(--border-color)" }}
+          flex={1}
+          w={768}
         >
           <Text size="xs" fw={700} flex={1 / 5}>
             Category
@@ -329,6 +339,8 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
             gap={0}
             justify="space-between"
             style={{ borderBottom: "2px solid var(--border-color)" }}
+            flex={1}
+            w={768}
           >
             <Group gap="xs" wrap="nowrap" flex={1 / 5}>
               <Box
@@ -376,7 +388,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
             </Text>
           </Group>
         ))}
-        <Group p="sm" justify="space-between" gap={0}>
+        <Group p="sm" justify="space-between" gap={0} flex={1} w={768}>
           <Text fw={800} size="sm" flex={1 / 5}>
             Budget total
           </Text>
@@ -396,23 +408,26 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
       </Card>
 
       {/* Saved progress */}
-      <Group wrap="nowrap" gap="md" align="center">
-        <Progress.Root
-          size={16}
-          radius="xl"
-          bd="2px solid var(--border-color)"
-          style={{ flex: 1 }}
-        >
-          <Progress.Section
-            value={savedPct}
-            bdrs="xl"
-            styles={{
-              section: {
-                background: "var(--aurora)",
-              },
-            }}
-          />
-        </Progress.Root>
+      <Group wrap="nowrap" gap="md" align="center" justify="center">
+        {!isSmallScreen && (
+          <Progress.Root
+            size={16}
+            radius="xl"
+            bd="2px solid var(--border-color)"
+            style={{ flex: 1 }}
+          >
+            <Progress.Section
+              value={savedPct}
+              bdrs="xl"
+              styles={{
+                section: {
+                  background: "var(--aurora)",
+                },
+              }}
+            />
+          </Progress.Root>
+        )}
+
         <Group>
           <Text
             size="sm"

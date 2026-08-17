@@ -1,6 +1,6 @@
 .back-button {
   border-radius: var(--mantine-radius-md);
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -15,5 +15,9 @@
 
   svg {
     margin: auto 0;
+  }
+
+  &:hover {
+    box-shadow: var(--mantine-shadow-sm);
   }
 }

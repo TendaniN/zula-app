@@ -30,7 +30,7 @@ export const TripCard = ({ trip, index }: TripCardProps) => {
     <Card
       p={0}
       component={Link}
-      to={`/trips/${trip.id}?tab=${encodeURIComponent("Stays & itinerary")}`}
+      to={`/trips/${trip.id}?tab="Stays & itinerary`}
     >
       <Stack>
         <Flex

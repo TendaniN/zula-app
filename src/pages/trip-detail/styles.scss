@@ -35,6 +35,11 @@
   svg {
     margin: auto 0;
   }
+
+  @media screen and (max-width: 75em) {
+    padding: 0.25rem 0.75rem;
+    font-size: var(--mantine-font-size-xs);
+  }
 }
 
 .empty-state {

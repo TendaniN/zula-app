@@ -7,13 +7,15 @@ import {
   Badge,
   Card,
   Divider,
+  Flex,
   Group,
   Menu,
   Stack,
   Text,
   ThemeIcon,
+  useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
 import {
   PiSubway,
@@ -75,6 +77,9 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
   const currency = useCurrencyStore((s) => s.symbol);
   const deleteTransport = useTransportStore((s) => s.deleteTransport);
 
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+
   const dateRange =
     start_date && end_date
       ? `${formatDate(start_date, "MMM D · H:mm")} → ${formatDate(end_date, "D MMM · H:mm")}`
@@ -110,7 +115,11 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
         >
           {TYPE_ICON[type]}
         </ThemeIcon>
-        <Group flex={1} justify="space-between">
+        <Flex
+          flex={1}
+          justify="space-between"
+          direction={{ base: "column", sm: "row" }}
+        >
           <Stack gap={4}>
             <Group>
               <Text fw="bold" size="sm">
@@ -138,8 +147,8 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
               </Text>
             </Group>
           </Stack>
-          <Group>
-            <Text fw={800} size="lg" my="auto">
+          <Flex justify={isSmallScreen ? "space-between" : "flex-end"} gap="sm">
+            <Text fw={800} my="auto" fz={{ base: "md", sm: "lg" }}>
               {currency}
               {cost.toLocaleString()}
             </Text>
@@ -168,8 +177,8 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
                 </Menu.Dropdown>
               </Menu>
             </CanEditTrip>
-          </Group>
-        </Group>
+          </Flex>
+        </Flex>
         <TransportModal
           transport={transport}
           tripId={tripId}
