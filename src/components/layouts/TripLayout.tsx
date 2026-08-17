@@ -9,6 +9,7 @@ import {
   Tabs,
   Text,
   Title,
+  useMantineTheme,
 } from "@mantine/core";
 import { Breadcrumbs } from "../nav/Breadcrumbs";
 import { useTripStore } from "@/stores/tripStore";
@@ -42,7 +43,7 @@ import { ExportModal } from "../ExportModal";
 import { Button, IconButton, DeleteModal } from "../ui";
 import { TripModal } from "@/pages/trip-list/components/TripModal";
 import { CanEditTrip } from "../auth";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 
 export default function TripLayout() {
   const {
@@ -61,13 +62,16 @@ export default function TripLayout() {
   const activities = useActivityStore((s) => s.activities);
   const [searchParams] = useSearchParams();
 
-  const defaultTab = decodeURIComponent(searchParams.get("tab") ?? "");
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+
+  const DEFAULT_TAB = "Stays & itinerary";
+
+  const defaultTab = searchParams.get("tab") ?? DEFAULT_TAB;
 
   const [initialized, setInitialized] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>(
-    defaultTab ?? "Stays & itinerary",
-  );
-  const [costPanelExpanded, setCostPanelExpanded] = useState(true);
+  const [activeTab, setActiveTab] = useState<string>(defaultTab);
+  const [costPanelExpanded, setCostPanelExpanded] = useState(isSmallScreen);
 
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
@@ -147,12 +151,9 @@ export default function TripLayout() {
   };
 
   return (
-    // Fills AppLayout's Container (which is h="100%" inside its 100dvh Group).
     <Stack p={0} gap={0} h="100%" style={{ minHeight: 0 }}>
       <Breadcrumbs trip={currentTripSummary} tab="Stays & itinerary" />
 
-      {/* was wrapped in a pointless <Group> — removed. This column owns the
-        remaining height and hands it down to Tabs → ScrollArea. */}
       <Stack px="xl" pt="sm" w="100%" style={{ flex: 1, minHeight: 0 }}>
         <Group justify="space-between">
           <Group>
@@ -174,6 +175,7 @@ export default function TripLayout() {
                   variant="ghost"
                   leftSection={<PiDownloadSimpleBold />}
                   onClick={open}
+                  size={isSmallScreen ? "sm" : "md"}
                 >
                   Export
                 </Button>
@@ -185,7 +187,7 @@ export default function TripLayout() {
                   <IconButton
                     icon={<PiDotsThreeBold />}
                     variant="ghost"
-                    size="lg"
+                    size={isSmallScreen ? "md" : "lg"}
                     aria-label="Activity options"
                   />
                 </Menu.Target>
@@ -239,7 +241,6 @@ export default function TripLayout() {
           onChange={handleTabSelect}
           flex={1}
           mih={0}
-          defaultValue="Stays & itinerary"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -279,11 +280,15 @@ export default function TripLayout() {
             offsetScrollbars
             classNames={{ scrollbar: "scrollbar", thumb: "thumb" }}
           >
-            <Stack p="lg" gap="lg">
+            <Stack p={{ base: "xs", lg: "lg" }} gap="lg">
               <Group align="flex-start" gap="lg" wrap="nowrap">
                 <Outlet />
                 {locations.length > 0 && (
-                  <Stack gap="lg" style={{ flexShrink: 0 }}>
+                  <Stack
+                    gap="lg"
+                    style={{ flexShrink: 0 }}
+                    display={{ base: "none", sm: "flex" }}
+                  >
                     <TripCostPanel
                       summary={currentTripSummary}
                       expanded={costPanelExpanded}
