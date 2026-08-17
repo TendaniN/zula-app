@@ -8,6 +8,7 @@ import {
   NumberInput,
   Rating,
   Select,
+  SimpleGrid,
   Stack,
   Switch,
   Text,
@@ -226,7 +227,7 @@ export const LocationModal = ({
             </Group>
 
             {/* ── Dates ───────────────────────────────────────── */}
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
               <form.Field name="start_date">
                 {(field) => (
                   <DatePickerInput
@@ -260,7 +261,7 @@ export const LocationModal = ({
                   />
                 )}
               </form.Field>
-            </Group>
+            </SimpleGrid>
 
             {/* ── Accommodation toggle ────────────────────────── */}
             <Divider variant="dashed" color="var(--border-color)" size="sm" />
@@ -292,7 +293,7 @@ export const LocationModal = ({
                   borderRadius: "var(--mantine-radius-md)",
                 }}
               >
-                <Group grow>
+                <SimpleGrid cols={{ base: 1, xs: 2 }}>
                   <form.Field name="accommodation.name">
                     {(field) => (
                       <TextInput
@@ -322,9 +323,9 @@ export const LocationModal = ({
                       />
                     )}
                   </form.Field>
-                </Group>
+                </SimpleGrid>
 
-                <Group grow>
+                <SimpleGrid cols={{ base: 1, xs: 2 }}>
                   <form.Field name="accommodation.cost_per_night">
                     {(field) => (
                       <NumberInput
@@ -357,9 +358,9 @@ export const LocationModal = ({
                       />
                     )}
                   </form.Field>
-                </Group>
+                </SimpleGrid>
 
-                <Group grow>
+                <SimpleGrid cols={{ base: 1, xs: 2 }}>
                   <form.Field name="accommodation.link">
                     {(field) => (
                       <TextInput
@@ -391,7 +392,7 @@ export const LocationModal = ({
                       </Stack>
                     )}
                   </form.Field>
-                </Group>
+                </SimpleGrid>
               </Stack>
             </Collapse>
 

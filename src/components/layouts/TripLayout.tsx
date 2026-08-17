@@ -67,10 +67,37 @@ export default function TripLayout() {
 
   const DEFAULT_TAB = "Stays & itinerary";
 
-  const defaultTab = searchParams.get("tab") ?? DEFAULT_TAB;
+  const TRIP_TABS_MAP = [
+    {
+      label: "Stays & itinerary",
+      icon: <PiMapPin />,
+    },
+    {
+      label: "Transport",
+      icon: <PiPaperPlaneTilt />,
+      disabled: locations.length === 0,
+    },
+    {
+      label: "To-dos",
+      icon: <PiCheckSquare />,
+      disabled: locations.length === 0,
+    },
+    {
+      label: "Budget",
+      icon: <PiCreditCard />,
+      disabled: locations.length === 0,
+    },
+  ];
+
+  const defaultTab = searchParams.get("tab")
+    ? TRIP_TABS_MAP.filter((t) => t.label === searchParams.get("tab")).length >
+      0
+      ? searchParams.get("tab")
+      : DEFAULT_TAB
+    : DEFAULT_TAB;
 
   const [initialized, setInitialized] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>(defaultTab);
+  const [activeTab, setActiveTab] = useState<string>(defaultTab ?? DEFAULT_TAB);
   const [costPanelExpanded, setCostPanelExpanded] = useState(isSmallScreen);
 
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
@@ -154,7 +181,12 @@ export default function TripLayout() {
     <Stack p={0} gap={0} h="100%" style={{ minHeight: 0 }}>
       <Breadcrumbs trip={currentTripSummary} tab="Stays & itinerary" />
 
-      <Stack px="xl" pt="sm" w="100%" style={{ flex: 1, minHeight: 0 }}>
+      <Stack
+        px={{ base: "lg", sm: "xl" }}
+        pt="sm"
+        w="100%"
+        style={{ flex: 1, minHeight: 0 }}
+      >
         <Group justify="space-between">
           <Group>
             <Title fw="bold">{currentTripSummary.name}</Title>
@@ -247,30 +279,11 @@ export default function TripLayout() {
           }}
         >
           <Tabs.List style={{ borderBottom: "2px solid var(--border-color)" }}>
-            <Tabs.Tab value="Stays & itinerary" leftSection={<PiMapPin />}>
-              Stays & itinerary
-            </Tabs.Tab>
-            <Tabs.Tab
-              value="Transport"
-              leftSection={<PiPaperPlaneTilt />}
-              disabled={locations.length === 0}
-            >
-              Transport
-            </Tabs.Tab>
-            <Tabs.Tab
-              value="To-dos"
-              leftSection={<PiCheckSquare />}
-              disabled={locations.length === 0}
-            >
-              To-dos
-            </Tabs.Tab>
-            <Tabs.Tab
-              value="Budget"
-              leftSection={<PiCreditCard />}
-              disabled={locations.length === 0}
-            >
-              Budget
-            </Tabs.Tab>
+            {TRIP_TABS_MAP.map(({ icon, label }) => (
+              <Tabs.Tab key={`tab-${label}`} value={label} leftSection={icon}>
+                {label}
+              </Tabs.Tab>
+            ))}
           </Tabs.List>
 
           <ScrollArea
