@@ -35,16 +35,16 @@ export const Modal = ({
       justify="space-between"
       px="lg"
       py="md"
-      bg="var(--bg-secondary)"
+      bg="var(--mantine-color-lavender-1)"
       style={{
         borderBottom: "2px solid var(--border-color)",
       }}
     >
-      <Title order={3} fw="bold" c="var(--text-color)">
+      <Title order={3} fw="bold" c="var(--border-color)">
         {title}
       </Title>
       <IconButton
-        icon={<LuX />}
+        icon={<LuX color="var(--border-color)" />}
         variant="ghost"
         aria-label="Close"
         onClick={close}

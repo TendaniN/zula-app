@@ -1,6 +1,5 @@
 import {
   Badge,
-  Burger,
   Drawer,
   Flex,
   Group,
@@ -20,10 +19,12 @@ import {
   PiPaperPlaneTiltBold,
   PiUserBold,
   PiSignOutBold,
+  PiListBold,
+  PiXBold,
 } from "react-icons/pi";
 import clsx from "clsx";
 import { useAuthStore } from "@/stores/authStore";
-import { CurrencySelect, ThemeToggle } from "@/components/ui";
+import { CurrencySelect, IconButton, ThemeToggle } from "@/components/ui";
 
 const MENU_ITEMS = [
   {
@@ -198,12 +199,12 @@ export const SidebarDrawer = () => {
 
   return (
     <Group py="xs">
-      <Burger
-        opened={opened}
+      <IconButton
         onClick={open}
-        aria-label="Open navigation"
         size="sm"
-        lineSize={2}
+        variant="ghost"
+        icon={opened ? <PiXBold /> : <PiListBold />}
+        aria-label="Open sidebar"
       />
       <Drawer
         opened={opened}

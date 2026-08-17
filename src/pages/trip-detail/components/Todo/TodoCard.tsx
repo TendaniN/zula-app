@@ -6,6 +6,7 @@ import {
   Card,
   Checkbox,
   Divider,
+  Flex,
   Group,
   Menu,
   Stack,
@@ -88,54 +89,72 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
         boxShadow: `0 4px 0 var(--bg-secondary)`,
       }}
     >
-      <Group>
+      <Group gap="sm">
         <Divider
           size="lg"
           orientation="vertical"
           bdrs="md"
           color={`${TYPE_COLOR[getTodoType()]}.3`}
         />
-        <Checkbox.Indicator
-          style={{ cursor: "pointer" }}
-          variant="filled"
-          size="md"
-          iconColor="var(--border-color)"
-          bd="2px solid var(--border-color)"
-          onClick={() => toggleCheckbox()}
-          checked={is_complete}
-        />
-        <Group flex={1} justify="space-between">
-          <Stack gap={4}>
-            <Group>
-              <Text
-                fw="bold"
-                size="sm"
-                td={is_complete ? "line-through" : ""}
-                c={is_complete ? "dimmed" : "var(--text-color)"}
+        <Group justify="space-between" flex={1} wrap="nowrap" gap="xs">
+          <Group gap="xs" wrap="nowrap" style={{ flex: 1, minWidth: 0 }}>
+            <Checkbox.Indicator
+              style={{ cursor: "pointer", flexShrink: 0 }}
+              variant="filled"
+              size="md"
+              iconColor="var(--border-color)"
+              bd="2px solid var(--border-color)"
+              onClick={() => toggleCheckbox()}
+              checked={is_complete}
+            />
+            <Stack miw={0} flex={1} gap={2}>
+              <Flex
+                direction={{ base: "column", sm: "row" }}
+                gap={{ base: 0, sm: "xs" }}
+                align={{ base: "flex-start", sm: "center" }}
+                style={{ minWidth: 0 }}
               >
-                {title}
-              </Text>
-              {(getTodoType() === "near" || getTodoType() === "overdue") && (
-                <Badge
-                  variant="filled"
-                  color={`${TYPE_COLOR[getTodoType()]}.3`}
-                  c="var(--border-color)"
-                  tt="capitalize"
-                  bd={`2px solid ${TYPE_COLOR[getTodoType()]}.5`}
+                <Text
+                  fw="bold"
+                  size="sm"
+                  td={is_complete ? "line-through" : ""}
+                  c={is_complete ? "dimmed" : "var(--text-color)"}
+
+                  miw={0}
+                  flex={1}
                 >
-                  {TYPE_LABEL[getTodoType()]}
-                </Badge>
+                  {title}
+                </Text>
+                {(getTodoType() === "near" || getTodoType() === "overdue") && (
+                  <Badge
+                    variant="filled"
+                    color={`${TYPE_COLOR[getTodoType()]}.3`}
+                    c="var(--border-color)"
+                    tt="capitalize"
+                    bd={`2px solid ${TYPE_COLOR[getTodoType()]}.5`}
+                    style={{ flexShrink: 0 }}
+                  >
+                    {TYPE_LABEL[getTodoType()]}
+                  </Badge>
+                )}
+              </Flex>
+
+              {!is_complete && description && (
+                <Text
+                  size="xs"
+                  c="dimmed"
+                  display={{ base: "none", sm: "block" }}
+                  truncate
+                >
+                  {description}
+                </Text>
               )}
-            </Group>
-            {!is_complete && description && (
               <Text size="xs" c="dimmed">
-                {description}
+                {dueDate}
               </Text>
-            )}
-            <Text size="xs" c="dimmed">
-              {dueDate}
-            </Text>
-          </Stack>
+            </Stack>
+          </Group>
+
           <CanEditTrip>
             <Menu position="bottom-end" withinPortal shadow="md">
               <Menu.Target>
@@ -143,7 +162,8 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
                   icon={<PiDotsThreeOutlineFill />}
                   variant="ghost"
                   size="sm"
-                  aria-label="Location options"
+                  aria-label="Todo options" // was "Location options"
+                  style={{ flexShrink: 0 }}
                 />
               </Menu.Target>
               <Menu.Dropdown>

@@ -150,6 +150,7 @@ export const LocationCostPanel = ({
         <Text
           size="sm"
           fw="bold"
+          c="var(--border-color)"
           style={{
             writingMode: "vertical-rl",
             whiteSpace: "nowrap",

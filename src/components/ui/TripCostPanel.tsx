@@ -100,7 +100,7 @@ export const TripCostPanel = ({
           }}
         >
           <Group gap={6}>
-            <LuChevronLeft />
+            <LuChevronRight />
             <Text fw="bold" size="sm">
               Trip cost
             </Text>
@@ -156,7 +156,7 @@ export const TripCostPanel = ({
           transitionDelay: expanded ? "0ms" : `${FADE_IN_DELAY_MS}ms`,
         }}
       >
-        <LuChevronRight />
+        <LuChevronLeft />
         <Text
           size="sm"
           fw="bold"

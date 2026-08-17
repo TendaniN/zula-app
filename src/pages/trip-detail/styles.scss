@@ -15,6 +15,15 @@
   &[data-active] {
     font-weight: 700;
   }
+
+  @media screen and (max-width: 75em) {
+    padding: 0.6rem 0.85rem;
+    font-size: var(--mantine-font-size-sm);
+  }
+
+  @media screen and (max-width: 34em) {
+    padding: 0.55rem 0.75rem;
+  }
 }
 
 .link-button {
@@ -34,6 +43,11 @@
 
   svg {
     margin: auto 0;
+  }
+
+  @media screen and (max-width: 75em) {
+    padding: 0.25rem 0.75rem;
+    font-size: var(--mantine-font-size-xs);
   }
 }
 

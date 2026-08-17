@@ -1,14 +1,17 @@
 import { useTripStore } from "@/stores/tripStore";
 import {
   Center,
+  Flex,
   Group,
   Image,
   Loader,
+  Select,
   SimpleGrid,
   Stack,
   Text,
   TextInput,
   Title,
+  useMantineTheme,
 } from "@mantine/core";
 import {
   PiArrowRight,
@@ -19,17 +22,21 @@ import {
 import noTripsImg from "@/assets/icons/empty-no-trips.svg";
 import noMatchesImg from "@/assets/icons/empty-no-matches.svg";
 import { TripModal } from "./components/TripModal";
-import { Button } from "@/components/ui";
+import { Button, IconButton } from "@/components/ui";
 import { useEffect, useState } from "react";
 import { TRIP_STATUS_FILTERS, type TripFilter } from "@/constants/status";
 import { FilterChip } from "./components/FilterChip";
 import { TripCard } from "./components/TripCard";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function TripListPage() {
+  const theme = useMantineTheme();
   const { loading, fetchTrips, tripSummaries } = useTripStore();
 
   const [search, setSearch] = useState("");
   const [filterTrips, setFilterTrips] = useState<TripFilter>("all");
+
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   const getTrips = async () => {
     await fetchTrips();
@@ -139,38 +146,63 @@ export default function TripListPage() {
         {tripSummaries.length > 0 && <TripModal />}
       </Group>
       {tripSummaries.length > 0 && (
-        <>
-          <Group>
-            <TextInput
-              w={{ base: "100%", lg: "50%" }}
-              placeholder="Search trips & destinations..."
-              leftSection={<PiMagnifyingGlassBold />}
-              rightSection={
-                search !== "" && (
-                  <PiXBold
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setSearch("")}
-                  />
+        <Flex
+          gap="sm"
+          direction={{ base: "column", xs: "row" }}
+          align={{ base: "stretch", sm: "normal" }}
+        >
+          <TextInput
+            flex={1}
+            w="100%"
+            placeholder="Search trips & destinations..."
+            leftSection={<PiMagnifyingGlassBold />}
+            rightSection={
+              search ? (
+                <IconButton
+                  size="xs"
+                  variant="ghost"
+                  icon={<PiXBold />}
+                  aria-label="Clear search"
+                  onClick={() => setSearch("")}
+                />
+              ) : undefined
+            }
+            rightSectionPointerEvents="all"
+            value={search}
+            onChange={(e) => setSearch(e.currentTarget.value)}
+          />
+
+          {isSmallScreen ? (
+            <Select
+              value={filterTrips}
+              data={TRIP_STATUS_FILTERS.map(({ id, label }) => ({
+                value: id,
+                label,
+              }))}
+              onChange={(v) =>
+                setFilterTrips(
+                  (v ?? TRIP_STATUS_FILTERS[0].id) as typeof filterTrips,
                 )
               }
-              rightSectionPointerEvents="all"
-              value={search}
-              onChange={(e) => setSearch(e.currentTarget.value)}
+              allowDeselect={false}
+              checkIconPosition="right"
+              comboboxProps={{ withinPortal: true }}
             />
-          </Group>
-          <Group wrap="wrap">
-            {TRIP_STATUS_FILTERS.map(({ label, id }) => (
-              <FilterChip
-                key={`filter-chip-${id}`}
-                active={filterTrips === id}
-                id={id}
-                onClick={() => setFilterTrips(id)}
-              >
-                {label}
-              </FilterChip>
-            ))}
-          </Group>
-        </>
+          ) : (
+            <Group gap="xs">
+              {TRIP_STATUS_FILTERS.map(({ label, id }) => (
+                <FilterChip
+                  key={id}
+                  id={id}
+                  active={filterTrips === id}
+                  onClick={() => setFilterTrips(id)}
+                >
+                  {label}
+                </FilterChip>
+              ))}
+            </Group>
+          )}
+        </Flex>
       )}
 
       {tripSummaries.filter(

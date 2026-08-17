@@ -84,7 +84,7 @@ export default function ItineraryListPage() {
             className="back-button"
           >
             <PiArrowLeft />
-            {location.country && getCountryFlag(location.country, 24)}
+            {location.country && getCountryFlag(location.country, 32)}
             <Text component="span" fw="bold">
               {location.city}
               {location.country ? `, ${location.country}` : ""}
@@ -148,7 +148,7 @@ export default function ItineraryListPage() {
               className="back-button"
             >
               <PiArrowLeft />
-              {location.country && getCountryFlag(location.country, 24)}
+              {location.country && getCountryFlag(location.country, 32)}
               <Text component="span" fw="bold">
                 {location.city}
                 {location.country ? `, ${location.country}` : ""}

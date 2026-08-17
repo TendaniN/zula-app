@@ -31,7 +31,7 @@ export const Breadcrumbs = ({ trip, tab }: BreadcrumbsProps) => {
     <Group
       bg="var(--surface-color)"
       style={{ borderBottom: "2px solid var(--border-color)" }}
-      px="xl"
+      px={{ base: "lg", sm: "xl" }}
       py="md"
     >
       <BaseBreadcrumbs
