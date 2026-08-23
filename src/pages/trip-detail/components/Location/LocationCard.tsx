@@ -179,7 +179,7 @@ export const LocationCard = ({
               <Badge
                 variant="filled"
                 color={`${TYPE_COLOR[accommodation.type]}.3`}
-                c="var(--text-color)"
+                c="var(--mantine-color-dark-7)"
                 tt="capitalize"
                 bd={`2px solid ${TYPE_COLOR[accommodation.type]}.5`}
               >
