@@ -1,14 +1,15 @@
 import { useState, type ReactNode } from "react";
-import { Group, Stack, Text } from "@mantine/core";
+import { Group, Stack, Text, useMantineTheme } from "@mantine/core";
 import {
   LuFileSpreadsheet,
   LuFileText,
   LuPresentation,
   LuDownload,
 } from "react-icons/lu";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { PiDownloadSimpleBold } from "react-icons/pi";
 
-import { IconButton, Modal } from "@/components/ui";
+import { Button, IconButton, Modal } from "@/components/ui";
 import type { TripSummaryRow } from "@/types/models";
 
 type ExportTypeValues = "xlsx" | "pdf" | "pptx";
@@ -51,14 +52,12 @@ const EXPORT_OPTIONS: ExportOption[] = [
 
 interface ExportModalProps {
   trip: TripSummaryRow;
-  trigger?: (open: () => void) => ReactNode;
   opened?: boolean;
   onClose?: () => void;
 }
 
 export const ExportModal = ({
   trip,
-  trigger,
   opened: openedProp,
   onClose,
 }: ExportModalProps) => {
@@ -71,6 +70,9 @@ export const ExportModal = ({
   const isControlled = openedProp !== undefined;
   const opened = isControlled ? openedProp : uncontrolledOpened;
   const close = isControlled ? (onClose ?? (() => {})) : closeUncontrolled;
+
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   const handleDownload = async (type: ExportTypeValues) => {
     setExporting(type);
@@ -144,8 +146,8 @@ export const ExportModal = ({
                   >
                     {option.icon}
                   </Group>
-                  <Stack gap={0} style={{ minWidth: 0 }}>
-                    <Text fw={700} size="sm" truncate>
+                  <Stack gap={0} miw={0}>
+                    <Text fw="bold" size="sm" truncate>
                       {`${option.label} · ${option.extension}`}
                     </Text>
                     <Text size="xs" c="dimmed" truncate>
@@ -167,7 +169,23 @@ export const ExportModal = ({
         </Stack>
       </Modal>
 
-      {isControlled ? null : trigger?.(open)}
+      {isSmallScreen ? (
+        <IconButton
+          variant="ghost"
+          icon={<PiDownloadSimpleBold />}
+          onClick={open}
+          aria-label="Export Trip Information"
+        />
+      ) : (
+        <Button
+          variant="ghost"
+          leftSection={<PiDownloadSimpleBold />}
+          onClick={open}
+          size="md"
+        >
+          Export
+        </Button>
+      )}
     </>
   );
 };
