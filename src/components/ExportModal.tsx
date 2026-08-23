@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Group, Stack, Text } from "@mantine/core";
 import {
   LuFileSpreadsheet,
@@ -9,7 +9,6 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 
 import { IconButton, Modal } from "@/components/ui";
-import { exportTripXLSX, exportTripPDF, exportTripPPT } from "@/utils/export";
 import type { TripSummaryRow } from "@/types/models";
 
 type ExportTypeValues = "xlsx" | "pdf" | "pptx";
@@ -65,14 +64,19 @@ export const ExportModal = ({
 }: ExportModalProps) => {
   const [uncontrolledOpened, { open, close: closeUncontrolled }] =
     useDisclosure(false);
+  const [exporting, setExporting] = useState<null | "xlsx" | "pdf" | "pptx">(
+    null,
+  );
 
   const isControlled = openedProp !== undefined;
   const opened = isControlled ? openedProp : uncontrolledOpened;
   const close = isControlled ? (onClose ?? (() => {})) : closeUncontrolled;
 
-  const handleDownload = (type: ExportTypeValues) => {
+  const handleDownload = async (type: ExportTypeValues) => {
+    setExporting(type);
     switch (type) {
       case "pdf": {
+        const { exportTripPDF } = await import("@/utils/export/exportTripPDF");
         exportTripPDF(
           trip as TripSummaryRow & {
             start_date: string;
@@ -82,6 +86,7 @@ export const ExportModal = ({
         break;
       }
       case "pptx": {
+        const { exportTripPPT } = await import("@/utils/export/exportTripPPT");
         exportTripPPT(
           trip as TripSummaryRow & {
             start_date: string;
@@ -91,6 +96,8 @@ export const ExportModal = ({
         break;
       }
       default: {
+        const { exportTripXLSX } =
+          await import("@/utils/export/exportTripXLSX");
         exportTripXLSX(
           trip as TripSummaryRow & {
             start_date: string;
@@ -152,6 +159,7 @@ export const ExportModal = ({
                   aria-label={`Download ${option.label}`}
                   onClick={() => handleDownload(option.type)}
                   variant="secondary"
+                  loading={exporting === option.type}
                 />
               </Group>
             ))}
