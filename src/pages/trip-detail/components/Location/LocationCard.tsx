@@ -57,10 +57,12 @@ export const LocationCard = ({
     useLocationStore();
   const currency = useCurrencyStore((s) => s.symbol);
 
+  const { id, city, start_date, end_date } = location;
+
   const theme = useMantineTheme();
   const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
-  const summary = locationSummaries.find((s) => s.location_id === location.id);
+  const summary = locationSummaries.find((s) => s.location_id === id);
 
   // Controlled edit modal + delete confirm state.
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
@@ -68,10 +70,7 @@ export const LocationCard = ({
   const [editOpened, { open: openEdit, close: closeEdit }] =
     useDisclosure(false);
 
-  const nights =
-    location.start_date && location.end_date
-      ? calcNights(location.start_date, location.end_date)
-      : 0;
+  const nights = start_date && end_date ? calcNights(start_date, end_date) : 0;
 
   const accommodationTotal = accommodation
     ? accommodation.cost_per_night * nights
@@ -80,12 +79,12 @@ export const LocationCard = ({
   const total = summary ? (summary.location_total ?? 0) : accommodationTotal;
 
   const dateRange =
-    location.start_date && location.end_date
-      ? `${formatDate(location.start_date, "D")} - ${formatDate(location.end_date, "D MMM")}`
+    start_date && end_date
+      ? `${formatDate(start_date, "D")} - ${formatDate(end_date, "D MMM")}`
       : "Dates TBC";
 
   const confirmDelete = async () => {
-    await deleteLocation(location.id);
+    await deleteLocation(id);
     closeDelete();
   };
   return (
@@ -180,7 +179,7 @@ export const LocationCard = ({
               <Badge
                 variant="filled"
                 color={`${TYPE_COLOR[accommodation.type]}.3`}
-                c="var(--text-color)"
+                c="var(--mantine-color-dark-7)"
                 tt="capitalize"
                 bd={`2px solid ${TYPE_COLOR[accommodation.type]}.5`}
               >
@@ -226,7 +225,8 @@ export const LocationCard = ({
                   >{`${summary.activities_count} activities · ${currency}${summary.activities_total}`}</Badge>
                 )}
                 <Link
-                  to={`/trips/${tripId}/locations/${location.id}`}
+                  to={`/trips/${tripId}/locations/${id}`}
+                  aria-label={`View ${city} itinerary`}
                   className="link-button"
                 >
                   View itinerary
@@ -250,7 +250,7 @@ export const LocationCard = ({
                 <LocationModal
                   location={location}
                   tripId={tripId}
-                  accommodation={accommodationFor(location.id)}
+                  accommodation={accommodationFor(id)}
                   trigger={(open) => (
                     <Button
                       variant="dashed"
@@ -276,7 +276,7 @@ export const LocationCard = ({
                 >{`${summary.activities_count} activities · ${currency}${summary.activities_total}`}</Badge>
               )}
               <Link
-                to={`/trips/${tripId}/locations/${location.id}`}
+                to={`/trips/${tripId}/locations/${id}`}
                 className="link-button"
               >
                 View itinerary
@@ -291,7 +291,7 @@ export const LocationCard = ({
         <LocationModal
           location={location}
           tripId={tripId}
-          accommodation={accommodationFor(location.id)}
+          accommodation={accommodationFor(id)}
           opened={editOpened}
           onClose={closeEdit}
         />
@@ -301,7 +301,7 @@ export const LocationCard = ({
           close={closeDelete}
           confirm={confirmDelete}
           item="location"
-          name={location.city}
+          name={city}
         />
       </Stack>
     </Card>

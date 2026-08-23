@@ -20,6 +20,7 @@ export function CurrencySelect() {
       onChange={setCurrency}
       searchable
       bd="none"
+      label="Currency"
       nothingFoundMessage="No currency found"
       bg="transparent"
       allowDeselect={false}

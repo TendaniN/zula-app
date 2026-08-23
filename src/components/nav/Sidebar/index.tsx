@@ -60,7 +60,7 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
   return (
     <Stack h="100%" p="md" className="sidebar" gap="xl">
       <Group gap="xs">
-        <Image w={24} src={logoImg} />
+        <Image w={24} src={logoImg} alt="Zula" />
         <Title order={3} fw="bold">
           zula
         </Title>
@@ -148,12 +148,7 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
         </Menu>
 
         <CurrencySelect />
-        <Group>
-          <Text fw="bold" fz="sm">
-            Dark mode
-          </Text>
-          <ThemeToggle />
-        </Group>
+        <ThemeToggle />
       </Stack>
     </Stack>
   );
@@ -173,6 +168,8 @@ export const Sidebar = () => {
       w="15rem"
       h="100%"
       gap={0}
+      component="nav"
+      aria-label="Primary"
     >
       <SidebarContent />
     </Stack>

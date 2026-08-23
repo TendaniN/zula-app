@@ -1,8 +1,7 @@
 import {
   Badge,
-  Center,
   Group,
-  Loader,
+  Skeleton,
   Menu,
   ScrollArea,
   Stack,
@@ -123,18 +122,60 @@ export default function TripLayout() {
   // Show loader until the first fetch resolves.
   if (!initialized || tripLoading || locationsLoading) {
     return (
-      <Stack>
-        <Center
-          display="flex"
-          style={{
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: "0.75rem",
-          }}
-          p="xl"
-        >
-          <Loader size="xl" />
-        </Center>
+      <Stack p={0}>
+        {/* breadcrumbs */}
+        <Skeleton height={14} width={220} radius="sm" mx="xl" mt="md" />
+
+        <Stack px="xl" pt="sm" w="100%">
+          {/* title + status badge, and the export/menu controls on the right */}
+          <Group justify="space-between" wrap="nowrap">
+            <Group gap="sm" wrap="nowrap">
+              <Skeleton height={32} width={240} radius="sm" />
+              <Skeleton height={24} width={80} radius="xl" />
+            </Group>
+            <Group gap="xs" wrap="nowrap">
+              <Skeleton height={32} width={90} radius="sm" />
+              <Skeleton height={32} width={32} radius="sm" />
+            </Group>
+          </Group>
+
+          {/* meta line (dates · stays · nights) */}
+          <Skeleton height={14} width={280} radius="sm" />
+
+          {/* tabs bar */}
+          <Group
+            gap="lg"
+            wrap="nowrap"
+            pb="sm"
+            style={{ borderBottom: "2px solid var(--border-color)" }}
+          >
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton
+                key={`tab-skeleton-${i}`}
+                height={20}
+                width={110}
+                radius="sm"
+              />
+            ))}
+          </Group>
+
+          {/* content area: main column + cost panel beside it */}
+          <Group align="flex-start" gap="lg" wrap="nowrap" pt="lg">
+            <Stack gap="lg" style={{ flex: 1, minWidth: 0 }}>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={`card-skeleton-${i}`} height={110} radius="lg" />
+              ))}
+            </Stack>
+
+            <Skeleton
+              height={260}
+              width={300}
+              radius="lg"
+              visibleFrom="md"
+              style={{ flexShrink: 0 }}
+            />
+          </Group>
+        </Stack>
       </Stack>
     );
   }
@@ -301,6 +342,8 @@ export default function TripLayout() {
                     gap="lg"
                     style={{ flexShrink: 0 }}
                     display={{ base: "none", sm: "flex" }}
+                    component="aside"
+                    aria-label="Trip costs"
                   >
                     <TripCostPanel
                       summary={currentTripSummary}

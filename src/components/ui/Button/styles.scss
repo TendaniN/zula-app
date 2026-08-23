@@ -19,21 +19,21 @@ button.button {
 
   &--primary {
     background-color: var(--mantine-primary-color-5);
-    color: var(--mantine-color-black);
+    color: var(--mantine-color-dark-7);
     box-shadow: 0 4px 0 var(--mantine-primary-color-7);
     border: 2px solid var(--mantine-primary-color-7);
   }
 
   &--secondary {
     background-color: var(--mantine-color-peach-5);
-    color: var(--mantine-primary-color-9);
+    color: var(--mantine-color-dark-7);
     box-shadow: 0 4px 0 var(--mantine-color-peach-6);
     border: 2px solid var(--mantine-color-peach-6);
   }
 
   &--tertiary {
     background-color: var(--mantine-color-mint-5);
-    color: var(--mantine-color-black);
+    color: var(--mantine-color-dark-7);
     box-shadow: 0 4px 0 var(--mantine-color-mint-7);
     border: 2px solid var(--mantine-color-mint-7);
   }
@@ -46,7 +46,7 @@ button.button {
 
   &--danger {
     background-color: var(--mantine-color-red-3);
-    color: var(--mantine-color-red-9);
+    color: var(--mantine-color-dark-7);
     box-shadow: 0 4px 0 var(--mantine-color-red-5);
     border: 2px solid var(--mantine-color-red-5);
   }

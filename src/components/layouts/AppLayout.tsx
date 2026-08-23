@@ -18,6 +18,7 @@ export default function AppLayout() {
           px="md"
           gap="sm"
           style={{ borderBottom: "2px solid var(--border-color)" }}
+          component="header"
         >
           <SidebarDrawer />
           <Flex
@@ -27,7 +28,7 @@ export default function AppLayout() {
             c="var(--text-color)"
             to="/trips"
           >
-            <Image w={22} src={logoImg} />
+            <Image w={22} src={logoImg} alt="Zula" />
             <Title order={4} fw="bold">
               zula
             </Title>
@@ -43,7 +44,14 @@ export default function AppLayout() {
   return (
     <Group gap={0} h="calc(100dvh - 4px)" bg="var(--bg-color)">
       <Sidebar />
-      <Container h="100%" flex={1} miw="calc(100% - 15rem)" m={0} p={0}>
+      <Container
+        component="main"
+        h="100%"
+        flex={1}
+        miw="calc(100% - 15rem)"
+        m={0}
+        p={0}
+      >
         <Outlet />
       </Container>
     </Group>

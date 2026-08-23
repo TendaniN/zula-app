@@ -107,7 +107,12 @@ export default function ItineraryListPage() {
             }}
             p="xl"
           >
-            <Image src={noActivitiesImg} w="8rem" h="6.5rem" />
+            <Image
+              src={noActivitiesImg}
+              w="8rem"
+              h="6.5rem"
+              alt="No Activities"
+            />
             <Title order={3} ta="center" fw="semibold">
               Three days, wide open
             </Title>

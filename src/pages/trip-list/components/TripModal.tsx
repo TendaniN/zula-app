@@ -76,7 +76,7 @@ export const TripModal = ({
           const data = await createTrip(parsed);
 
           if (data) {
-            navigate(`/trips/${data.id}`);
+            navigate(`/trips/${data.id}?tab=Stays & itinerary`);
           }
         }
         form.reset();
