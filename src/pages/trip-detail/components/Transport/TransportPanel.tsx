@@ -69,7 +69,12 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
           }}
           p="xl"
         >
-          <Image src={noTransportsImg} w="8rem" h="6.5rem" />
+          <Image
+            src={noTransportsImg}
+            w="8rem"
+            h="6.5rem"
+            alt="No Transports"
+          />
           <Title order={3} ta="center" fw="semibold">
             No journeys plans yet
           </Title>

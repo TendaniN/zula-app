@@ -19,6 +19,8 @@ export const ThemeToggle = () => {
       onChange={(e) =>
         setColorScheme(e.currentTarget.checked ? "dark" : "light")
       }
+      label="Dark mode"
+      labelPosition="left"
       aria-label="Toggle dark mode"
       thumbIcon={
         isDark ? (
@@ -40,6 +42,10 @@ export const ThemeToggle = () => {
             : "var(--surface-color)",
           border: "2px solid var(--border-color)",
           cursor: "pointer",
+        },
+        label: {
+          fontSize: "var(--mantine-font-size-sm)",
+          fontWeight: "bold",
         },
       }}
     />

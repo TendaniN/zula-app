@@ -70,7 +70,7 @@ export const TodoPanel = ({ tripId }: TodoPanelProps) => {
           }}
           p="xl"
         >
-          <Image src={noTodosImg} w="8rem" h="6.5rem" />
+          <Image src={noTodosImg} w="8rem" h="6.5rem" alt="No Todos" />
           <Title order={3} ta="center" fw="semibold">
             Nothing left to sort out - yet
           </Title>

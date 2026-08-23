@@ -29,7 +29,7 @@ export default function AuthLayout() {
       <Group h="calc(100dvh - 4px)" gap={0}>
         <Stack p="lg" h="100%" w={{ base: "30%", sm: "50%", xl: "60%" }}>
           <Group>
-            <Image w={{ base: 32, sm: 40 }} src={logoImg} />
+            <Image w={{ base: 32, sm: 40 }} src={logoImg} alt="Zula" />
             <Title order={2} fw="bold">
               zula
             </Title>
@@ -61,6 +61,7 @@ export default function AuthLayout() {
           style={{
             borderLeft: "2px solid var(--border-color)",
           }}
+          component="main"
         >
           <Outlet />
         </Container>

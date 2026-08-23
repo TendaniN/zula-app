@@ -76,7 +76,7 @@ export default function TripListPage() {
             }}
             p="xl"
           >
-            <Image src={noTripsImg} w="8rem" h="6.5rem" />
+            <Image src={noTripsImg} w="8rem" h="6.5rem" alt="No Trips" />
             <Title order={3} ta="center" fw="semibold">
               No trips yet
             </Title>
@@ -231,7 +231,12 @@ export default function TripListPage() {
             }}
             p="xl"
           >
-            <Image src={noMatchesImg} w="8rem" h="6.5rem" />
+            <Image
+              src={noMatchesImg}
+              w="8rem"
+              h="6.5rem"
+              alt="No Filter/Search matches"
+            />
             <Title order={3} ta="center" fw="semibold">
               No trips match
             </Title>

@@ -51,7 +51,7 @@ export default function TripDetailPage() {
           }}
           p="xl"
         >
-          <Image src={noLocationsImg} w="8rem" h="6.5rem" />
+          <Image src={noLocationsImg} w="8rem" h="6.5rem" alt="No Locations" />
           <Title order={3} ta="center" fw="semibold">
             Where are you headed?
           </Title>

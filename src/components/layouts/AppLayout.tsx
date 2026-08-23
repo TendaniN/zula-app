@@ -28,7 +28,7 @@ export default function AppLayout() {
             c="var(--text-color)"
             to="/trips"
           >
-            <Image w={22} src={logoImg} />
+            <Image w={22} src={logoImg} alt="Zula" />
             <Title order={4} fw="bold">
               zula
             </Title>
