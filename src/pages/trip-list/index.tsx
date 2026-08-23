@@ -1,10 +1,11 @@
 import { useTripStore } from "@/stores/tripStore";
 import {
+  Card,
   Center,
   Flex,
   Group,
   Image,
-  Loader,
+  Skeleton,
   Select,
   SimpleGrid,
   Stack,
@@ -107,27 +108,31 @@ export default function TripListPage() {
             </Text>
           </Stack>
         </Group>
-        <Stack
-          p="xl"
-          bdrs="lg"
-          bd="2px dashed var(--muted)"
-          style={{
-            backgroundColor:
-              "light-dark(var(--mantine-color-white), var(--mantine-color-black))",
-          }}
-        >
-          <Center
-            display="flex"
-            style={{
-              flexDirection: "column",
-              justifyContent: "center",
-              gap: "0.75rem",
-            }}
-            p="xl"
-          >
-            <Loader size="xl" />
-          </Center>
-        </Stack>
+
+        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="lg">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Card key={`trip-skeleton-${i}`} p="md" shadow="xl">
+              {/* cover strip */}
+              <Skeleton height={120} radius="md" mb="md" />
+
+              {/* title + status badge row */}
+              <Group justify="space-between" wrap="nowrap" mb="sm">
+                <Skeleton height={20} width="55%" radius="sm" />
+                <Skeleton height={20} width={70} radius="xl" />
+              </Group>
+
+              {/* date / meta line */}
+              <Skeleton height={12} width="80%" radius="sm" mb="xs" />
+              <Skeleton height={12} width="40%" radius="sm" mb="md" />
+
+              {/* footer (e.g. cost / member avatars) */}
+              <Group justify="space-between" wrap="nowrap">
+                <Skeleton height={14} width={90} radius="sm" />
+                <Skeleton height={28} width={28} radius="xl" />
+              </Group>
+            </Card>
+          ))}
+        </SimpleGrid>
       </Stack>
     );
   }

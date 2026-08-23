@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/stores/authStore";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { Center, Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { DefaultLoader } from "../ui/DefaultLoader";
 
 export default function DefaultLayout() {
   const { loading, user, profile, initialize } = useAuthStore();
@@ -14,11 +14,7 @@ export default function DefaultLayout() {
 
   // Show loader until the auth session has been checked at least once.
   if (!initialized || loading) {
-    return (
-      <Center h="100%">
-        <Loader size="xl" type="bars" />
-      </Center>
-    );
+    return <DefaultLoader />;
   }
 
   if (!user && !profile) {
