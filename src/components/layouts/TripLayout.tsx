@@ -342,6 +342,8 @@ export default function TripLayout() {
                     gap="lg"
                     style={{ flexShrink: 0 }}
                     display={{ base: "none", sm: "flex" }}
+                    component="aside"
+                    aria-label="Trip costs"
                   >
                     <TripCostPanel
                       summary={currentTripSummary}

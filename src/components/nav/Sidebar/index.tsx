@@ -173,6 +173,8 @@ export const Sidebar = () => {
       w="15rem"
       h="100%"
       gap={0}
+      component="nav"
+      aria-label="Primary"
     >
       <SidebarContent />
     </Stack>
