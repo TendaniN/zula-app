@@ -1,6 +1,8 @@
 import {
   Group,
   Modal as BaseModal,
+  Stack,
+  Text,
   Title,
   type MantineSize,
 } from "@mantine/core";
@@ -12,6 +14,7 @@ interface ModalProps {
   opened: boolean;
   close: () => void;
   title: string;
+  description?: string;
   size?: MantineSize | (string & {}) | number;
 }
 
@@ -19,6 +22,7 @@ export const Modal = ({
   opened,
   close,
   title,
+  description,
   children,
   size = "lg",
 }: ModalProps) => (
@@ -40,9 +44,16 @@ export const Modal = ({
         borderBottom: "2px solid var(--border-color)",
       }}
     >
-      <Title order={3} fw="bold" c="var(--border-color)">
-        {title}
-      </Title>
+      <Stack gap={0}>
+        <Title order={3} fw="bold" c="var(--border-color)">
+          {title}
+        </Title>
+        {description && (
+          <Text c="dimmed" size="sm">
+            {description}
+          </Text>
+        )}
+      </Stack>
       <IconButton
         icon={<LuX color="var(--border-color)" />}
         variant="ghost"
