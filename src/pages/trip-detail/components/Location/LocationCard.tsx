@@ -1,33 +1,25 @@
 import {
   Badge,
   Card,
-  Box,
+  Flex,
   Group,
   Menu,
-  Modal,
-  SimpleGrid,
   Stack,
   Text,
-  Title,
+  useMantineTheme,
 } from "@mantine/core";
-import {
-  FaPencil,
-  FaPlus,
-  FaRegTrashCan,
-  FaStar,
-  FaTrash,
-} from "react-icons/fa6";
+import { FaPencil, FaPlus, FaRegTrashCan, FaStar } from "react-icons/fa6";
 import { TbDots } from "react-icons/tb";
 import { LuMoveRight } from "react-icons/lu";
 
-import { IconButton, Button } from "@/components/ui";
+import { IconButton, Button, DeleteModal } from "@/components/ui";
 import { getCountryFlag } from "@/utils/getCountryFlag";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import type { Location, Accommodation } from "@/types/models";
 import { LocationModal } from "./LocationModal";
 import { useLocationStore } from "@/stores/locationStore";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Link } from "react-router-dom";
 import { CanEditTrip } from "@/components/auth";
 import { formatDate } from "@/utils/date";
@@ -65,7 +57,12 @@ export const LocationCard = ({
     useLocationStore();
   const currency = useCurrencyStore((s) => s.symbol);
 
-  const summary = locationSummaries.find((s) => s.location_id === location.id);
+  const { id, city, start_date, end_date } = location;
+
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+
+  const summary = locationSummaries.find((s) => s.location_id === id);
 
   // Controlled edit modal + delete confirm state.
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
@@ -73,10 +70,7 @@ export const LocationCard = ({
   const [editOpened, { open: openEdit, close: closeEdit }] =
     useDisclosure(false);
 
-  const nights =
-    location.start_date && location.end_date
-      ? calcNights(location.start_date, location.end_date)
-      : 0;
+  const nights = start_date && end_date ? calcNights(start_date, end_date) : 0;
 
   const accommodationTotal = accommodation
     ? accommodation.cost_per_night * nights
@@ -85,30 +79,32 @@ export const LocationCard = ({
   const total = summary ? (summary.location_total ?? 0) : accommodationTotal;
 
   const dateRange =
-    location.start_date && location.end_date
-      ? `${formatDate(location.start_date, "D")} - ${formatDate(location.end_date, "D MMM")}`
+    start_date && end_date
+      ? `${formatDate(start_date, "D")} - ${formatDate(end_date, "D MMM")}`
       : "Dates TBC";
 
   const confirmDelete = async () => {
-    await deleteLocation(location.id);
+    await deleteLocation(id);
     closeDelete();
   };
   return (
     <Card
       radius="lg"
       p={0}
+      shadow="xl"
       style={{
-        boxShadow: `0 4px 0 var(--mantine-primary-color-1)`,
+        boxShadow: `0 4px 0 var(--bg-secondary)`,
       }}
     >
       <Stack gap={0} p={0}>
         <Group
           justify="space-between"
-          wrap="nowrap"
-          p="md"
+          wrap="wrap"
+          p={{ base: "xs", sm: "md" }}
           style={{ borderBottom: "2px solid var(--border-color)" }}
+          flex={1}
         >
-          <Group gap="sm" wrap="nowrap">
+          <Group gap="sm" wrap="nowrap" mr="auto">
             {location.country &&
               getCountryFlag(
                 location.country,
@@ -126,7 +122,12 @@ export const LocationCard = ({
             </Stack>
           </Group>
 
-          <Group gap="xs" wrap="nowrap">
+          <Group
+            gap="xs"
+            wrap="nowrap"
+            flex={{ base: 1, sm: 0.5 }}
+            justify={isSmallScreen ? "space-between" : "flex-end"}
+          >
             <Stack gap={0} align="flex-end">
               <Text size="xs" c="dimmed">
                 Location total
@@ -165,7 +166,12 @@ export const LocationCard = ({
         </Group>
 
         {accommodation ? (
-          <Stack justify="space-between" p="md" gap={0} bg="lavender.0">
+          <Stack
+            justify="space-between"
+            p={{ base: "sm", sm: "md" }}
+            gap={0}
+            bg="var(--bg-secondary)"
+          >
             <Group gap="xs" wrap="nowrap">
               <Text fw="bold" size="sm">
                 {accommodation.name}
@@ -173,19 +179,25 @@ export const LocationCard = ({
               <Badge
                 variant="filled"
                 color={`${TYPE_COLOR[accommodation.type]}.3`}
-                c="var(--text-color)"
+                c="var(--mantine-color-dark-7)"
                 tt="capitalize"
                 bd={`2px solid ${TYPE_COLOR[accommodation.type]}.5`}
               >
                 {TYPE_LABEL[accommodation.type]}
               </Badge>
             </Group>
-            <Group gap="md" wrap="nowrap" justify="space-between">
+            <Flex
+              gap="md"
+              direction={{ base: "column", sm: "row" }}
+              align={{ base: "stretch", sm: "normal" }}
+              wrap="nowrap"
+              justify="space-between"
+            >
               <Group gap="xs">
                 {accommodation.rating != null && (
                   <Group gap={4} wrap="nowrap" c="dimmed">
-                    <FaStar />
-                    <Text size="xs" fw={600}>
+                    <Text size="xs" fw={600} c="dimmed">
+                      <FaStar size="0.65rem" />{" "}
                       {accommodation.rating.toFixed(1)}
                     </Text>
                   </Group>
@@ -195,17 +207,41 @@ export const LocationCard = ({
                   {accommodation.cost_per_night} / night
                 </Text>
               </Group>
-              <Link
-                to={`/trips/${tripId}/locations/${location.id}?tab=Stays & itinerary`}
-                className="link-button"
+              <Flex
+                gap="xs"
+                direction={{ base: "column", sm: "row" }}
+                justify={isSmallScreen ? "space-between" : "flex-end"}
               >
-                View itinerary
-                <LuMoveRight />
-              </Link>
-            </Group>
+                {summary && summary.activities_count && (
+                  <Badge
+                    variant="outline"
+                    bd="2px solid var(--border-color)"
+                    c="var(--text-color)"
+                    bg="var(--surface-color)"
+                    radius="sm"
+                    p={{ base: "xs", sm: "md" }}
+                    my="auto"
+                    tt="initial"
+                  >{`${summary.activities_count} activities · ${currency}${summary.activities_total}`}</Badge>
+                )}
+                <Link
+                  to={`/trips/${tripId}/locations/${id}`}
+                  aria-label={`View ${city} itinerary`}
+                  className="link-button"
+                >
+                  View itinerary
+                  <LuMoveRight />
+                </Link>
+              </Flex>
+            </Flex>
           </Stack>
         ) : (
-          <Group justify="space-between" p="md" gap={0} bg="lavender.0">
+          <Group
+            justify="space-between"
+            p="md"
+            gap={0}
+            bg="var(--bg-secondary)"
+          >
             <Text c="dimmed" fs="italic">
               No accommodation yet.
             </Text>
@@ -214,7 +250,7 @@ export const LocationCard = ({
                 <LocationModal
                   location={location}
                   tripId={tripId}
-                  accommodation={accommodationFor(location.id)}
+                  accommodation={accommodationFor(id)}
                   trigger={(open) => (
                     <Button
                       variant="dashed"
@@ -227,8 +263,20 @@ export const LocationCard = ({
                   )}
                 />
               </CanEditTrip>
+              {summary && summary.activities_count && (
+                <Badge
+                  variant="outline"
+                  bd="2px solid var(--border-color)"
+                  c="var(--text-color)"
+                  bg="var(--surface-color)"
+                  radius="sm"
+                  p="md"
+                  my="auto"
+                  tt="initial"
+                >{`${summary.activities_count} activities · ${currency}${summary.activities_total}`}</Badge>
+              )}
               <Link
-                to={`/trips/${tripId}/locations/${location.id}?tab=Stays & itinerary`}
+                to={`/trips/${tripId}/locations/${id}`}
                 className="link-button"
               >
                 View itinerary
@@ -243,48 +291,18 @@ export const LocationCard = ({
         <LocationModal
           location={location}
           tripId={tripId}
-          accommodation={accommodationFor(location.id)}
+          accommodation={accommodationFor(id)}
           opened={editOpened}
           onClose={closeEdit}
         />
 
-        <Modal
+        <DeleteModal
           opened={deleteOpened}
-          onClose={closeDelete}
-          centered
-          size="sm"
-          title={
-            <Stack gap="xs">
-              <Box
-                p="sm"
-                bdrs="md"
-                bd="2px solid red.3"
-                bg="red.1"
-                w="2.75rem"
-                c="red.8"
-              >
-                <FaTrash />
-              </Box>
-              <Title order={4} lh={1} fw="bold">
-                Delete this location?
-              </Title>
-            </Stack>
-          }
-        >
-          <Stack gap="lg">
-            <Text size="sm" c="dimmed">
-              {`Delete "${location.city}"? This also removes its accommodation and activities. This can't be undone.`}
-            </Text>
-            <SimpleGrid cols={2}>
-              <Button fluid variant="ghost" onClick={closeDelete}>
-                Cancel
-              </Button>
-              <Button fluid variant="danger" onClick={confirmDelete}>
-                Delete
-              </Button>
-            </SimpleGrid>
-          </Stack>
-        </Modal>
+          close={closeDelete}
+          confirm={confirmDelete}
+          item="location"
+          name={city}
+        />
       </Stack>
     </Card>
   );

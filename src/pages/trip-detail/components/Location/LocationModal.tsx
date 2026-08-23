@@ -5,31 +5,22 @@ import {
   Divider,
   Group,
   InputLabel,
-  Modal,
   NumberInput,
   Rating,
   Select,
+  SimpleGrid,
   Stack,
   Switch,
   Text,
   TextInput,
   ThemeIcon,
-  Title,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@tanstack/react-form";
-import {
-  LuBed,
-  LuInfo,
-  LuLink,
-  LuMapPin,
-  LuPlus,
-  LuPencil,
-  LuX,
-} from "react-icons/lu";
+import { LuBed, LuInfo, LuLink, LuPlus, LuPencil } from "react-icons/lu";
 
-import { Button, IconButton } from "@/components/ui";
+import { Button, Modal } from "@/components/ui";
 import { ALL_CITIES_MAP } from "@/constants/city";
 import { Constants } from "@/types/database.types";
 import { useCurrencyStore } from "@/stores/currencyStore";
@@ -187,38 +178,10 @@ export const LocationModal = ({
     <>
       <Modal
         opened={opened}
-        onClose={handleClose}
+        close={handleClose}
         size="lg"
-        radius="lg"
-        padding={0}
-        title={null}
-        withCloseButton={false}
-        overlayProps={{ blur: 2 }}
+        title={isEdit ? "Edit Stay" : "Add Stay"}
       >
-        {/* Banner header */}
-        <Group
-          justify="space-between"
-          px="lg"
-          py="md"
-          style={{
-            background: "var(--mantine-color-lavender-1)",
-            borderBottom: "2px solid var(--border-color)",
-          }}
-        >
-          <Group gap="xs">
-            <LuMapPin />
-            <Title order={3} fw="bold" c="var(--text-color)">
-              {isEdit ? "Edit Stay" : "Add Stay"}
-            </Title>
-          </Group>
-          <IconButton
-            icon={<LuX />}
-            variant="ghost"
-            aria-label="Close"
-            onClick={handleClose}
-          />
-        </Group>
-
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -264,7 +227,7 @@ export const LocationModal = ({
             </Group>
 
             {/* ── Dates ───────────────────────────────────────── */}
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
               <form.Field name="start_date">
                 {(field) => (
                   <DatePickerInput
@@ -298,7 +261,7 @@ export const LocationModal = ({
                   />
                 )}
               </form.Field>
-            </Group>
+            </SimpleGrid>
 
             {/* ── Accommodation toggle ────────────────────────── */}
             <Divider variant="dashed" color="var(--border-color)" size="sm" />
@@ -330,7 +293,7 @@ export const LocationModal = ({
                   borderRadius: "var(--mantine-radius-md)",
                 }}
               >
-                <Group grow>
+                <SimpleGrid cols={{ base: 1, xs: 2 }}>
                   <form.Field name="accommodation.name">
                     {(field) => (
                       <TextInput
@@ -360,9 +323,9 @@ export const LocationModal = ({
                       />
                     )}
                   </form.Field>
-                </Group>
+                </SimpleGrid>
 
-                <Group grow>
+                <SimpleGrid cols={{ base: 1, xs: 2 }}>
                   <form.Field name="accommodation.cost_per_night">
                     {(field) => (
                       <NumberInput
@@ -395,9 +358,9 @@ export const LocationModal = ({
                       />
                     )}
                   </form.Field>
-                </Group>
+                </SimpleGrid>
 
-                <Group grow>
+                <SimpleGrid cols={{ base: 1, xs: 2 }}>
                   <form.Field name="accommodation.link">
                     {(field) => (
                       <TextInput
@@ -429,7 +392,7 @@ export const LocationModal = ({
                       </Stack>
                     )}
                   </form.Field>
-                </Group>
+                </SimpleGrid>
               </Stack>
             </Collapse>
 

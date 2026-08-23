@@ -7,7 +7,7 @@
       border-radius: var(--mantine-radius-md);
       border: 2px solid transparent;
       color: light-dark(
-        var(--mantine-color-gray-6),
+        var(--mantine-color-gray-7),
         var(--mantine-primary-color-5)
       );
       text-decoration: none;
@@ -29,15 +29,21 @@
     }
   }
 
-  &__avatar {
-    width: 2.25rem;
-    height: 2.25rem;
-
-    &[data-role="admin"] {
-      background: var(--aurora);
+  &__menu {
+    &:hover {
+      background-color: var(--surface-color);
     }
-    &[data-role="user"] {
-      background: var(--meadow);
+
+    &--avatar {
+      width: 2rem;
+      height: 2rem;
+
+      &[data-role="admin"] {
+        background: var(--aurora);
+      }
+      &[data-role="user"] {
+        background: var(--meadow);
+      }
     }
   }
 }

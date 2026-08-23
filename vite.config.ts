@@ -7,10 +7,10 @@ export default defineConfig({
   base: "/zula/",
   resolve: {
     alias: {
-      "@": resolve(__dirname, "./src"),
+      "@": resolve(import.meta.dirname, "./src"),
 
-      react: resolve(__dirname, "node_modules", "react"),
-      "react-dom": resolve(__dirname, "node_modules", "react-dom"),
+      react: resolve(import.meta.dirname, "node_modules", "react"),
+      "react-dom": resolve(import.meta.dirname, "node_modules", "react-dom"),
     },
   },
   plugins: [react()],

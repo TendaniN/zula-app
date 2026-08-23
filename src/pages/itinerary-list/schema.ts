@@ -1,3 +1,4 @@
+import { Constants } from "@/types/database.types";
 import * as z from "zod";
 
 export const ActivitySchema = z.object({
@@ -23,6 +24,7 @@ export const ActivitySchema = z.object({
     .nullable()
     .optional()
     .or(z.literal("")),
+  type: z.enum(Constants.public.Enums.activity_type),
 });
 
 export type ActivityFormValues = z.infer<typeof ActivitySchema>;

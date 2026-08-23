@@ -3,25 +3,71 @@ import { type ReactNode } from "react";
 import {
   Divider,
   Group,
-  Modal,
   NumberInput,
+  Select,
+  SimpleGrid,
   Stack,
   Text,
   TextInput,
   ThemeIcon,
-  Title,
 } from "@mantine/core";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@tanstack/react-form";
-import { LuInfo, LuLink, LuPencil, LuPlus, LuX } from "react-icons/lu";
+import { LuInfo, LuLink, LuPencil, LuPlus } from "react-icons/lu";
 
-import { Button, IconButton } from "@/components/ui";
+import { Button, Modal } from "@/components/ui";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import { useActivityStore } from "@/stores/activityStore";
 import { ActivitySchema, type ActivityFormValues } from "../schema";
-import type { Activity } from "@/types/models";
+import type { Activity, ActivityType } from "@/types/models";
 import { formatDate, translateDate } from "@/utils/date";
+
+const ACTIVITY_TYPE_LABEL: Record<ActivityType, string> = {
+  breakfast: "Breakfast",
+  brunch: "Brunch",
+  lunch: "Lunch",
+  dinner: "Dinner",
+  cafe: "Café / coffee",
+  drinks: "Drinks / nightlife",
+  tour: "Tour",
+  sightseeing: "Sightseeing",
+  museum: "Museum / gallery",
+  attraction: "Attraction / theme park",
+  hike: "Walk or hike",
+  outdoor: "Outdoor / adventure",
+  beach: "Beach / pool",
+  shopping: "Shopping",
+  entertainment: "Show / entertainment",
+  wellness: "Spa / wellness",
+  other: "Other",
+};
+
+const ACTIVITY_TYPE_DATA = [
+  {
+    group: "Meals & drinks",
+    items: ["breakfast", "brunch", "lunch", "dinner", "cafe", "drinks"],
+  },
+  {
+    group: "Explore & culture",
+    items: [
+      "tour",
+      "sightseeing",
+      "museum",
+      "attraction",
+      "shopping",
+      "entertainment",
+    ],
+  },
+  { group: "Outdoors & active", items: ["hike", "outdoor", "beach"] },
+  { group: "Relax & other", items: ["wellness", "other"] },
+].map((g) => ({
+  group: g.group,
+  items: g.items.map((k) => ({
+    value: k,
+    label: ACTIVITY_TYPE_LABEL[k as ActivityType],
+  })),
+}));
 
 interface ActivityModalProps {
   locationId: string;
@@ -65,6 +111,7 @@ export const ActivityModal = ({
     defaultValues: {
       name: activity?.name ?? "",
       cost: activity?.cost ?? 0,
+      type: activity?.type ?? "other",
       activity_date: activity?.activity_date ?? defaultActivityDate ?? null,
       activity_time: activity?.activity_time ?? null,
       duration_minutes: activity?.duration_minutes ?? null,
@@ -111,36 +158,9 @@ export const ActivityModal = ({
     <>
       <Modal
         opened={opened}
-        onClose={handleClose}
-        size="lg"
-        radius="lg"
-        padding={0}
-        title={null}
-        withCloseButton={false}
-        overlayProps={{ blur: 2 }}
-        withinPortal={true}
+        close={handleClose}
+        title={isEdit ? "Edit activity" : "Add activity"}
       >
-        {/* Banner header */}
-        <Group
-          justify="space-between"
-          px="lg"
-          py="md"
-          style={{
-            background: "var(--mantine-color-lavender-1)",
-            borderBottom: "2px solid var(--border-color)",
-          }}
-        >
-          <Title order={3} fw="bold" c="var(--text-color)">
-            {isEdit ? "Edit activity" : "Add activity"}
-          </Title>
-          <IconButton
-            icon={<LuX />}
-            variant="ghost"
-            aria-label="Close"
-            onClick={handleClose}
-          />
-        </Group>
-
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -149,22 +169,43 @@ export const ActivityModal = ({
           }}
         >
           <Stack gap="md" p="lg">
-            <form.Field name="name">
-              {(field) => (
-                <TextInput
-                  required
-                  label="Activity name"
-                  placeholder="e.g. Colosseum guided tour"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.currentTarget.value)}
-                  onBlur={field.handleBlur}
-                  error={field.state.meta.errors[0]}
-                  data-autofocus
-                />
-              )}
-            </form.Field>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
+              <form.Field name="type">
+                {(field) => (
+                  <Select
+                    required
+                    label="Type"
+                    data={ACTIVITY_TYPE_DATA}
+                    value={field.state.value}
+                    onChange={(v) =>
+                      field.handleChange((v as ActivityType) ?? "other")
+                    }
+                    onBlur={field.handleBlur}
+                    error={field.state.meta.errors[0]}
+                    searchable
+                    allowDeselect={false}
+                    checkIconPosition="right"
+                    comboboxProps={{ withinPortal: true }}
+                  />
+                )}
+              </form.Field>
+              <form.Field name="name">
+                {(field) => (
+                  <TextInput
+                    required
+                    label="Activity name"
+                    placeholder="e.g. Colosseum guided tour"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.currentTarget.value)}
+                    onBlur={field.handleBlur}
+                    error={field.state.meta.errors[0]}
+                    data-autofocus
+                  />
+                )}
+              </form.Field>
+            </SimpleGrid>
 
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
               <form.Field name="activity_date">
                 {(field) => (
                   <DatePickerInput
@@ -192,12 +233,13 @@ export const ActivityModal = ({
                   />
                 )}
               </form.Field>
-            </Group>
+            </SimpleGrid>
 
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
               <form.Field name="cost">
                 {(field) => (
                   <NumberInput
+                    required
                     label="Cost"
                     prefix={`${currency} `}
                     thousandSeparator
@@ -227,7 +269,7 @@ export const ActivityModal = ({
                   />
                 )}
               </form.Field>
-            </Group>
+            </SimpleGrid>
 
             <form.Field name="link">
               {(field) => (

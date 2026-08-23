@@ -58,10 +58,7 @@ export const TodoPanel = ({ tripId }: TodoPanelProps) => {
         bdrs="lg"
         className="empty-state todo"
         bd="2px dashed var(--empty-card-border)"
-        style={{
-          backgroundColor:
-            "light-dark(var(--mantine-color-white), var(--mantine-color-black))",
-        }}
+        bg="var(--surface-color)"
         flex={1}
       >
         <Center
@@ -73,7 +70,7 @@ export const TodoPanel = ({ tripId }: TodoPanelProps) => {
           }}
           p="xl"
         >
-          <Image src={noTodosImg} w="8rem" h="6.5rem" />
+          <Image src={noTodosImg} w="8rem" h="6.5rem" alt="No Todos" />
           <Title order={3} ta="center" fw="semibold">
             Nothing left to sort out - yet
           </Title>
@@ -104,7 +101,7 @@ export const TodoPanel = ({ tripId }: TodoPanelProps) => {
           return dayjs(a.due_date).diff(dayjs(b.due_date));
         })
         .map((todo) => (
-          <TodoCard tripId={tripId} todo={todo} />
+          <TodoCard key={`todo-${todo.id}`} tripId={tripId} todo={todo} />
         ))}
     </Stack>
   );

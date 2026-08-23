@@ -10,7 +10,7 @@ import {
 import { AuthHeader } from "./AuthHeader";
 import "./styles.scss";
 import { useAuthStore } from "@/stores/authStore";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import { LoginSchema } from "./schema";
@@ -18,8 +18,11 @@ import { Button } from "@/components/ui";
 import { FaArrowRightLong } from "react-icons/fa6";
 
 export default function LoginPage() {
-  const { signInWithPassword, user, error } = useAuthStore();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const { signInWithPassword, user, error } = useAuthStore();
+
   const [formErrors, setFormErrors] = useState("");
 
   const { handleSubmit, Field } = useForm({
@@ -41,10 +44,13 @@ export default function LoginPage() {
   });
 
   useEffect(() => {
-    if (user) {
-      navigate("/trips");
-    }
-  }, [navigate, user]);
+    if (!user) return;
+
+    const next = searchParams.get("next");
+    const isInternal = !!next && next.startsWith("/") && !next.startsWith("//");
+
+    navigate(isInternal ? next : "/trips", { replace: true });
+  }, [navigate, user, searchParams]);
 
   return (
     <Stack gap={0} h="100%">

@@ -39,10 +39,7 @@ export default function TripDetailPage() {
         bdrs="lg"
         className="empty-state"
         bd="2px dashed var(--empty-card-border)"
-        style={{
-          backgroundColor:
-            "light-dark(var(--mantine-color-white), var(--mantine-color-black))",
-        }}
+        bg="var(--surface-color)"
         flex={1}
       >
         <Center
@@ -54,7 +51,7 @@ export default function TripDetailPage() {
           }}
           p="xl"
         >
-          <Image src={noLocationsImg} w="8rem" h="6.5rem" />
+          <Image src={noLocationsImg} w="8rem" h="6.5rem" alt="No Locations" />
           <Title order={3} ta="center" fw="semibold">
             Where are you headed?
           </Title>

@@ -13,11 +13,11 @@ export const Breadcrumbs = ({ trip, tab }: BreadcrumbsProps) => {
     { title: "My trips", href: "/trips" },
     { title: trip.name, href: `/trips/${trip.id}` },
     { title: tab, href: "#" },
-  ].map((item, index) => (
+  ].map((item) => (
     <Anchor
       component={Link}
       to={item.href}
-      key={index}
+      key={`anchor-${item.title}`}
       size="sm"
       fw="bold"
       c={item.title === tab ? "var(--text-color)" : "dimmed"}
@@ -31,7 +31,7 @@ export const Breadcrumbs = ({ trip, tab }: BreadcrumbsProps) => {
     <Group
       bg="var(--surface-color)"
       style={{ borderBottom: "2px solid var(--border-color)" }}
-      px="xl"
+      px={{ base: "lg", sm: "xl" }}
       py="md"
     >
       <BaseBreadcrumbs

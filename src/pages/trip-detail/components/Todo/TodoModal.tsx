@@ -3,20 +3,18 @@ import { type ReactNode } from "react";
 import {
   Divider,
   Group,
-  Modal,
   Stack,
   Text,
   Textarea,
   TextInput,
   ThemeIcon,
-  Title,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@tanstack/react-form";
-import { LuInfo, LuPencil, LuPlus, LuX } from "react-icons/lu";
+import { LuInfo, LuPencil, LuPlus } from "react-icons/lu";
 
-import { Button, IconButton } from "@/components/ui";
+import { Button, Modal } from "@/components/ui";
 import { useTodoStore } from "@/stores/todoStore";
 import { TodoSchema, type TodoFormValues } from "../../schema";
 import type { Todo } from "@/types/models";
@@ -97,34 +95,10 @@ export const TodoModal = ({
     <>
       <Modal
         opened={opened}
-        onClose={handleClose}
-        size="md"
-        radius="lg"
-        padding={0}
-        title={null}
-        withCloseButton={false}
-        overlayProps={{ blur: 2 }}
+        close={handleClose}
+        size="lg"
+        title={isEdit ? "Edit to-do" : "Add to-do"}
       >
-        {/* Banner header */}
-        <Group
-          justify="space-between"
-          px="lg"
-          py="md"
-          style={{
-            borderBottom: "2px solid var(--border-color)",
-          }}
-        >
-          <Title order={3} fw="bold" c="var(--text-color)">
-            {isEdit ? "Edit to-do" : "Add to-do"}
-          </Title>
-          <IconButton
-            icon={<LuX />}
-            variant="ghost"
-            aria-label="Close"
-            onClick={handleClose}
-          />
-        </Group>
-
         <form
           onSubmit={(e) => {
             e.preventDefault();

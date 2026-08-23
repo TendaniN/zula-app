@@ -27,7 +27,12 @@ export const TripCard = ({ trip, index }: TripCardProps) => {
   const statusColor = getStatusColor(trip.status ?? "planning");
   const currency = useCurrencyStore((s) => s.symbol);
   return (
-    <Card p={0} component={Link} to={`/trips/${trip.id}`}>
+    <Card
+      p={0}
+      component={Link}
+      to={`/trips/${trip.id}?tab=Stays & itinerary`}
+      aria-label={`View ${trip.name}`}
+    >
       <Stack>
         <Flex
           bg={`var(--${GRADIENT_COLORS[index % GRADIENT_COLORS.length]})`}
@@ -36,7 +41,7 @@ export const TripCard = ({ trip, index }: TripCardProps) => {
         >
           <Badge
             color={`${statusColor.color}.2`}
-            c="var(--text-color)"
+            c="var(--border-color)"
             bd={`2px solid ${statusColor.color}.6`}
             tt="capitalize"
             py="sm"

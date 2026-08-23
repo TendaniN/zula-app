@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@/components/ui";
+import { IconButton, DeleteModal } from "@/components/ui";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import type { Transport } from "@/types/models";
 import { formatDate } from "@/utils/date";
@@ -7,16 +7,16 @@ import {
   Badge,
   Card,
   Divider,
+  Flex,
   Group,
   Menu,
-  Modal,
   Stack,
   Text,
   ThemeIcon,
-  Title,
+  useMantineTheme,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { FaPencil, FaRegTrashCan, FaTrash } from "react-icons/fa6";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
 import {
   PiSubway,
   PiBus,
@@ -77,6 +77,9 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
   const currency = useCurrencyStore((s) => s.symbol);
   const deleteTransport = useTransportStore((s) => s.deleteTransport);
 
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+
   const dateRange =
     start_date && end_date
       ? `${formatDate(start_date, "MMM D · H:mm")} → ${formatDate(end_date, "D MMM · H:mm")}`
@@ -91,8 +94,9 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
     <Card
       radius="lg"
       p="md"
+      shadow="xl"
       style={{
-        boxShadow: `0 4px 0 var(--mantine-primary-color-1)`,
+        boxShadow: `0 4px 0 var(--bg-secondary)`,
       }}
     >
       <Group>
@@ -107,10 +111,15 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
           radius="sm"
           variant="light"
           color={TYPE_COLOR[type]}
+          bd="2px solid var(--border-color)"
         >
           {TYPE_ICON[type]}
         </ThemeIcon>
-        <Group flex={1} justify="space-between">
+        <Flex
+          flex={1}
+          justify="space-between"
+          direction={{ base: "column", sm: "row" }}
+        >
           <Stack gap={4}>
             <Group>
               <Text fw="bold" size="sm">
@@ -119,7 +128,7 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
               <Badge
                 variant="filled"
                 color={`${TYPE_COLOR[type]}.3`}
-                c="var(--text-color)"
+                c="var(--border-color)"
                 tt="capitalize"
                 bd={`2px solid ${TYPE_COLOR[type]}.5`}
               >
@@ -138,8 +147,8 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
               </Text>
             </Group>
           </Stack>
-          <Group>
-            <Text fw={800} size="lg" my="auto">
+          <Flex justify={isSmallScreen ? "space-between" : "flex-end"} gap="sm">
+            <Text fw={800} my="auto" fz={{ base: "md", sm: "lg" }}>
               {currency}
               {cost.toLocaleString()}
             </Text>
@@ -168,44 +177,21 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
                 </Menu.Dropdown>
               </Menu>
             </CanEditTrip>
-          </Group>
-        </Group>
+          </Flex>
+        </Flex>
         <TransportModal
           transport={transport}
           tripId={tripId}
           opened={editOpened}
           onClose={closeEdit}
         />
-        <Modal
+        <DeleteModal
           opened={deleteOpened}
-          onClose={closeDelete}
-          centered
-          size="sm"
-          title={
-            <Stack gap="xs">
-              <ThemeIcon bd="2px solid red.3" color="red" radius="md">
-                <FaTrash />
-              </ThemeIcon>
-              <Title order={4} lh={1} fw="bold">
-                Delete this transport?
-              </Title>
-            </Stack>
-          }
-        >
-          <Stack gap="lg">
-            <Text size="sm" c="dimmed">
-              {`Delete "${name}"? This can't be undone.`}
-            </Text>
-            <Group grow>
-              <Button fluid variant="ghost" onClick={closeDelete}>
-                Cancel
-              </Button>
-              <Button fluid variant="danger" onClick={confirmDelete}>
-                Delete
-              </Button>
-            </Group>
-          </Stack>
-        </Modal>
+          close={closeDelete}
+          confirm={confirmDelete}
+          item="transport"
+          name={name}
+        />
       </Group>
     </Card>
   );

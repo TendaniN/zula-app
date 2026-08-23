@@ -57,10 +57,7 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
         bdrs="lg"
         className="empty-state transport"
         bd="2px dashed var(--empty-card-border)"
-        style={{
-          backgroundColor:
-            "light-dark(var(--mantine-color-white), var(--mantine-color-black))",
-        }}
+        bg="var(--surface-color)"
         flex={1}
       >
         <Center
@@ -72,7 +69,12 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
           }}
           p="xl"
         >
-          <Image src={noTransportsImg} w="8rem" h="6.5rem" />
+          <Image
+            src={noTransportsImg}
+            w="8rem"
+            h="6.5rem"
+            alt="No Transports"
+          />
           <Title order={3} ta="center" fw="semibold">
             No journeys plans yet
           </Title>
@@ -97,7 +99,11 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
         </CanEditTrip>
       </Group>
       {transports.map((transport) => (
-        <TransportCard tripId={tripId} transport={transport} />
+        <TransportCard
+          key={`transport-${transport.id}`}
+          tripId={tripId}
+          transport={transport}
+        />
       ))}
     </Stack>
   );

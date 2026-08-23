@@ -3,22 +3,21 @@ import { type ReactNode } from "react";
 import {
   Divider,
   Group,
-  Modal,
   NumberInput,
   Select,
+  SimpleGrid,
   Stack,
   Text,
   TextInput,
   ThemeIcon,
-  Title,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@tanstack/react-form";
-import { LuInfo, LuPencil, LuPlus, LuX } from "react-icons/lu";
+import { LuInfo, LuPencil, LuPlus } from "react-icons/lu";
 import { Constants } from "@/types/database.types";
 
-import { Button, IconButton } from "@/components/ui";
+import { Button, Modal } from "@/components/ui";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import { useTransportStore } from "@/stores/transportStore";
 import { TransportSchema, type TransportFormValues } from "../../schema";
@@ -122,34 +121,10 @@ export const TransportModal = ({
     <>
       <Modal
         opened={opened}
-        onClose={handleClose}
+        close={handleClose}
         size="lg"
-        radius="lg"
-        padding={0}
-        title={null}
-        withCloseButton={false}
-        overlayProps={{ blur: 2 }}
+        title={isEdit ? "Edit transport" : "Add transport"}
       >
-        {/* Banner header */}
-        <Group
-          justify="space-between"
-          px="lg"
-          py="md"
-          style={{
-            borderBottom: "2px solid var(--border-color)",
-          }}
-        >
-          <Title order={3} fw="bold" c="var(--text-color)">
-            {isEdit ? "Edit transport" : "Add transport"}
-          </Title>
-          <IconButton
-            icon={<LuX />}
-            variant="ghost"
-            aria-label="Close"
-            onClick={handleClose}
-          />
-        </Group>
-
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -158,7 +133,7 @@ export const TransportModal = ({
           }}
         >
           <Stack gap="md" p="lg">
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
               <form.Field name="name">
                 {(field) => (
                   <TextInput
@@ -192,9 +167,9 @@ export const TransportModal = ({
                   />
                 )}
               </form.Field>
-            </Group>
+            </SimpleGrid>
 
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
               <form.Field name="start_date">
                 {(field) => (
                   <DateTimePicker
@@ -226,9 +201,9 @@ export const TransportModal = ({
                   />
                 )}
               </form.Field>
-            </Group>
+            </SimpleGrid>
 
-            <Group grow>
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
               <form.Field name="cost">
                 {(field) => (
                   <NumberInput
@@ -261,10 +236,10 @@ export const TransportModal = ({
                   />
                 )}
               </form.Field>
-            </Group>
+            </SimpleGrid>
 
             {locationOptions.length > 0 && (
-              <Group grow>
+              <SimpleGrid cols={{ base: 1, xs: 2 }}>
                 <form.Field name="start_location_id">
                   {(field) => (
                     <Select
@@ -294,7 +269,7 @@ export const TransportModal = ({
                     />
                   )}
                 </form.Field>
-              </Group>
+              </SimpleGrid>
             )}
 
             <Divider variant="dashed" color="var(--border-color)" size="sm" />

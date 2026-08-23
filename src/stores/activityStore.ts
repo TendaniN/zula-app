@@ -42,13 +42,9 @@ export const useActivityStore = create<ActivityState>((set, get) => ({
       .order("activity_time", { ascending: true });
     if (error) set({ error: error.message });
     else
-      set((state) => ({
-        // Replace this location's activities, keep the rest.
-        activities: [
-          ...state.activities.filter((a) => a.location_id !== locationId),
-          ...(data ?? []),
-        ],
-      }));
+      set({
+        activities: data ?? [],
+      });
     set({ loading: false });
   },
 

@@ -2,6 +2,7 @@ import clsx from "clsx";
 import type { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
 import type { ButtonSize, ButtonVariant } from "./types";
 import "./styles.scss";
+import { Loader } from "@mantine/core";
 
 type NativeButtonProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -14,6 +15,7 @@ interface IconButtonProps extends Omit<NativeButtonProps, "children"> {
   size?: ButtonSize;
   /** Required: icon-only buttons have no visible text, so they need an accessible name. */
   "aria-label": string;
+  loading?: boolean;
 }
 
 export const IconButton = ({
@@ -22,6 +24,8 @@ export const IconButton = ({
   size = "md",
   className,
   type = "button",
+  loading = false,
+  disabled = false,
   ...props
 }: IconButtonProps) => (
   <button
@@ -33,8 +37,9 @@ export const IconButton = ({
       `button--${size}`,
       className,
     )}
+    disabled={loading || disabled}
     {...props}
   >
-    {icon}
+    {loading ? <Loader size="sm" color="var(--mantine-color-dark-7)" /> : icon}
   </button>
 );

@@ -67,6 +67,7 @@ export const LocationCostPanel = ({
       aria-label={`${city} cost breakdown`}
       gap={0}
       style={{
+        boxShadow: `0 4px 0 var(--bg-secondary)`,
         width: expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
         minWidth: expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
         flexShrink: 0,
@@ -101,7 +102,7 @@ export const LocationCostPanel = ({
             borderBottom: "2px solid var(--border-color)",
           }}
         >
-          <Text fw={800} size="sm" c="var(--text-color)">
+          <Text fw={800} size="sm" c="var(--border-color)">
             {city}
           </Text>
           <Badge variant="filled" color="mint.7" size="sm" radius="xl">
@@ -149,6 +150,7 @@ export const LocationCostPanel = ({
         <Text
           size="sm"
           fw="bold"
+          c="var(--border-color)"
           style={{
             writingMode: "vertical-rl",
             whiteSpace: "nowrap",

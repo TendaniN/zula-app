@@ -1,30 +1,48 @@
 import {
-  Box,
   Group,
-  Modal,
-  SimpleGrid,
   Stack,
-  Title,
   Text,
+  ThemeIcon,
   Badge,
   Divider,
   Menu,
   Anchor,
+  useMantineTheme,
 } from "@mantine/core";
 import { ActivityModal } from "./ActivityModal";
-import { Button, IconButton } from "@/components/ui";
+import { Button, IconButton, DeleteModal } from "@/components/ui";
 import { PiPlus, PiDotsThreeBold } from "react-icons/pi";
-import { FaPencil, FaRegTrashCan, FaTrash, FaLink } from "react-icons/fa6";
+import { FaPencil, FaRegTrashCan, FaLink } from "react-icons/fa6";
 import dayjs from "dayjs";
 import { CanEditTrip } from "@/components/auth";
-import type { Activity, Location } from "@/types/models";
+import type { Activity, ActivityType, Location } from "@/types/models";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { useState } from "react";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDuration } from "@/utils/formatDuration";
 import { formatDate } from "@/utils/date";
+
+const ACTIVITY_TYPE_COLOR: Record<ActivityType, string> = {
+  breakfast: "lavender",
+  brunch: "lavender",
+  lunch: "lavender",
+  dinner: "lavender",
+  cafe: "lavender",
+  drinks: "lavender",
+  tour: "mint",
+  sightseeing: "mint",
+  museum: "mint",
+  attraction: "mint",
+  hike: "peach",
+  outdoor: "peach",
+  beach: "peach",
+  shopping: "indigo",
+  entertainment: "indigo",
+  wellness: "indigo",
+  other: "gray",
+};
 
 interface DayGroup {
   date: string; // YYYY-MM-DD
@@ -57,6 +75,9 @@ export const ActivitiesPanel = ({
 
   const deleteActivity = useActivityStore((s) => s.deleteActivity);
   const currency = useCurrencyStore((s) => s.symbol);
+
+  const theme = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   const nights = calcNights(location.start_date, location.end_date);
 
@@ -106,17 +127,34 @@ export const ActivitiesPanel = ({
   return (
     <Stack gap="lg" p="md">
       {days.map((day) => (
-        <Stack key={day.date} gap="xs">
+        <Stack key={`activity-day-${day.date}`} gap="xs">
           <Group justify="space-between" wrap="nowrap" gap="sm">
             <Group gap={6} wrap="nowrap" style={{ flexShrink: 0 }}>
-              <Text fw="bold">{`Day ${day.index}`}</Text>
-              <Text c="dimmed" size="sm">
+              <Text
+                fw="bold"
+                fz={{ base: "sm", sm: "md" }}
+              >{`Day ${day.index}`}</Text>
+              <Text c="dimmed" fz={{ base: "xs", sm: "sm" }}>
                 {formatDate(day.date, "ddd D MMM")}
               </Text>
             </Group>
-            <Divider flex={1} size="md" color="mint.1" />
+            <Divider
+              flex={1}
+              size={isSmallScreen ? "sm" : "md"}
+              styles={{
+                root: {
+                  "--divider-color":
+                    "light-dark(var(--mantine-color-mint-1), var(--mantine-color-mint-9))",
+                },
+              }}
+            />
             {day.total > 0 && (
-              <Text fw="bold" c="dimmed" size="sm" style={{ flexShrink: 0 }}>
+              <Text
+                fw="bold"
+                c="dimmed"
+                style={{ flexShrink: 0 }}
+                fz={{ base: "xs", sm: "sm" }}
+              >
                 {currency}
                 {day.total}
               </Text>
@@ -152,62 +190,81 @@ export const ActivitiesPanel = ({
           ) : (
             <>
               <Stack gap="xs">
-                {day.activities.map((activity) => (
+                {day.activities.map((activity, idx) => (
                   <>
                     <Group
-                      key={activity.id}
+                      key={`activity-${activity.id}`}
                       justify="space-between"
                       wrap="nowrap"
                       gap="sm"
                     >
-                      <Group gap="sm" wrap="nowrap" style={{ minWidth: 0 }}>
+                      <Group gap="sm" wrap="nowrap" miw={0}>
                         {activity.activity_time && (
                           <Badge
                             variant="light"
                             color="mint"
                             radius="sm"
                             p="xs"
-                            size="md"
+                            size={isSmallScreen ? "xs" : "md"}
                             bd="2px solid mint.4"
+                            miw="3.075rem"
                           >
                             {activity.activity_time.slice(0, 5)}
                           </Badge>
                         )}
-                        <Text fw={600} size="sm" truncate>
-                          {activity.name}
+                        <Text
+                          fw={600}
+                          size="sm"
+                          truncate
+                          fz={{ base: "xs", sm: "sm" }}
+                        >
+                          <Text
+                            fw="bold"
+                            component="span"
+                            c={ACTIVITY_TYPE_COLOR[activity.type]}
+                            tt="capitalize"
+                            fz={{ base: "xs", sm: "sm" }}
+                          >
+                            {activity.type}
+                          </Text>{" "}
+                          - {activity.name}
                         </Text>
                         {activity.link && (
                           <Anchor href={activity.link} target="_blank">
-                            <Group
-                              p={2}
-                              bdrs="sm"
-                              bd="2px solid peach.3"
-                              bg="peach.1"
+                            <ThemeIcon
+                              variant="filled"
+                              color="peach.3"
                               c="peach.8"
+                              radius="sm"
+                              size="sm"
+                              bd="2px solid peach.8"
+                              p={2}
                             >
                               <FaLink size="1rem" />
-                            </Group>
+                            </ThemeIcon>
                           </Anchor>
                         )}
                       </Group>
 
                       <Group gap="md" wrap="nowrap" style={{ flexShrink: 0 }}>
                         {activity.duration_minutes != null && (
-                          <Text size="sm" c="dimmed">
+                          <Text c="dimmed" fz={{ base: "xs", sm: "sm" }}>
                             {formatDuration(activity.duration_minutes)}
                           </Text>
                         )}
-                        <Text size="sm" fw="bold">
-                          {currency}
-                          {activity.cost}
-                        </Text>
+                        {activity.cost > 0 && (
+                          <Text fw="bold" fz={{ base: "xs", sm: "sm" }}>
+                            {currency}
+                            {activity.cost}
+                          </Text>
+                        )}
                         <CanEditTrip>
                           <Menu position="bottom-end" withinPortal shadow="md">
                             <Menu.Target>
                               <IconButton
                                 icon={<PiDotsThreeBold />}
                                 variant="ghost"
-                                size="sm"
+                                size={isSmallScreen ? "xs" : "sm"}
                                 aria-label="Activity options"
                               />
                             </Menu.Target>
@@ -231,7 +288,14 @@ export const ActivitiesPanel = ({
                         </CanEditTrip>
                       </Group>
                     </Group>
-                    <Divider flex={1} size="xs" />
+                    <Divider
+                      key={`divider-${activity.id}`}
+                      display={
+                        idx === day.activities.length - 1 ? "none" : "block"
+                      }
+                      flex={1}
+                      size="xs"
+                    />
                   </>
                 ))}
               </Stack>
@@ -245,7 +309,11 @@ export const ActivitiesPanel = ({
                       onClick={open}
                       size="xs"
                       fluid
-                      leftSection={<PiPlus />}
+                      leftSection={
+                        <PiPlus
+                          style={{ color: "var(--mantine-color-dimmed)" }}
+                        />
+                      }
                     >
                       <Text c="dimmed" size="xs">
                         {`Add to Day ${day.index}`}
@@ -254,6 +322,7 @@ export const ActivitiesPanel = ({
                   )}
                 />
               </CanEditTrip>
+              <Divider flex={1} size="xs" />
             </>
           )}
         </Stack>
@@ -269,45 +338,15 @@ export const ActivitiesPanel = ({
         onClose={closeEdit}
       />
 
-      <Modal
-        opened={deleteOpened}
-        onClose={closeDelete}
-        centered
-        size="sm"
-        title={
-          <Stack gap="xs">
-            <Box
-              p="sm"
-              bdrs="md"
-              bd="2px solid red.3"
-              bg="red.1"
-              w="2.75rem"
-              c="red.8"
-            >
-              <FaTrash />
-            </Box>
-            <Title order={4} lh={1} fw="bold">
-              Delete this activity?
-            </Title>
-          </Stack>
-        }
-      >
-        <Stack gap="md">
-          <Text size="sm" c="dimmed">
-            {deleteTarget
-              ? `Delete "${deleteTarget.name}"? This can't be undone.`
-              : "This can't be undone."}
-          </Text>
-          <SimpleGrid cols={2}>
-            <Button fluid variant="ghost" onClick={closeDelete}>
-              Cancel
-            </Button>
-            <Button fluid variant="danger" onClick={confirmDelete}>
-              Delete
-            </Button>
-          </SimpleGrid>
-        </Stack>
-      </Modal>
+      {deleteTarget && (
+        <DeleteModal
+          opened={deleteOpened}
+          close={closeDelete}
+          confirm={confirmDelete}
+          item="activity"
+          name={deleteTarget.name}
+        />
+      )}
     </Stack>
   );
 };

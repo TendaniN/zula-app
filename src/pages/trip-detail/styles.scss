@@ -1,20 +1,34 @@
 .mantine-Tabs-tab {
   color: var(--mantine-color-dimmed);
   font-size: var(--mantine-font-size-md);
+  font-weight: 600;
 
   &:hover,
   &[data-active] {
     color: var(--text-color);
     background-color: light-dark(
       var(--mantine-primary-color-1),
-      var(--mantine-color-dark-9)
+      var(--mantine-color-dark-4)
     );
+  }
+
+  &[data-active] {
+    font-weight: 700;
+  }
+
+  @media screen and (max-width: 75em) {
+    padding: 0.6rem 0.85rem;
+    font-size: var(--mantine-font-size-sm);
+  }
+
+  @media screen and (max-width: 34em) {
+    padding: 0.55rem 0.75rem;
   }
 }
 
 .link-button {
   background-color: var(--mantine-color-mint-5);
-  color: var(--border-color);
+  color: var(--mantine-color-dark-7);
   box-shadow: 0 2px 0 var(--mantine-color-mint-7);
   border: 2px solid var(--mantine-color-mint-7);
   border-radius: var(--mantine-radius-md);
@@ -29,6 +43,11 @@
 
   svg {
     margin: auto 0;
+  }
+
+  @media screen and (max-width: 75em) {
+    padding: 0.25rem 0.75rem;
+    font-size: var(--mantine-font-size-xs);
   }
 }
 

@@ -1,6 +1,6 @@
 .back-button {
   border-radius: var(--mantine-radius-md);
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -10,10 +10,14 @@
   text-decoration: none;
   font-size: var(--mantine-font-size-sm);
   background-color: transparent;
-  color: var(--mantine-primary-color-9);
-  border: 2px solid var(--mantine-primary-color-9);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
 
   svg {
     margin: auto 0;
+  }
+
+  &:hover {
+    box-shadow: var(--mantine-shadow-sm);
   }
 }

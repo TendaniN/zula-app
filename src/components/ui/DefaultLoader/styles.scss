@@ -1,0 +1,23 @@
+.app-loader__pin {
+  animation: app-loader-bob 1.4s ease-in-out infinite;
+  transform-origin: center bottom; // pivot from the pin's point, like it's planted
+}
+
+@keyframes app-loader-bob {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-8px) scale(1.05);
+    opacity: 0.7;
+  }
+}
+
+// Respect reduced-motion — fall back to a still logo, no bob.
+@media (prefers-reduced-motion: reduce) {
+  .app-loader__pin {
+    animation: none;
+  }
+}

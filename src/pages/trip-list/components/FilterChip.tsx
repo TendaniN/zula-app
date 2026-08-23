@@ -26,9 +26,10 @@ export const FilterChip = ({
         <Divider orientation="vertical" color="" />
         <Badge
           tt="capitalize"
-          color={active ? "peach.3" : "lavender.0"}
+          variant="outline"
+          bg={active ? "peach.3" : "transparent"}
           size="xl"
-          c={active ? "var(--text-color)" : "gray.6"}
+          c={active ? "var(--border-color)" : "dimmed"}
           py="md"
           px="lg"
           fz="sm"
@@ -49,10 +50,11 @@ export const FilterChip = ({
 
   return (
     <Badge
+      variant="outline"
       tt="capitalize"
-      color={active ? "lavender.3" : "lavender.0"}
+      bg={active ? "lavender.3" : "transparent"}
       size="xl"
-      c={active ? "var(--text-color)" : "gray.6"}
+      c={active ? "var(--border-color)" : "dimmed"}
       py="md"
       px="lg"
       fz="sm"

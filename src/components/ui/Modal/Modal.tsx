@@ -1,0 +1,67 @@
+import {
+  Group,
+  Modal as BaseModal,
+  Stack,
+  Text,
+  Title,
+  type MantineSize,
+} from "@mantine/core";
+import { IconButton } from "../Button/IconButton";
+import { LuX } from "react-icons/lu";
+
+interface ModalProps {
+  children: React.ReactNode;
+  opened: boolean;
+  close: () => void;
+  title: string;
+  description?: string;
+  size?: MantineSize | (string & {}) | number;
+}
+
+export const Modal = ({
+  opened,
+  close,
+  title,
+  description,
+  children,
+  size = "lg",
+}: ModalProps) => (
+  <BaseModal
+    opened={opened}
+    onClose={close}
+    padding={0}
+    title={null}
+    overlayProps={{ blur: 2 }}
+    size={size}
+  >
+    {/* Banner header */}
+    <Group
+      justify="space-between"
+      px="lg"
+      py="md"
+      bg="var(--mantine-color-lavender-1)"
+      style={{
+        borderBottom: "2px solid var(--border-color)",
+      }}
+    >
+      <Stack gap={0}>
+        <Title order={3} fw="bold" c="var(--border-color)">
+          {title}
+        </Title>
+        {description && (
+          <Text c="dimmed" size="sm">
+            {description}
+          </Text>
+        )}
+      </Stack>
+      <IconButton
+        icon={<LuX color="var(--border-color)" />}
+        variant="ghost"
+        aria-label="Close"
+        onClick={close}
+      />
+    </Group>
+
+    {children}
+  </BaseModal>
+);
