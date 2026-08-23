@@ -280,6 +280,76 @@ export type Database = {
           },
         ]
       }
+      pending_invites: {
+        Row: {
+          created_at: string
+          email: string
+          invited_by: string
+          redeemed_at: string | null
+          role: Database["public"]["Enums"]["member_role"]
+          trip_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          invited_by: string
+          redeemed_at?: string | null
+          role?: Database["public"]["Enums"]["member_role"]
+          trip_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          invited_by?: string
+          redeemed_at?: string | null
+          role?: Database["public"]["Enums"]["member_role"]
+          trip_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pending_invites_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_budget_plan"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "pending_invites_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_budget_summary"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "pending_invites_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_cost_summary"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "pending_invites_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_monthly_budget"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "pending_invites_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pending_invites_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           app_role: Database["public"]["Enums"]["app_role"]
@@ -777,7 +847,19 @@ export type Database = {
         Args: { p_trip_id: string; uid?: string }
         Returns: boolean
       }
+      invite_traveller: {
+        Args: {
+          p_email: string
+          p_role?: Database["public"]["Enums"]["member_role"]
+          p_trip_id: string
+        }
+        Returns: undefined
+      }
       is_admin: { Args: { uid?: string }; Returns: boolean }
+      is_trip_manager: {
+        Args: { p_trip_id: string; uid?: string }
+        Returns: boolean
+      }
       is_trip_member: {
         Args: { p_trip_id: string; uid?: string }
         Returns: boolean
@@ -787,6 +869,27 @@ export type Database = {
         Returns: boolean
       }
       location_trip_id: { Args: { p_location_id: string }; Returns: string }
+      redeem_pending_invites: { Args: never; Returns: string[] }
+      remove_member: {
+        Args: { p_trip_id: string; p_user_id: string }
+        Returns: undefined
+      }
+      resend_invite: {
+        Args: { p_email: string; p_trip_id: string }
+        Returns: undefined
+      }
+      revoke_invite: {
+        Args: { p_email: string; p_trip_id: string }
+        Returns: undefined
+      }
+      set_member_role: {
+        Args: {
+          p_role: Database["public"]["Enums"]["member_role"]
+          p_trip_id: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
       shares_trip_with: {
         Args: { other_uid: string; uid?: string }
         Returns: boolean
@@ -824,7 +927,7 @@ export type Database = {
         | "wellness"
         | "other"
       app_role: "admin" | "user"
-      member_role: "owner" | "member"
+      member_role: "owner" | "member" | "editor" | "viewer"
       transport_type:
         | "flight"
         | "train"
@@ -989,7 +1092,7 @@ export const Constants = {
         "other",
       ],
       app_role: ["admin", "user"],
-      member_role: ["owner", "member"],
+      member_role: ["owner", "member", "editor", "viewer"],
       transport_type: [
         "flight",
         "train",

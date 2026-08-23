@@ -198,7 +198,7 @@ export const ActivitiesPanel = ({
                       wrap="nowrap"
                       gap="sm"
                     >
-                      <Group gap="sm" wrap="nowrap" style={{ minWidth: 0 }}>
+                      <Group gap="sm" wrap="nowrap" miw={0}>
                         {activity.activity_time && (
                           <Badge
                             variant="light"

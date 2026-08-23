@@ -263,10 +263,10 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
               </ThemeIcon>
               <Stack gap={0}>
                 <Group>
-                  <Text size="xs" c="dimmed" fw={700}>
+                  <Text size="xs" c="dimmed" fw="bold">
                     {c.label}
                   </Text>
-                  <Text size="xs" c="dimmed" fw={700}>
+                  <Text size="xs" c="dimmed" fw="bold">
                     {pct}%
                   </Text>
                 </Group>
@@ -316,19 +316,19 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
           flex={1}
           w={768}
         >
-          <Text size="xs" fw={700} flex={1 / 5}>
+          <Text size="xs" fw="bold" flex={1 / 5}>
             Category
           </Text>
-          <Text size="xs" fw={700} flex={1 / 5}>
+          <Text size="xs" fw="bold" flex={1 / 5}>
             Type
           </Text>
-          <Text size="xs" fw={700} flex={1 / 5}>
+          <Text size="xs" fw="bold" flex={1 / 5}>
             Cost
           </Text>
-          <Text size="xs" fw={700} ta="center" flex={1 / 5}>
+          <Text size="xs" fw="bold" ta="center" flex={1 / 5}>
             Timespan
           </Text>
-          <Text size="xs" fw={700} ta="right" flex={1 / 5}>
+          <Text size="xs" fw="bold" ta="right" flex={1 / 5}>
             Monthly
           </Text>
         </Group>
@@ -352,7 +352,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
                   flexShrink: 0,
                 }}
               />
-              <Text fw={700} size="sm">
+              <Text fw="bold" size="sm">
                 {c.label}
               </Text>
             </Group>
@@ -383,7 +383,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
                 onClick={() => handleAdjust(c.key, 1)}
               />
             </Group>
-            <Text size="sm" fw={700} ta="right" flex={1 / 5}>
+            <Text size="sm" fw="bold" ta="right" flex={1 / 5}>
               {format(monthlyFor(c.cost, c.key))}
             </Text>
           </Group>
@@ -431,7 +431,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
         <Group>
           <Text
             size="sm"
-            fw={700}
+            fw="bold"
             style={{ flexShrink: 0, whiteSpace: "nowrap" }}
           >
             {`${savedPct}% saved`}

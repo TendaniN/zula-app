@@ -30,7 +30,6 @@ import {
   PiDotBold,
   PiMapPin,
   PiPaperPlaneTilt,
-  PiDownloadSimpleBold,
   PiDotsThreeBold,
 } from "react-icons/pi";
 import { useEffect, useState } from "react";
@@ -39,10 +38,12 @@ import { LocationCostPanel } from "../ui/LocationCostPanel";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDate } from "@/utils/date";
 import { ExportModal } from "../ExportModal";
-import { Button, IconButton, DeleteModal } from "../ui";
+import { IconButton, DeleteModal } from "../ui";
 import { TripModal } from "@/pages/trip-list/components/TripModal";
 import { CanEditTrip } from "../auth";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { ShareModal } from "../ShareModal";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function TripLayout() {
   const {
@@ -51,6 +52,9 @@ export default function TripLayout() {
     fetchTrip,
     loading: tripLoading,
     deleteTrip,
+    fetchMembers,
+    currentMembers,
+    currentInvites,
   } = useTripStore();
   const {
     locations,
@@ -58,6 +62,7 @@ export default function TripLayout() {
     accommodationFor,
     loading: locationsLoading,
   } = useLocationStore();
+  const currentUser = useAuthStore((s) => s.user);
   const activities = useActivityStore((s) => s.activities);
   const [searchParams] = useSearchParams();
 
@@ -111,6 +116,7 @@ export default function TripLayout() {
     const load = async (id: string) => {
       await fetchTrip(id);
       await fetchByTrip(id);
+      await fetchMembers(id);
       setInitialized(true);
     };
 
@@ -161,7 +167,7 @@ export default function TripLayout() {
 
           {/* content area: main column + cost panel beside it */}
           <Group align="flex-start" gap="lg" wrap="nowrap" pt="lg">
-            <Stack gap="lg" style={{ flex: 1, minWidth: 0 }}>
+            <Stack gap="lg" flex={1} miw={0}>
               {Array.from({ length: 3 }).map((_, i) => (
                 <Skeleton key={`card-skeleton-${i}`} height={110} radius="lg" />
               ))}
@@ -241,19 +247,16 @@ export default function TripLayout() {
             </Badge>
           </Group>
           <Group>
-            <ExportModal
-              trip={currentTripSummary}
-              trigger={(open) => (
-                <Button
-                  variant="ghost"
-                  leftSection={<PiDownloadSimpleBold />}
-                  onClick={open}
-                  size={isSmallScreen ? "sm" : "md"}
-                >
-                  Export
-                </Button>
-              )}
-            />
+            <CanEditTrip>
+              <ShareModal
+                trip={currentTrip}
+                members={currentMembers}
+                currentUserId={currentUser?.id}
+                pendingInvites={currentInvites}
+              />
+            </CanEditTrip>
+
+            <ExportModal trip={currentTripSummary} />
             <CanEditTrip>
               <Menu position="bottom-end" withinPortal shadow="md">
                 <Menu.Target>

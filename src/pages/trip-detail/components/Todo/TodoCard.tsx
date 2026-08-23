@@ -112,7 +112,7 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
                 direction={{ base: "column", sm: "row" }}
                 gap={{ base: 0, sm: "xs" }}
                 align={{ base: "flex-start", sm: "center" }}
-                style={{ minWidth: 0 }}
+                miw={0}
               >
                 <Text
                   fw="bold"
