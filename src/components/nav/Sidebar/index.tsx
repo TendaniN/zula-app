@@ -24,8 +24,12 @@ import {
 } from "react-icons/pi";
 import clsx from "clsx";
 import { useAuthStore } from "@/stores/authStore";
-import { CurrencySelect, IconButton, ThemeToggle } from "@/components/ui";
-import { FeedbackModal } from "../FeedbackModal";
+import {
+  CurrencySelect,
+  IconButton,
+  ThemeToggle,
+  FeedbackModal,
+} from "@/components";
 
 const MENU_ITEMS = [
   {

@@ -1,3 +1,4 @@
 import { Sidebar, SidebarDrawer } from "./Sidebar";
+import { FeedbackModal } from "./FeedbackModal";
 
-export { Sidebar, SidebarDrawer };
+export { FeedbackModal, Sidebar, SidebarDrawer };

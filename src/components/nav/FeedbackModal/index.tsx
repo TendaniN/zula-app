@@ -17,7 +17,6 @@ import { useAuthStore } from "@/stores/authStore";
 import { useFeedbackStore } from "@/stores/feedbackStore";
 import { FeedbackSchema, type FeedbackFormValues } from "./schema";
 
-// Short chip labels (the design uses one-word chips, not full sentences).
 const CATEGORY_OPTIONS = [
   { value: "bug", label: "Bug" },
   { value: "idea", label: "Idea" },
@@ -26,7 +25,6 @@ const CATEGORY_OPTIONS = [
   { value: "other", label: "Other" },
 ];
 
-// Good / Neutral / Rough, keeping the emoji alongside the label.
 const SENTIMENT_OPTIONS = [
   { value: "positive", label: "😊 Good" },
   { value: "neutral", label: "😐 Neutral" },
