@@ -25,6 +25,7 @@ import {
 import clsx from "clsx";
 import { useAuthStore } from "@/stores/authStore";
 import { CurrencySelect, IconButton, ThemeToggle } from "@/components/ui";
+import { FeedbackModal } from "../FeedbackModal";
 
 const MENU_ITEMS = [
   {
@@ -81,6 +82,7 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
             </Group>
           </Link>
         ))}
+        <FeedbackModal />
       </Stack>
       <Stack
         mt="auto"
