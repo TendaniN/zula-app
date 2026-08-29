@@ -12,8 +12,7 @@ import {
   TodoPanel,
   TransportPanel,
 } from "./components";
-import { Button } from "@/components/ui";
-import { CanEditTrip } from "@/components/auth";
+import { Button, CanEditTrip } from "@/components";
 
 export default function TripDetailPage() {
   const { currentTripSummary } = useTripStore();

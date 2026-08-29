@@ -12,7 +12,7 @@ import { FaPencil, FaPlus, FaRegTrashCan, FaStar } from "react-icons/fa6";
 import { TbDots } from "react-icons/tb";
 import { LuMoveRight } from "react-icons/lu";
 
-import { IconButton, Button, DeleteModal } from "@/components/ui";
+import { CanEditTrip, IconButton, Button, DeleteModal } from "@/components";
 import { getCountryFlag } from "@/utils/getCountryFlag";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";
@@ -21,7 +21,6 @@ import { LocationModal } from "./LocationModal";
 import { useLocationStore } from "@/stores/locationStore";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Link } from "react-router-dom";
-import { CanEditTrip } from "@/components/auth";
 import { formatDate } from "@/utils/date";
 
 const TYPE_COLOR: Record<Accommodation["type"], string> = {

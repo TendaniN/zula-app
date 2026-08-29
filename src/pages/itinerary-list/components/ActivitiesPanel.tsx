@@ -10,11 +10,10 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { ActivityModal } from "./ActivityModal";
-import { Button, IconButton, DeleteModal } from "@/components/ui";
+import { CanEditTrip, Button, IconButton, DeleteModal } from "@/components";
 import { PiPlus, PiDotsThreeBold } from "react-icons/pi";
 import { FaPencil, FaRegTrashCan, FaLink } from "react-icons/fa6";
 import dayjs from "dayjs";
-import { CanEditTrip } from "@/components/auth";
 import type { Activity, ActivityType, Location } from "@/types/models";
 import { calcNights } from "@/utils/calcNights";
 import { useCurrencyStore } from "@/stores/currencyStore";

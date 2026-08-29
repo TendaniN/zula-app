@@ -1,4 +1,4 @@
-import { IconButton, DeleteModal } from "@/components/ui";
+import { IconButton, DeleteModal, CanEditTrip } from "@/components";
 import { useCurrencyStore } from "@/stores/currencyStore";
 import type { Transport } from "@/types/models";
 import { formatDate } from "@/utils/date";
@@ -27,7 +27,6 @@ import {
   PiDotsThreeOutlineFill,
 } from "react-icons/pi";
 import { TransportModal } from "./TransportModal";
-import { CanEditTrip } from "@/components/auth";
 import { useTransportStore } from "@/stores/transportStore";
 
 const TYPE_COLOR: Record<Transport["type"], string> = {

@@ -1,4 +1,4 @@
-import { IconButton, DeleteModal } from "@/components/ui";
+import { IconButton, CanEditTrip, DeleteModal } from "@/components";
 import type { Todo } from "@/types/models";
 import { formatDate } from "@/utils/date";
 import {
@@ -15,7 +15,6 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
 import { PiDotsThreeOutlineFill } from "react-icons/pi";
-import { CanEditTrip } from "@/components/auth";
 import dayjs from "dayjs";
 import { TodoModal } from "./TodoModal";
 import { useTodoStore } from "@/stores/todoStore";
