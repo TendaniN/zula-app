@@ -31,8 +31,23 @@ const SENTIMENT_OPTIONS = [
   { value: "negative", label: "😞 Rough" },
 ];
 
-export const FeedbackModal = () => {
-  const [opened, { open, close }] = useDisclosure(false);
+interface FeedbackModalProps {
+  trigger?: (open: () => void) => React.ReactNode;
+  opened?: boolean;
+  onClose?: () => void;
+}
+
+export const FeedbackModal = ({
+  trigger,
+  opened: openedProp,
+  onClose,
+}: FeedbackModalProps) => {
+  const [uncontrolledOpened, { open, close: closeUncontrolled }] =
+    useDisclosure(false);
+
+  const isControlled = openedProp !== undefined;
+  const opened = isControlled ? openedProp : uncontrolledOpened;
+  const close = isControlled ? (onClose ?? (() => {})) : closeUncontrolled;
   const [submitted, setSubmitted] = useState(false);
 
   const profile = useAuthStore((s) => s.profile);
@@ -244,12 +259,16 @@ export const FeedbackModal = () => {
         )}
       </Modal>
 
-      <button className="sidebar__nav--item" onClick={open}>
-        <Group>
-          <PiChatCircleTextBold />
-          <Text fz="sm">Feedback</Text>
-        </Group>
-      </button>
+      {isControlled ? null : trigger ? (
+        trigger(open)
+      ) : (
+        <button className="sidebar__nav--item" onClick={open}>
+          <Group>
+            <PiChatCircleTextBold />
+            <Text fz="sm">Feedback</Text>
+          </Group>
+        </button>
+      )}
     </>
   );
 };

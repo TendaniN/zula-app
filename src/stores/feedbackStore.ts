@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { supabase } from "@/lib/supabase";
-import type { FeedbackFormValues } from "@/components/nav/FeedbackModal/schema";
+import type { FeedbackFormValues } from "@/components/FeedbackModal/schema";
 
 // App version stamped on every row so a report from 0.4.1 isn't chased in
 // 0.5.0 code. Vite inlines this from package.json at build time — see the
