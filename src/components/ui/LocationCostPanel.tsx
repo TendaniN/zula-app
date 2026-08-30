@@ -66,17 +66,17 @@ export const LocationCostPanel = ({
       component="aside"
       aria-label={`${city} cost breakdown`}
       gap={0}
+      w={expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH}
+      miw={expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH}
+      pos="relative"
+      bdrs="lg"
+      bd="2px solid var(--border-color)"
+      bg="var(--surface-color)"
       style={{
         boxShadow: `0 4px 0 var(--bg-secondary)`,
-        width: expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
-        minWidth: expanded ? EXPANDED_WIDTH : COLLAPSED_WIDTH,
         flexShrink: 0,
-        position: "relative",
         overflow: "hidden",
         alignSelf: "flex-start",
-        borderRadius: "var(--mantine-radius-lg)",
-        border: "2px solid var(--border-color)",
-        background: "var(--surface-color)",
         transition: `width ${WIDTH_MS}ms cubic-bezier(0.4, 0, 0.2, 1), min-width ${WIDTH_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
       }}
     >
@@ -97,8 +97,8 @@ export const LocationCostPanel = ({
           justify="space-between"
           px="md"
           py="sm"
+          bg="mint.4"
           style={{
-            background: "var(--mantine-color-mint-4)",
             borderBottom: "2px solid var(--border-color)",
           }}
         >
@@ -138,9 +138,9 @@ export const LocationCostPanel = ({
         py="md"
         bg="mint.3"
         pos={expanded ? "absolute" : "static"}
+        w={COLLAPSED_WIDTH}
+        opacity={expanded ? 0 : 1}
         style={{
-          width: COLLAPSED_WIDTH,
-          opacity: expanded ? 0 : 1,
           pointerEvents: "none",
           inset: 0,
           transition: `opacity ${FADE_MS}ms ease`,

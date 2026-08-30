@@ -30,11 +30,9 @@ export default function LogoutPage() {
     <BackgroundImage
       src={colorScheme === "dark" ? wallpaperDarkImg : wallpaperLightImg}
       flex={1}
-      style={{
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-      }}
+      bgp="center"
+      bgsz="cover"
+      bgr="no-repeat"
     >
       <Group h="calc(100dvh - 4px)" gap={0} justify="center">
         <Center>

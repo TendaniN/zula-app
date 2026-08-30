@@ -96,7 +96,7 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
           color={`${TYPE_COLOR[getTodoType()]}.3`}
         />
         <Group justify="space-between" flex={1} wrap="nowrap" gap="xs">
-          <Group gap="xs" wrap="nowrap" style={{ flex: 1, minWidth: 0 }}>
+          <Group gap="xs" wrap="nowrap" flex={1} miw={0}>
             <Checkbox.Indicator
               style={{ cursor: "pointer", flexShrink: 0 }}
               variant="filled"

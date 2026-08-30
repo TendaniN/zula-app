@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { AppLayout, DefaultLayout, AuthLayout } from "@/components/layouts";
 import { lazy, Suspense } from "react";
 import { DefaultLoader } from "@/components/ui/DefaultLoader";
+import HelpPage from "./help";
 
 const TripLayout = lazy(() => import("@/components/layouts/TripLayout"));
 const TripListPage = lazy(() => import("./trip-list"));
@@ -36,6 +37,7 @@ export default function Pages() {
                 element={<ItineraryListPage />}
               />
             </Route>
+            <Route path="help" element={<HelpPage />} />
           </Route>
           <Route path="logout" element={<LogoutPage />} />
         </Route>

@@ -225,15 +225,10 @@ export default function TripLayout() {
   };
 
   return (
-    <Stack p={0} gap={0} h="100%" style={{ minHeight: 0 }}>
+    <Stack p={0} gap={0} h="100%" mih={0}>
       <Breadcrumbs trip={currentTripSummary} tab="Stays & itinerary" />
 
-      <Stack
-        px={{ base: "lg", sm: "xl" }}
-        pt="sm"
-        w="100%"
-        style={{ flex: 1, minHeight: 0 }}
-      >
+      <Stack px={{ base: "lg", sm: "xl" }} pt="sm" w="100%" mih={0} flex={1}>
         <Group justify="space-between">
           <Group>
             <Title fw="bold">{currentTripSummary.name}</Title>

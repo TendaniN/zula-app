@@ -288,10 +288,8 @@ export const LocationModal = ({
               <Stack
                 gap="md"
                 p="md"
-                style={{
-                  border: "2px solid var(--border-color)",
-                  borderRadius: "var(--mantine-radius-md)",
-                }}
+                bdrs="md"
+                bd="2px solid var(--border-color)"
               >
                 <SimpleGrid cols={{ base: 1, xs: 2 }}>
                   <form.Field name="accommodation.name">
