@@ -317,7 +317,10 @@ export default function TripLayout() {
             flexDirection: "column",
           }}
         >
-          <Tabs.List style={{ borderBottom: "2px solid var(--border-color)" }}>
+          <Tabs.List
+            style={{ borderBottom: "2px solid var(--border-color)" }}
+            data-tour="trip-tabs"
+          >
             {TRIP_TABS_MAP.map(({ icon, label }) => (
               <Tabs.Tab key={`tab-${label}`} value={label} leftSection={icon}>
                 {label}
@@ -342,6 +345,7 @@ export default function TripLayout() {
                     display={{ base: "none", sm: "flex" }}
                     component="aside"
                     aria-label="Trip costs"
+                    data-tour="trip-cost"
                   >
                     <TripCostPanel
                       summary={currentTripSummary}

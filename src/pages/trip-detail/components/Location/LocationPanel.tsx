@@ -20,7 +20,11 @@ export const LocationPanel = ({ tripId }: LocationPanelProps) => {
           <LocationModal
             tripId={tripId}
             trigger={(open) => (
-              <Button onClick={open} leftSection={<PiPlus />}>
+              <Button
+                onClick={open}
+                leftSection={<PiPlus />}
+                data-tour="add-stay"
+              >
                 Add a stay
               </Button>
             )}

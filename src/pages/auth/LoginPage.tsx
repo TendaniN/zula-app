@@ -16,11 +16,13 @@ import { useForm } from "@tanstack/react-form";
 import { LoginSchema } from "./schema";
 import { Button } from "@/components/ui";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { useOnboardStore } from "@/stores/onboardStore";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
+  const refresh = useOnboardStore((s) => s.refresh);
   const { signInWithPassword, user, error } = useAuthStore();
 
   const [formErrors, setFormErrors] = useState("");
@@ -46,11 +48,13 @@ export default function LoginPage() {
   useEffect(() => {
     if (!user) return;
 
+    refresh(user.id);
+
     const next = searchParams.get("next");
     const isInternal = !!next && next.startsWith("/") && !next.startsWith("//");
 
     navigate(isInternal ? next : "/trips", { replace: true });
-  }, [navigate, user, searchParams]);
+  }, [navigate, user, searchParams, refresh]);
 
   return (
     <Stack gap={0} h="100%">
