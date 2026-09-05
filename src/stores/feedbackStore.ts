@@ -63,16 +63,3 @@ export const useFeedbackStore = create<FeedbackState>((set) => ({
 
   clearError: () => set({ error: null }),
 }));
-
-/*
- * __APP_VERSION__ needs to be defined in vite.config.ts:
- *
- *   import pkg from "./package.json";
- *   export default defineConfig({
- *     define: { __APP_VERSION__: JSON.stringify(pkg.version) },
- *     ...
- *   });
- *
- * (importing package.json needs "resolveJsonModule": true in tsconfig, which
- *  Vite projects usually already have.)
- */

@@ -308,12 +308,14 @@ export const ShareModal = ({
           icon={<PiShareNetworkBold />}
           onClick={open}
           aria-label="Share trip"
+          data-tour="share-trip"
         />
       ) : (
         <Button
           variant="tertiary"
           leftSection={<PiShareNetworkBold />}
           onClick={open}
+          data-tour="share-trip"
         >
           Share
         </Button>

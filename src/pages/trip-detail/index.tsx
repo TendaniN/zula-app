@@ -62,7 +62,11 @@ export default function TripDetailPage() {
             <LocationModal
               tripId={tripId}
               trigger={(open) => (
-                <Button leftSection={<PiPlus />} onClick={open}>
+                <Button
+                  leftSection={<PiPlus />}
+                  onClick={open}
+                  data-tour="add-stay"
+                >
                   Add your first stay
                 </Button>
               )}

@@ -247,19 +247,7 @@ export default function HelpPage() {
                       Five coach-marks over a real trip: trips list, tabs,
                       stays, costs, sharing.
                     </Text>
-                    <Button
-                      leftSection={<PiPlayCircleBold />}
-                      fluid
-                      onClick={() =>
-                        setLightbox({
-                          title: "The 60-second tour",
-                          blurb:
-                            "Five coach-marks over a real trip: trips list, tabs, stays, costs, sharing.",
-                          gif: tourLoopGif,
-                          gifMobile: tourLoopMobileGif,
-                        })
-                      }
-                    >
+                    <Button leftSection={<PiPlayCircleBold />} fluid>
                       Start the tour
                     </Button>
                   </Stack>
