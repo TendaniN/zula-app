@@ -5,8 +5,7 @@ import pkg from "./package.json" with { type: "json" };
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/zula/",
-  define: { __APP_VERSION__: JSON.stringify(pkg.version) },
+  base: "/zula-app/",
   resolve: {
     alias: {
       "@": resolve(import.meta.dirname, "./src"),
