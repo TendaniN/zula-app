@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="https://tendanin.github.io/zula/">
+  <a href="https://tendanin.github.io/zula-app/">
     <img src="https://img.shields.io/badge/live-demo-82A895" />
   </a>
 </p>
@@ -76,8 +76,8 @@ The `admin` / `user` distinction is a global role on the user's profile; the `ow
 ### 1. Install
 
 ```bash
-git clone <your-repo-url> zula
-cd zula
+git clone <your-repo-url> zula-app
+cd zula-app
 npm install
 ```
 
@@ -173,12 +173,12 @@ trips    ─1─(0..1) budget_configs          (per-trip savings-plan config)
 
 ## Deployment
 
-The app deploys as a static SPA to **GitHub Pages** (milestone 0.4.0). Because it's served from a sub-path, the router runs with `basename="/zula"` and Vite's `base` is set to `/zula/`. This also needs a client-routing 404 fallback, a GitHub Actions build/deploy workflow, and the Pages URL added to Supabase's allowed auth redirect URLs.
+The app deploys as a static SPA to **GitHub Pages** (milestone 0.4.0). Because it's served from a sub-path, the router runs with `basename="zula-app"` and Vite's `base` is set to `/zula-app/`. This also needs a client-routing 404 fallback, a GitHub Actions build/deploy workflow, and the Pages URL added to Supabase's allowed auth redirect URLs.
 
 ```tsx
 <MantineProvider theme={theme}>
   <Notifications />
-  <BrowserRouter basename="/zula">
+  <BrowserRouter basename="zula-app">
     <Pages />
   </BrowserRouter>
 </MantineProvider>
