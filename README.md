@@ -120,18 +120,29 @@ npm run dev
 
 ## Project structure
 
-Feature-first: shared plumbing lives at the top of `src/`, and each domain is a self-contained `features/<domain>/` folder (`api.ts` → `store.ts` → `components/` → `pages/`).
+Routing-first: `pages/` holds one folder per route (each with its own `index.tsx` page and any page-local components), and shared plumbing lives in sibling top-level folders.
 
 ```
 src/
+├── pages/        one folder per route
+│   ├── index.tsx      the <Routes> tree (Pages)
+│   ├── auth/          login · register · logout
+│   ├── trip-list/     "My trips"
+│   ├── trip-detail/   a single trip
+│   ├── itinerary-list/ a stay's day-by-day itinerary
+│   ├── help/          help & support page
+│   └── user-profile/  account, preferences, session
+├── components/   layouts, access guards, shared UI (buttons, modals, loaders)
+├── stores/       Zustand: auth, currency, and per-feature server-data stores
+├── schemas/      Zod form schemas (single source of truth for form values)
+├── hooks/        usePermissions (RBAC), and other shared hooks
 ├── lib/          supabase client, dayjs setup
-├── types/        generated DB types + app-facing model aliases
-├── stores/       Zustand: auth, ui/filters, and per-feature server-data stores
-├── hooks/        useAuth, usePermissions (RBAC)
-├── components/   layout, guards, form field adapters, shared UI
-├── features/     auth · trips · locations · activities · transport · todos · budget
-└── utils/        formatting, error handling, export (pdf/pptx/xlsx)
+├── types/        generated DB types (database.types.ts) + model aliases
+├── utils/        formatting, exports (pdf/pptx/xlsx), permissions, helpers
+├── constants/    enums-derived constants (status, budget defaults, …)
+└── assets/       logo, wallpapers, help GIFs
 ```
+
 
 ## Data model
 
@@ -183,7 +194,7 @@ feedback                                    (standalone; optional trip/user refs
 | **0.2.0** ✅ | Mock data removed; Supabase auth, RLS, and cost/budget views working |
 | **0.3.0** ✅ | Theme toggling (light/dark/auto) and full responsiveness complete |
 | **0.4.0** 🚧 | *(current)* Beta-ready: sharing, help pages, feedback, onboarding, and a live GitHub Pages deploy |
-| **0.5.0** | Hardening & delight: tooling/CI, error logging, and traveller features (countdowns, packing lists, departure checklists, calendar export) |
+| **0.5.0** | Hardening & delight: tooling/CI, error logging (Sentry), and traveller features (countdowns, packing lists, departure checklists, calendar export) |
 | **1.0.0** | Beta feedback implemented; ready to expand the user base            |
 
 ## Deployment
