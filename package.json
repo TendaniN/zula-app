@@ -8,7 +8,20 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "gen:types": "supabase gen types typescript --project-id bneffjsakfyqwlehbido > src/types/database.types.ts"
+    "gen:types": "supabase gen types typescript --project-id bneffjsakfyqwlehbido > src/types/database.types.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc -b --noEmit",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,scss,html,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@mantine/core": "^9.5.1",
@@ -41,9 +54,12 @@
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.5",
     "eslint": "^10.8.1",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.9.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.0",
     "prettier": "^3.9.5",
     "sass": "^1.102.0",
     "supabase": "^2.113.0",

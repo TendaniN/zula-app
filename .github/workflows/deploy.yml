@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 on:
   push:
-    branches: [master]        # your release branch
-  workflow_dispatch:          # lets you trigger manually too
+    branches: [master] # your release branch
+  workflow_dispatch: # lets you trigger manually too
 
 permissions:
   contents: read
@@ -21,11 +21,14 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: npm }
       - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
       - run: npm run build
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-      - run: cp dist/index.html dist/404.html    # SPA client-routing fallback
+      - run: cp dist/index.html dist/404.html # SPA client-routing fallback
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }
