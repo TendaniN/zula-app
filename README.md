@@ -1,4 +1,5 @@
 # Zula
+
 <p align="center">
   <img src="src/assets/logo.svg" alt="Zula" width="200" />
 </p>
@@ -19,7 +20,7 @@
 
 > **Packed bags. Packed itinerary.**
 
-Zula (from the Zulu *izula*, "to wander") is a trip-planning app. Build a trip out of stays, plan what you'll do in each city, track how you'll get around, tick off a pre-trip checklist, and watch the costs add up automatically, then share it with fellow travellers.
+Zula (from the Zulu _izula_, "to wander") is a trip-planning app. Build a trip out of stays, plan what you'll do in each city, track how you'll get around, tick off a pre-trip checklist, and watch the costs add up automatically, then share it with fellow travellers.
 
 ---
 
@@ -40,30 +41,30 @@ Zula (from the Zulu *izula*, "to wander") is a trip-planning app. Build a trip o
 
 ## Roles & permissions
 
-| Role        | Scope of visible trips   | What they can do                                        |
-|-------------|--------------------------|---------------------------------------------------------|
-| **Admin**   | Every trip               | Edit any trip, any status                               |
-| **Owner**   | Trips they created        | Full control; edit while `planning`/`active`/`archived`, read-only once `completed` (an admin can reopen) |
-| **Editor**  | Trips shared with them    | Add and change trip content; can't manage members or delete the trip |
-| **Viewer**  | Trips shared with them    | Read-only                                               |
+| Role       | Scope of visible trips | What they can do                                                                                          |
+| ---------- | ---------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Admin**  | Every trip             | Edit any trip, any status                                                                                 |
+| **Owner**  | Trips they created     | Full control; edit while `planning`/`active`/`archived`, read-only once `completed` (an admin can reopen) |
+| **Editor** | Trips shared with them | Add and change trip content; can't manage members or delete the trip                                      |
+| **Viewer** | Trips shared with them | Read-only                                                                                                 |
 
 The `admin` / `user` distinction is a global role on the user's profile; `owner` / `editor` / `viewer` are per-trip roles. Access is enforced in the database via Row Level Security — the frontend mirrors the same rules only to decide which controls to render.
 
 ## Tech stack
 
-| Layer         | Choice                                                    |
-|---------------|-----------------------------------------------------------|
-| Language      | TypeScript                                                |
-| UI            | React 19 + [Mantine](https://mantine.dev) v9              |
-| Build/dev     | Vite                                                      |
-| Routing       | React Router — **Declarative mode** (`<BrowserRouter>` + `<Routes>`) |
-| State         | [Zustand](https://zustand.docs.pmnd.rs) (client/UI **and** server data via feature stores) |
-| Forms         | [TanStack Form](https://tanstack.com/form) + [Zod](https://zod.dev) 4 |
-| Dates         | Day.js                                                    |
-| Onboarding    | [driver.js](https://driverjs.com) (guided tour)          |
-| Exports       | pdfmake (PDF) · pptxgenjs (PPTX) · [ExcelJS](https://github.com/exceljs/exceljs) (XLSX) |
-| Backend       | [Supabase](https://supabase.com) (Postgres + Auth + RLS)  |
-| Hosting       | GitHub Pages (static SPA, GitHub Actions deploy)          |
+| Layer      | Choice                                                                                     |
+| ---------- | ------------------------------------------------------------------------------------------ |
+| Language   | TypeScript                                                                                 |
+| UI         | React 19 + [Mantine](https://mantine.dev) v9                                               |
+| Build/dev  | Vite                                                                                       |
+| Routing    | React Router — **Declarative mode** (`<BrowserRouter>` + `<Routes>`)                       |
+| State      | [Zustand](https://zustand.docs.pmnd.rs) (client/UI **and** server data via feature stores) |
+| Forms      | [TanStack Form](https://tanstack.com/form) + [Zod](https://zod.dev) 4                      |
+| Dates      | Day.js                                                                                     |
+| Onboarding | [driver.js](https://driverjs.com) (guided tour)                                            |
+| Exports    | pdfmake (PDF) · pptxgenjs (PPTX) · [ExcelJS](https://github.com/exceljs/exceljs) (XLSX)    |
+| Backend    | [Supabase](https://supabase.com) (Postgres + Auth + RLS)                                   |
+| Hosting    | GitHub Pages (static SPA, GitHub Actions deploy)                                           |
 
 > **On data fetching:** Zula does not use TanStack Query. Server rows are read and cached in per-feature **Zustand** stores (`tripStore`, `locationStore`, `activityStore`, `transportStore`, `budgetStore`, `feedbackStore`, …) that call `supabase-js` directly. Forms are owned by **TanStack Form** with Zod schemas as the single source of truth for values and validation.
 
@@ -143,7 +144,6 @@ src/
 └── assets/       logo, wallpapers, help GIFs
 ```
 
-
 ## Data model
 
 ```
@@ -157,7 +157,7 @@ trips    ─1─* pending_invites              (email invites awaiting sign-in)
 feedback                                    (standalone; optional trip/user refs)
 ```
 
-**`budget_configs`** is the one piece of *stored* budget state: the savings window (in months) for each category — `accommodation_months`, `activities_months`, `transport_months`, `buffer_months` — one row per trip. It intentionally stores no costs; those come from the views below. Monthly targets and "saved so far" are computed from these months + the view costs + the trip's start date. Writes are owner/admin only via RLS; any trip member can read.
+**`budget_configs`** is the one piece of _stored_ budget state: the savings window (in months) for each category — `accommodation_months`, `activities_months`, `transport_months`, `buffer_months` — one row per trip. It intentionally stores no costs; those come from the views below. Monthly targets and "saved so far" are computed from these months + the view costs + the trip's start date. Writes are owner/admin only via RLS; any trip member can read.
 
 **`pending_invites`** holds email invitations to a trip that haven't been redeemed yet. When the invited person signs in with that email, the invite is converted into a `trip_members` row and marked redeemed.
 
@@ -169,15 +169,15 @@ feedback                                    (standalone; optional trip/user refs
 - `trip_cost_summary`: `Σ location totals + Σ transport costs`
 - `trip_budget_summary`: the budget table: `buffer + accommodation + activities + travel`, split by category, per trip
 - `trip_summary`: derived trip start/end dates, distinct `countries[]`, and the budget totals (the row the app maps to its `TripSummary` type)
-- `trip_monthly_budget` *(optional)*: server-side monthly split; the export utilities also compute this client-side
-- `trip_budget_plan` *(optional)*: joins the saved per-category months from `budget_configs` onto the `trip_summary` costs, so one query returns everything the Budget panel needs
+- `trip_monthly_budget` _(optional)_: server-side monthly split; the export utilities also compute this client-side
+- `trip_budget_plan` _(optional)_: joins the saved per-category months from `budget_configs` onto the `trip_summary` costs, so one query returns everything the Budget panel needs
 
 ---
 
 ## Scripts
 
 | Script              | Description                                  |
-|---------------------|----------------------------------------------|
+| ------------------- | -------------------------------------------- |
 | `npm run dev`       | Start the Vite dev server                    |
 | `npm run build`     | Type-check and build for production          |
 | `npm run preview`   | Preview the production build                 |
@@ -188,14 +188,14 @@ feedback                                    (standalone; optional trip/user refs
 
 ## Roadmap
 
-| Milestone | Outcome                                                              |
-|-----------|---------------------------------------------------------------------|
-| **0.1.0** ✅ | All pages and components built, running on mock data             |
-| **0.2.0** ✅ | Mock data removed; Supabase auth, RLS, and cost/budget views working |
-| **0.3.0** ✅ | Theme toggling (light/dark/auto) and full responsiveness complete |
-| **0.4.0** 🚧 | *(current)* Beta-ready: sharing, help pages, feedback, onboarding, and a live GitHub Pages deploy |
-| **0.5.0** | Hardening & delight: tooling/CI, error logging (Sentry), and traveller features (countdowns, packing lists, departure checklists, calendar export) |
-| **1.0.0** | Beta feedback implemented; ready to expand the user base            |
+| Milestone    | Outcome                                                                                                                                            |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0.1.0** ✅ | All pages and components built, running on mock data                                                                                               |
+| **0.2.0** ✅ | Mock data removed; Supabase auth, RLS, and cost/budget views working                                                                               |
+| **0.3.0** ✅ | Theme toggling (light/dark/auto) and full responsiveness complete                                                                                  |
+| **0.4.0** 🚧 | _(current)_ Beta-ready: sharing, help pages, feedback, onboarding, and a live GitHub Pages deploy                                                  |
+| **0.5.0**    | Hardening & delight: tooling/CI, error logging (Sentry), and traveller features (countdowns, packing lists, departure checklists, calendar export) |
+| **1.0.0**    | Beta feedback implemented; ready to expand the user base                                                                                           |
 
 ## Deployment
 

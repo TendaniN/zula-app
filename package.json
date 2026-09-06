@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "gen:types": "supabase gen types typescript --project-id bneffjsakfyqwlehbido > src/types/database.types.ts"
+    "gen:types": "supabase gen types typescript --project-id bneffjsakfyqwlehbido > src/types/database.types.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@mantine/core": "^9.5.1",
