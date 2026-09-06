@@ -35,6 +35,8 @@ import {
 import { useOnboardStore } from "@/stores/onboardStore";
 import { startTour } from "@/stores/tour";
 
+declare const __APP_VERSION__: string;
+
 const MENU_ITEMS = [
   {
     to: "/trips",
@@ -72,12 +74,18 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
 
   return (
     <Stack h="100%" p="md" className="sidebar" gap="xl">
-      <Group gap="xs">
-        <Image w={24} src={logoImg} alt="Zula" />
-        <Title order={3} fw="bold">
-          zula
-        </Title>
+      <Group gap={0} justify="space-between">
+        <Group gap="xs">
+          <Image w={24} src={logoImg} alt="Zula" />
+          <Title order={3} fw="bold">
+            zula
+          </Title>
+        </Group>
+        {typeof __APP_VERSION__ !== "undefined" && (
+          <Text c="dimmed" fz={11} ta="right">{`v${__APP_VERSION__}`}</Text>
+        )}
       </Group>
+
       <Stack gap="xs" className="sidebar__nav">
         {MENU_ITEMS.map(({ to, label, icon, tour }) => (
           <Link
