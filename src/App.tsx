@@ -21,7 +21,7 @@ function App() {
     <MantineProvider theme={theme}>
       <DatesProvider settings={{ firstDayOfWeek: 1 }}>
         <Notifications />
-        <BrowserRouter basename="zula">
+        <BrowserRouter basename="zula-app">
           <Pages />
         </BrowserRouter>
       </DatesProvider>
