@@ -12,8 +12,7 @@ import {
   TodoPanel,
   TransportPanel,
 } from "./components";
-import { Button } from "@/components/ui";
-import { CanEditTrip } from "@/components/auth";
+import { Button, CanEditTrip } from "@/components";
 
 export default function TripDetailPage() {
   const { currentTripSummary } = useTripStore();
@@ -63,7 +62,11 @@ export default function TripDetailPage() {
             <LocationModal
               tripId={tripId}
               trigger={(open) => (
-                <Button leftSection={<PiPlus />} onClick={open}>
+                <Button
+                  leftSection={<PiPlus />}
+                  onClick={open}
+                  data-tour="add-stay"
+                >
                   Add your first stay
                 </Button>
               )}

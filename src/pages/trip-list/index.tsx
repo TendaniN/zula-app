@@ -86,7 +86,11 @@ export default function TripListPage() {
             </Text>
             <TripModal
               trigger={(open) => (
-                <Button rightSection={<PiArrowRight />} onClick={open}>
+                <Button
+                  rightSection={<PiArrowRight />}
+                  onClick={open}
+                  data-tour="new-trip"
+                >
                   Plan your first trip
                 </Button>
               )}

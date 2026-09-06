@@ -1,7 +1,7 @@
 {
   "name": "zula-app",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -22,6 +22,7 @@
     "country-flag-icons": "^1.6.20",
     "currency-codes": "^2.2.0",
     "dayjs": "^1.11.21",
+    "driver.js": "^1.8.0",
     "exceljs": "^4.4.0",
     "pdfmake": "^0.3.11",
     "pptxgenjs": "^4.0.1",

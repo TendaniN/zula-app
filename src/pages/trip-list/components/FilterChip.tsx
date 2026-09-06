@@ -23,7 +23,7 @@ export const FilterChip = ({
   if (id === "archived") {
     return (
       <>
-        <Divider orientation="vertical" color="" />
+        <Divider orientation="vertical" />
         <Badge
           tt="capitalize"
           variant="outline"

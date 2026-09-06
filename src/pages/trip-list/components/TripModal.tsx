@@ -116,6 +116,7 @@ export const TripModal = ({
             e.stopPropagation();
             form.handleSubmit();
           }}
+          data-tour="trip-modal"
         >
           <Stack gap="md" p="lg">
             <form.Field name="name">
@@ -226,7 +227,11 @@ export const TripModal = ({
       {isControlled ? null : trigger ? (
         trigger(open)
       ) : (
-        <Button onClick={open} leftSection={isEdit ? <LuPencil /> : <LuPlus />}>
+        <Button
+          onClick={open}
+          leftSection={isEdit ? <LuPencil /> : <LuPlus />}
+          data-tour="new-trip"
+        >
           {isEdit ? "Edit trip" : "New trip"}
         </Button>
       )}
