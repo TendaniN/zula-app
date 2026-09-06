@@ -205,7 +205,6 @@ The app deploys as a static SPA to **GitHub Pages** via a GitHub Actions workflo
 - the Supabase URL and anon key provided as **repo secrets** to the build;
 - the Pages URL added to Supabase's **allowed auth redirect URLs**, or login/signup redirects fail on the live site.
 
-
 ```tsx
 <MantineProvider theme={theme}>
   <Notifications />
