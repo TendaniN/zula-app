@@ -3,6 +3,7 @@ import { AppLayout, DefaultLayout, AuthLayout } from "@/components/layouts";
 import { lazy, Suspense } from "react";
 import { DefaultLoader } from "@/components/ui/DefaultLoader";
 import HelpPage from "./help";
+import UserProfilePage from "./user-profile";
 
 const TripLayout = lazy(() => import("@/components/layouts/TripLayout"));
 const TripListPage = lazy(() => import("./trip-list"));
@@ -38,6 +39,7 @@ export default function Pages() {
               />
             </Route>
             <Route path="help" element={<HelpPage />} />
+            <Route path="profile" element={<UserProfilePage />} />
           </Route>
           <Route path="logout" element={<LogoutPage />} />
         </Route>
