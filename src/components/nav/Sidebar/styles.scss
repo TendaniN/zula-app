@@ -4,6 +4,8 @@
   &__nav {
     &--item {
       padding: 0.5rem 0.75rem;
+      background-color: transparent;
+      cursor: pointer;
       border-radius: var(--mantine-radius-md);
       border: 2px solid transparent;
       color: light-dark(

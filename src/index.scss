@@ -31,6 +31,61 @@ body {
       background-color: var(--mantine-color-lavender-3);
     }
   }
+
+  // Onboarding Popover
+  .onboarding-popover {
+    font-family: var(--mantine-font-family);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    background: var(--surface-color);
+    border-radius: var(--mantine-radius-lg);
+
+    .driver-popover-progress-text {
+      color: var(--text-color);
+    }
+
+    .driver-popover-description {
+      font-size: var(--mantine-font-size-sm);
+      line-height: 1;
+    }
+
+    button {
+      border-radius: var(--mantine-radius-md);
+      font-size: var(--mantine-font-size-sm);
+      padding: 0.375rem 0.875rem;
+      width: fit-content;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 700;
+
+      &.driver-popover-next-btn {
+        background-color: var(--mantine-primary-color-5);
+        color: var(--mantine-color-dark-7);
+        border: 2px solid var(--mantine-primary-color-7);
+      }
+
+      &.driver-popover-prev-btn {
+        background-color: transparent;
+        color: var(--text-color);
+        border: 2px solid var(--mantine-primary-color-7);
+      }
+
+      &.driver-popover-close-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        padding: 0.1rem;
+        font-weight: 600;
+        line-height: 1rem;
+        font-size: 1rem;
+        background-color: transparent;
+        color: var(--text-color);
+      }
+    }
+  }
 }
 
 h1,

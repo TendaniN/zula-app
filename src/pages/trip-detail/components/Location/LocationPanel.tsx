@@ -1,11 +1,10 @@
 import { Group, Stack, Text } from "@mantine/core";
 
-import { Button } from "@/components/ui";
+import { Button, CanEditTrip } from "@/components";
 import { useLocationStore } from "@/stores/locationStore";
 import { LocationModal } from "./LocationModal";
 import { LocationCard } from "./LocationCard";
 import { PiPlus } from "react-icons/pi";
-import { CanEditTrip } from "@/components/auth";
 
 interface LocationPanelProps {
   tripId: string;
@@ -21,7 +20,11 @@ export const LocationPanel = ({ tripId }: LocationPanelProps) => {
           <LocationModal
             tripId={tripId}
             trigger={(open) => (
-              <Button onClick={open} leftSection={<PiPlus />}>
+              <Button
+                onClick={open}
+                leftSection={<PiPlus />}
+                data-tour="add-stay"
+              >
                 Add a stay
               </Button>
             )}

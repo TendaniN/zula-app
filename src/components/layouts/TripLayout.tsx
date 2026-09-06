@@ -225,15 +225,10 @@ export default function TripLayout() {
   };
 
   return (
-    <Stack p={0} gap={0} h="100%" style={{ minHeight: 0 }}>
+    <Stack p={0} gap={0} h="100%" mih={0}>
       <Breadcrumbs trip={currentTripSummary} tab="Stays & itinerary" />
 
-      <Stack
-        px={{ base: "lg", sm: "xl" }}
-        pt="sm"
-        w="100%"
-        style={{ flex: 1, minHeight: 0 }}
-      >
+      <Stack px={{ base: "lg", sm: "xl" }} pt="sm" w="100%" mih={0} flex={1}>
         <Group justify="space-between">
           <Group>
             <Title fw="bold">{currentTripSummary.name}</Title>
@@ -322,7 +317,10 @@ export default function TripLayout() {
             flexDirection: "column",
           }}
         >
-          <Tabs.List style={{ borderBottom: "2px solid var(--border-color)" }}>
+          <Tabs.List
+            style={{ borderBottom: "2px solid var(--border-color)" }}
+            data-tour="trip-tabs"
+          >
             {TRIP_TABS_MAP.map(({ icon, label }) => (
               <Tabs.Tab key={`tab-${label}`} value={label} leftSection={icon}>
                 {label}
@@ -347,6 +345,7 @@ export default function TripLayout() {
                     display={{ base: "none", sm: "flex" }}
                     component="aside"
                     aria-label="Trip costs"
+                    data-tour="trip-cost"
                   >
                     <TripCostPanel
                       summary={currentTripSummary}

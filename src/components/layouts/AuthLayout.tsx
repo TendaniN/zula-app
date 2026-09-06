@@ -20,11 +20,9 @@ export default function AuthLayout() {
     <BackgroundImage
       src={colorScheme === "dark" ? wallpaperDarkImg : wallpaperLightImg}
       flex={1}
-      style={{
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-      }}
+      bgp="center"
+      bgsz="cover"
+      bgr="no-repeat"
     >
       <Group h="calc(100dvh - 4px)" gap={0}>
         <Stack p="lg" h="100%" w={{ base: "30%", sm: "50%", xl: "60%" }}>

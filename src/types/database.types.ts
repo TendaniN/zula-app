@@ -201,6 +201,106 @@ export type Database = {
           },
         ]
       }
+      feedback: {
+        Row: {
+          admin_notes: string | null
+          app_version: string | null
+          category: Database["public"]["Enums"]["feedback_category"]
+          contact_email: string | null
+          created_at: string
+          github_issue_url: string | null
+          id: string
+          message: string
+          route: string | null
+          sentiment: Database["public"]["Enums"]["feedback_sentiment"] | null
+          severity: number | null
+          status: Database["public"]["Enums"]["feedback_status"]
+          trip_id: string | null
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          app_version?: string | null
+          category: Database["public"]["Enums"]["feedback_category"]
+          contact_email?: string | null
+          created_at?: string
+          github_issue_url?: string | null
+          id?: string
+          message: string
+          route?: string | null
+          sentiment?: Database["public"]["Enums"]["feedback_sentiment"] | null
+          severity?: number | null
+          status?: Database["public"]["Enums"]["feedback_status"]
+          trip_id?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          app_version?: string | null
+          category?: Database["public"]["Enums"]["feedback_category"]
+          contact_email?: string | null
+          created_at?: string
+          github_issue_url?: string | null
+          id?: string
+          message?: string
+          route?: string | null
+          sentiment?: Database["public"]["Enums"]["feedback_sentiment"] | null
+          severity?: number | null
+          status?: Database["public"]["Enums"]["feedback_status"]
+          trip_id?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feedback_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_budget_plan"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "feedback_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_budget_summary"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "feedback_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_cost_summary"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "feedback_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_monthly_budget"
+            referencedColumns: ["trip_id"]
+          },
+          {
+            foreignKeyName: "feedback_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trip_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "feedback_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       locations: {
         Row: {
           city: string
@@ -927,6 +1027,15 @@ export type Database = {
         | "wellness"
         | "other"
       app_role: "admin" | "user"
+      feedback_category: "bug" | "idea" | "confusion" | "praise" | "other"
+      feedback_sentiment: "positive" | "neutral" | "negative"
+      feedback_status:
+        | "new"
+        | "triaged"
+        | "planned"
+        | "done"
+        | "wont_fix"
+        | "duplicate"
       member_role: "owner" | "member" | "editor" | "viewer"
       transport_type:
         | "flight"
@@ -1092,6 +1201,16 @@ export const Constants = {
         "other",
       ],
       app_role: ["admin", "user"],
+      feedback_category: ["bug", "idea", "confusion", "praise", "other"],
+      feedback_sentiment: ["positive", "neutral", "negative"],
+      feedback_status: [
+        "new",
+        "triaged",
+        "planned",
+        "done",
+        "wont_fix",
+        "duplicate",
+      ],
       member_role: ["owner", "member", "editor", "viewer"],
       transport_type: [
         "flight",

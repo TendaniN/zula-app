@@ -414,7 +414,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
             size={16}
             radius="xl"
             bd="2px solid var(--border-color)"
-            style={{ flex: 1 }}
+            flex={1}
           >
             <Progress.Section
               value={savedPct}

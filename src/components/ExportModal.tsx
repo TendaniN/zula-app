@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { Group, Stack, Text, useMantineTheme } from "@mantine/core";
+import { Group, Stack, Text, ThemeIcon, useMantineTheme } from "@mantine/core";
 import {
   LuFileSpreadsheet,
   LuFileText,
@@ -131,21 +131,14 @@ export const ExportModal = ({
                 bdrs="lg"
               >
                 <Group gap="sm" wrap="nowrap" miw={0}>
-                  <Group
-                    justify="center"
-                    align="center"
-                    style={{
-                      width: 44,
-                      height: 44,
-                      flexShrink: 0,
-                      borderRadius: "var(--mantine-radius-md)",
-                      border: `2px solid var(--mantine-color-${option.color}-5)`,
-                      background: `var(--mantine-color-${option.color}-1)`,
-                      color: `var(--mantine-color-${option.color}-7)`,
-                    }}
+                  <ThemeIcon
+                    variant="light"
+                    size="xl"
+                    bd={`2px solid var(--mantine-color-${option.color}-5)`}
+                    color={option.color}
                   >
                     {option.icon}
-                  </Group>
+                  </ThemeIcon>
                   <Stack gap={0} miw={0}>
                     <Text fw="bold" size="sm" truncate>
                       {`${option.label} · ${option.extension}`}

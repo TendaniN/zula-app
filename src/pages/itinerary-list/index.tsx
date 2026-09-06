@@ -15,13 +15,12 @@ import { useEffect, useState } from "react";
 import noActivitiesImg from "@/assets/icons/empty-itinerary.svg";
 import { useLocationStore } from "@/stores/locationStore";
 import { ActivityModal } from "./components/ActivityModal";
-import { Button } from "@/components/ui";
+import { Button, CanEditTrip } from "@/components";
 import { PiArrowLeft, PiPlus } from "react-icons/pi";
 import "./styles.scss";
 import { getCountryFlag } from "@/utils/getCountryFlag";
 import { calcNights } from "@/utils/calcNights";
 import { ActivitiesPanel } from "./components/ActivitiesPanel";
-import { CanEditTrip } from "@/components/auth";
 import { formatDate } from "@/utils/date";
 
 export default function ItineraryListPage() {
