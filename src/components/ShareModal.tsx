@@ -158,9 +158,7 @@ export const ShareModal = ({
 
             {/* Members */}
             {members.map((m, index) => {
-              const name = m.profile
-                ? getFullName(m.profile.first_name, m.profile.last_name)
-                : "";
+              const name = getFullName(m.profile);
               const memberEmail = m.profile?.email ?? "";
               const isYou = !!currentUserId && m.user_id === currentUserId;
               const isOwner = m.role === "owner";
