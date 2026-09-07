@@ -6,6 +6,7 @@ import { DeleteModal } from "./Modal/DeleteModal";
 import { ThemeToggle } from "./ThemeToggle";
 import { TripCostPanel } from "./TripCostPanel";
 import { DefaultLoader } from "./DefaultLoader";
+import { TripStatusBanner } from "./TripStatusBanner";
 
 export {
   Button,
@@ -16,4 +17,5 @@ export {
   DeleteModal,
   ThemeToggle,
   TripCostPanel,
+  TripStatusBanner,
 };

@@ -23,7 +23,7 @@ import {
 import { getStatusColor } from "@/constants/status";
 import { TripCostPanel } from "../ui/TripCostPanel";
 import { calcNights } from "@/utils/calcNights";
-import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
+import { FaPencil, FaRegTrashCan, FaRegClock } from "react-icons/fa6";
 import {
   PiCheckSquare,
   PiCreditCard,
@@ -38,12 +38,13 @@ import { LocationCostPanel } from "../ui/LocationCostPanel";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDate } from "@/utils/date";
 import { ExportModal } from "../ExportModal";
-import { IconButton, DeleteModal } from "../ui";
+import { IconButton, DeleteModal, TripStatusBanner } from "../ui";
 import { TripModal } from "@/pages/trip-list/components/TripModal";
 import { CanEditTrip } from "../auth";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { ShareModal } from "../ShareModal";
 import { useAuthStore } from "@/stores/authStore";
+import { getTripCountdown } from "@/utils/getTripCountdown";
 
 export default function TripLayout() {
   const {
@@ -121,7 +122,7 @@ export default function TripLayout() {
     };
 
     if (tripId) {
-      load(tripId);
+      void load(tripId);
     }
   }, [tripId]);
 
@@ -215,7 +216,7 @@ export default function TripLayout() {
   const handleTabSelect = (tab: string | null) => {
     if (tab) {
       setActiveTab(tab);
-      navigate(`/trips/${tripId}?tab=${tab}`);
+      void navigate(`/trips/${tripId}?tab=${tab}`);
     }
   };
 
@@ -239,6 +240,16 @@ export default function TripLayout() {
               py="sm"
             >
               {currentTripSummary.status}
+            </Badge>
+            <Badge
+              variant="outline"
+              tt="capitalize"
+              color={`${statusColor.color}.7`}
+              bd={`2px solid ${statusColor.color}.7`}
+              size="lg"
+              leftSection={<FaRegClock />}
+            >
+              {getTripCountdown(currentTrip).label}
             </Badge>
           </Group>
           <Group>
@@ -305,7 +316,7 @@ export default function TripLayout() {
           )}
         </Group>
 
-        <ViewOnlyBanner />
+        <ViewOnlyBanner fallback={<TripStatusBanner />} />
 
         <Tabs
           value={activeTab}
