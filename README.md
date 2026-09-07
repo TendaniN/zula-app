@@ -78,7 +78,7 @@ The `admin` / `user` distinction is a global role on the user's profile; `owner`
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20+
 - A Supabase project (free tier is fine)
 - Supabase CLI (for type generation): `npm i -g supabase`
 
@@ -176,13 +176,16 @@ feedback                                    (standalone; optional trip/user refs
 
 ## Scripts
 
-| Script              | Description                                  |
-| ------------------- | -------------------------------------------- |
-| `npm run dev`       | Start the Vite dev server                    |
-| `npm run build`     | Type-check and build for production          |
-| `npm run preview`   | Preview the production build                 |
-| `npm run lint`      | Run ESLint                                   |
-| `npm run gen:types` | Regenerate `database.types.ts` from Supabase |
+| Script                 | Description                                  |
+| ---------------------- | -------------------------------------------- |
+| `npm run dev`          | Start the Vite dev server                    |
+| `npm run build`        | Type-check and build for production          |
+| `npm run preview`      | Preview the production build                 |
+| `npm run lint`         | Run ESLint                                   |
+| `npm run format`       | Format the repo with Prettier                |
+| `npm run format:check` | Check formatting without writing             |
+| `npm run typecheck`    | Type-check without emitting                  |
+| `npm run gen:types`    | Regenerate `database.types.ts` from Supabase |
 
 ---
 

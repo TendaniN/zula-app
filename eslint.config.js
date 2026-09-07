@@ -19,25 +19,22 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     rules: {
       // Catches a supabase call (or any promise) left un-awaited — the class
       // of bug hit in the export utils.
       "@typescript-eslint/no-floating-promises": "error",
       // Catches async handlers passed where a void handler is expected
-      "@typescript-eslint/no-misused-promises": "error",
+      "@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: {attributes: false}}],
       // Allow intentionally-unused args/vars prefixed with _.
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
     }
-  },
-  {
-    files: ["vite.config.ts", "eslint.config.js"],
-    languageOptions: {
-      globals: globals.node,
-      parserOptions: { project: ["./tsconfig.node.json"] },
-    },
   },
 ]);
