@@ -23,7 +23,7 @@ import {
 import { getStatusColor } from "@/constants/status";
 import { TripCostPanel } from "../ui/TripCostPanel";
 import { calcNights } from "@/utils/calcNights";
-import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
+import { FaPencil, FaRegTrashCan, FaRegClock } from "react-icons/fa6";
 import {
   PiCheckSquare,
   PiCreditCard,
@@ -38,7 +38,7 @@ import { LocationCostPanel } from "../ui/LocationCostPanel";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDate } from "@/utils/date";
 import { ExportModal } from "../ExportModal";
-import { IconButton, DeleteModal } from "../ui";
+import { IconButton, DeleteModal, TripStatusBanner } from "../ui";
 import { TripModal } from "@/pages/trip-list/components/TripModal";
 import { CanEditTrip } from "../auth";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
@@ -316,7 +316,7 @@ export default function TripLayout() {
           )}
         </Group>
 
-        <ViewOnlyBanner />
+        <ViewOnlyBanner fallback={<TripStatusBanner />} />
 
         <Tabs
           value={activeTab}
