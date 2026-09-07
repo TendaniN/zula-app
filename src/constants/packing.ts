@@ -1,6 +1,9 @@
 /**
  *
- * Default packing suggestions, grouped by bag.  These constants are just the suggested item list.
+ * Default packing suggestions, grouped by bag. Quantities are NOT stored here —
+ * the Packing Panel owns quantity as editable local state (a traveller sets how
+ * many of each they're taking, ticks items off, adds their own, then prints /
+ * exports). These constants are just the suggested item list.
  *
  * `needTag` marks items gated behind an opt-in need (bras, period care, …) so
  * the panel can filter inclusively — by what someone actually packs for, never
@@ -199,10 +202,9 @@ export const PACKING_SUGGESTIONS: PackingBagGroup[] = [
   },
   {
     bag: "Airport Bag",
-    description: "Carry-on — keep on you",
+    description: "Carry-on - keep on you",
     items: [
       { id: "air-hand-wipes", label: "Hand wipes" },
-      { id: "air-gum", label: "Gum" },
       { id: "air-sanitizer", label: "Sanitizer" },
       { id: "air-hand-cream", label: "Hand cream" },
       { id: "air-powerbank", label: "Powerbank", note: "& cable" },
@@ -239,10 +241,25 @@ export const PACKING_SUGGESTIONS: PackingBagGroup[] = [
         label: "Reusable water bottle",
         note: "empty through security",
       },
-      { id: "air-pen", label: "Pen", note: "for landing / customs cards" },
       { id: "air-snacks", label: "Snacks" },
       { id: "air-cash", label: "Cash / cards", note: "some local currency" },
       { id: "air-travel-pillow", label: "Travel pillow" },
     ],
   },
 ];
+
+/**
+ * Bag nesting for the sheet export's two bag columns — the makeup / toiletry /
+ * medicine bags sit inside the checked Luggage; Luggage and Airport Bag are
+ * top-level. Mirrors the "Luggage · Makeup Bag" two-column layout.
+ */
+export const BAG_PARENT: Record<
+  PackingBag,
+  { parent: string; sub: string | null }
+> = {
+  Luggage: { parent: "Luggage", sub: null },
+  "Makeup Bag": { parent: "Luggage", sub: "Makeup Bag" },
+  "Toiletry Bag": { parent: "Luggage", sub: "Toiletry Bag" },
+  "Medicine Bag": { parent: "Luggage", sub: "Medicine Bag" },
+  "Airport Bag": { parent: "Airport Bag", sub: null },
+};

@@ -5,13 +5,15 @@ import {
   Chip,
   Group,
   NumberInput,
+  Select,
   Stack,
   Text,
   TextInput,
+  ThemeIcon,
   Title,
+  Tooltip,
 } from "@mantine/core";
-import { LuDownload, LuPlus } from "react-icons/lu";
-import { Button } from "@/components/ui/Button";
+import { LuDownload, LuFileSpreadsheet, LuPlus, LuInfo } from "react-icons/lu";
 
 import {
   PACKING_SUGGESTIONS,
@@ -20,15 +22,19 @@ import {
   type PackingNeedTag,
 } from "@/constants/packing";
 
+import { Button } from "@/components/ui/Button";
+
 /**
- * Packing Panel. The constants provide the suggested item list; everything
- * mutable — quantity per item, what's ticked, custom items, which opt-in need
- * tags are on — lives in local state here (v1: not persisted). A traveller
- * tailors the list, then downloads it to take offline.
+ * Packing Panel. Constants provide the suggested items; everything mutable —
+ * per-item quantity, the TWO tick states (packed / final check), custom items,
+ * enabled need tags — is local state (v1: not persisted).
  *
- * Need tags are opt-in: makeup / bras / period-care / shaving items are hidden
- * until the traveller enables that tag, so the list is inclusive by default and
- * never labelled by gender.
+ * Two checkboxes per item, mirroring the physical packing flow:
+ *   ① Packed      — ticked as you pack over the days before departure
+ *   ② Final check — ticked on departure day, the sweep before closing the bag
+ *
+ * Need tags are opt-in (makeup / bras / period-care / shaving hidden until
+ * enabled), so the list is inclusive by default and never labelled by gender.
  */
 
 interface CustomItem {
@@ -38,15 +44,13 @@ interface CustomItem {
 }
 
 const ALL_NEED_TAGS = Object.keys(NEED_TAG_LABELS) as PackingNeedTag[];
+const ALL_BAGS = PACKING_SUGGESTIONS.map((g) => g.bag);
 
 export const PackingPanel = () => {
-  // Per-item quantity (defaults to 1 when first shown). Keyed by item id.
   const [quantities, setQuantities] = useState<Record<string, number>>({});
-  // Ticked ("packed") state, keyed by item id.
   const [packed, setPacked] = useState<Record<string, boolean>>({});
-  // Which opt-in need tags are enabled (default none — universal base only).
+  const [final, setFinal] = useState<Record<string, boolean>>({});
   const [needTags, setNeedTags] = useState<PackingNeedTag[]>([]);
-  // User-added items.
   const [customItems, setCustomItems] = useState<CustomItem[]>([]);
   const [draft, setDraft] = useState("");
   const [draftBag, setDraftBag] = useState<PackingBag>("Luggage");
@@ -54,10 +58,22 @@ export const PackingPanel = () => {
   const qtyOf = (id: string) => quantities[id] ?? 1;
   const setQty = (id: string, value: number) =>
     setQuantities((q) => ({ ...q, [id]: Math.max(1, value) }));
-  const togglePacked = (id: string) =>
-    setPacked((p) => ({ ...p, [id]: !p[id] }));
 
-  // Build the visible, filtered groups (base items + custom, need-tag gated).
+  const toggle =
+    (setter: React.Dispatch<React.SetStateAction<Record<string, boolean>>>) =>
+    (id: string) =>
+      setter((prev) => ({ ...prev, [id]: !prev[id] }));
+
+  const togglePacked = toggle(setPacked);
+  // Final check implies packed — tick both when the final check is set.
+  const toggleFinal = (id: string) => {
+    setFinal((prev) => {
+      const next = !prev[id];
+      if (next) setPacked((p) => ({ ...p, [id]: true }));
+      return { ...prev, [id]: next };
+    });
+  };
+
   const groups = useMemo(() => {
     return PACKING_SUGGESTIONS.map((group) => {
       const base = group.items.filter(
@@ -72,6 +88,7 @@ export const PackingPanel = () => {
 
   const visibleItems = groups.flatMap((g) => g.items);
   const packedCount = visibleItems.filter((i) => packed[i.id]).length;
+  const finalCount = visibleItems.filter((i) => final[i.id]).length;
 
   const addCustom = () => {
     const label = draft.trim();
@@ -83,14 +100,24 @@ export const PackingPanel = () => {
     setDraft("");
   };
 
-  const download = () => {
-    const lines: string[] = ["Packing list", ""];
+  const exportSheet = async () => {
+    const { exportPackingXLSX } = await import("./exportPackingXLSX");
+    await exportPackingXLSX({ groups, quantities, packed, final });
+  };
+
+  const downloadText = () => {
+    const lines: string[] = [
+      "Packing list",
+      "(P = packed · F = final check)",
+      "",
+    ];
     for (const group of groups) {
       lines.push(group.bag.toUpperCase());
       for (const item of group.items) {
-        const mark = packed[item.id] ? "[x]" : "[ ]";
+        const p = packed[item.id] ? "x" : " ";
+        const f = final[item.id] ? "x" : " ";
         const qty = qtyOf(item.id);
-        lines.push(`${mark} ${item.label}${qty > 1 ? ` ×${qty}` : ""}`);
+        lines.push(`[${p}][${f}] ${item.label}${qty > 1 ? ` ×${qty}` : ""}`);
       }
       lines.push("");
     }
@@ -114,12 +141,36 @@ export const PackingPanel = () => {
             Packing list
           </Text>
           <Text size="sm" c="dimmed">
-            {`${packedCount} of ${visibleItems.length} packed`}
+            {`${packedCount} packed · ${finalCount} final-checked · ${visibleItems.length} items`}
           </Text>
         </Stack>
-        <Button variant="ghost" leftSection={<LuDownload />} onClick={download}>
-          Download
-        </Button>
+        <Group gap="xs">
+          <Button
+            variant="ghost"
+            leftSection={<LuDownload />}
+            onClick={downloadText}
+          >
+            Text
+          </Button>
+          <Button
+            variant="secondary"
+            leftSection={<LuFileSpreadsheet />}
+            onClick={exportSheet}
+          >
+            Export sheet
+          </Button>
+        </Group>
+      </Group>
+
+      {/* Legend for the two checkboxes */}
+      <Group gap="xs" wrap="nowrap">
+        <ThemeIcon variant="transparent" color="lavender" size="sm">
+          <LuInfo size="0.85rem" />
+        </ThemeIcon>
+        <Text size="xs" c="dimmed">
+          Tick <b>①</b> as you pack, and <b>②</b> on departure day — the final
+          sweep before you close the bag.
+        </Text>
       </Group>
 
       {/* Opt-in need tags */}
@@ -167,16 +218,28 @@ export const PackingPanel = () => {
                 style={{ borderTop: "1px solid var(--border-color)" }}
               >
                 <Group gap="sm" wrap="nowrap" style={{ minWidth: 0, flex: 1 }}>
-                  <Checkbox
-                    checked={!!packed[item.id]}
-                    onChange={() => togglePacked(item.id)}
-                    aria-label={`Packed ${item.label}`}
-                  />
+                  {/* ① Packed */}
+                  <Tooltip label="Packed" withArrow>
+                    <Checkbox
+                      checked={!!packed[item.id]}
+                      onChange={() => togglePacked(item.id)}
+                      aria-label={`Packed ${item.label}`}
+                    />
+                  </Tooltip>
+                  {/* ② Final check */}
+                  <Tooltip label="Final check" withArrow>
+                    <Checkbox
+                      color="mint"
+                      checked={!!final[item.id]}
+                      onChange={() => toggleFinal(item.id)}
+                      aria-label={`Final check ${item.label}`}
+                    />
+                  </Tooltip>
                   <Stack gap={0} style={{ minWidth: 0 }}>
                     <Text
                       size="sm"
                       fw={600}
-                      td={packed[item.id] ? "line-through" : undefined}
+                      td={final[item.id] ? "line-through" : undefined}
                       c={packed[item.id] ? "dimmed" : undefined}
                       truncate
                     >
@@ -197,7 +260,6 @@ export const PackingPanel = () => {
                   max={99}
                   size="xs"
                   w={72}
-                  hideControls={false}
                   style={{ flexShrink: 0 }}
                   aria-label={`Quantity of ${item.label}`}
                 />
@@ -220,13 +282,15 @@ export const PackingPanel = () => {
               if (e.key === "Enter") addCustom();
             }}
           />
-          <Chip.Group
-            multiple={false}
+          <Select
+            label="Bag"
+            w={150}
+            data={ALL_BAGS}
             value={draftBag}
-            onChange={(v) => setDraftBag(v as PackingBag)}
-          >
-            {/* Simple bag picker — swap for a Select if you prefer */}
-          </Chip.Group>
+            onChange={(v) => setDraftBag((v as PackingBag) ?? "Luggage")}
+            allowDeselect={false}
+            comboboxProps={{ withinPortal: true }}
+          />
           <Button
             leftSection={<LuPlus />}
             onClick={addCustom}
