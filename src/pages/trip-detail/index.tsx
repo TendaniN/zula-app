@@ -9,6 +9,7 @@ import {
   BudgetPanel,
   LocationModal,
   LocationPanel,
+  PackingPanel,
   TodoPanel,
   TransportPanel,
 } from "./components";
@@ -86,6 +87,9 @@ export default function TripDetailPage() {
     }
     case "To-dos": {
       return <TodoPanel tripId={tripId} />;
+    }
+    case "Packing": {
+      return <PackingPanel />;
     }
     default: {
       return <LocationPanel tripId={tripId} />;
