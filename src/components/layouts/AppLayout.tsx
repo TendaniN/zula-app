@@ -4,6 +4,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { Link, Outlet } from "react-router-dom";
 import logoImg from "@/assets/logo.svg";
 import { Sidebar, SidebarDrawer } from "../nav";
+import { RouteErrorBoundary } from "../error/RouteErrorBoundary";
 
 export default function AppLayout() {
   const theme = useMantineTheme();
@@ -35,7 +36,9 @@ export default function AppLayout() {
           </Flex>
         </Group>
         <Container flex={1} maw="100%" mih={0} m={0} p={0}>
-          <Outlet />
+          <RouteErrorBoundary>
+            <Outlet />
+          </RouteErrorBoundary>
         </Container>
       </Stack>
     );
@@ -52,7 +55,9 @@ export default function AppLayout() {
         m={0}
         p={0}
       >
-        <Outlet />
+        <RouteErrorBoundary>
+          <Outlet />
+        </RouteErrorBoundary>
       </Container>
     </Group>
   );
