@@ -19,6 +19,10 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     rules: {
       // Catches a supabase call (or any promise) left un-awaited — the class
@@ -32,12 +36,5 @@ export default defineConfig([
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
     }
-  },
-  {
-    files: ["vite.config.ts", "eslint.config.js"],
-    languageOptions: {
-      globals: globals.node,
-      parserOptions: { project: ["./tsconfig.node.json"] },
-    },
   },
 ]);

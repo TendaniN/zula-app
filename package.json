@@ -29,6 +29,7 @@
     "@mantine/hooks": "^9.5.1",
     "@mantine/modals": "^9.5.1",
     "@mantine/notifications": "^9.5.1",
+    "@sentry/react": "^10.73.0",
     "@supabase/supabase-js": "^2.112.2",
     "@tanstack/react-form": "^1.33.3",
     "clsx": "^2.1.1",

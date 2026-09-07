@@ -9,21 +9,24 @@ import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
 import Pages from "./pages";
 import { BrowserRouter } from "react-router-dom";
+import { ErrorBoundary } from "./components/error/ErrorBoundary";
 
 function App() {
   const initAuth = useAuthStore((s) => s.initialize);
 
   useEffect(() => {
-    initAuth();
-  }, []);
+    void initAuth();
+  }, [initAuth]);
 
   return (
     <MantineProvider theme={theme}>
       <DatesProvider settings={{ firstDayOfWeek: 1 }}>
         <Notifications />
-        <BrowserRouter basename="zula-app">
-          <Pages />
-        </BrowserRouter>
+        <ErrorBoundary>
+          <BrowserRouter basename="/zula-app">
+            <Pages />
+          </BrowserRouter>
+        </ErrorBoundary>
       </DatesProvider>
     </MantineProvider>
   );
