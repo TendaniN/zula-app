@@ -24,6 +24,7 @@ import { ActivitiesPanel } from "./components/ActivitiesPanel";
 import { formatDate } from "@/utils/date";
 import type { Activity } from "@/types/models";
 import { downloadCalendarEvents } from "@/utils/calendar";
+import dayjs from "dayjs";
 
 export default function ItineraryListPage() {
   const { fetchByLocation, loading, activities } = useActivityStore();
@@ -149,29 +150,22 @@ export default function ItineraryListPage() {
       return null;
     }
 
-    const start = new Date(
-      `${activity.activity_date}T${activity.activity_time}`,
-    );
+    const start = dayjs(`${activity.activity_date} ${activity.activity_time}`);
 
-    if (Number.isNaN(start.getTime())) {
+    if (!start.isValid()) {
       return null;
     }
 
-    const end = new Date(start);
-
-    if (activity.duration_minutes) {
-      end.setMinutes(end.getMinutes() + activity.duration_minutes);
-    } else {
-      // Default duration if none is provided
-      end.setMinutes(end.getMinutes() + 60);
-    }
+    const end = activity.duration_minutes
+      ? start.add(activity.duration_minutes, "minute")
+      : start.add(1, "hour");
 
     return {
       title: activity.name,
       location: location.city,
       url: activity.link,
-      start,
-      end,
+      start: start.toDate(),
+      end: end.toDate(),
     };
   };
 
