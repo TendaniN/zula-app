@@ -29,12 +29,15 @@ export default defineConfig([
       // of bug hit in the export utils.
       "@typescript-eslint/no-floating-promises": "error",
       // Catches async handlers passed where a void handler is expected
-      "@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: {attributes: false}}],
+      "@typescript-eslint/no-misused-promises": [
+        "error",
+        { checksVoidReturn: { attributes: false } },
+      ],
       // Allow intentionally-unused args/vars prefixed with _.
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
-    }
+    },
   },
 ]);
