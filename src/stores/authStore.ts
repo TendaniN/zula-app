@@ -45,9 +45,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       if (session?.user) await get().fetchProfile();
 
       // Keep the store in sync with future sign-in / sign-out / refresh events.
-      supabase.auth.onAuthStateChange((_event, nextSession) => {
+      supabase.auth.onAuthStateChange(async (_event, nextSession) => {
         set({ session: nextSession, user: nextSession?.user ?? null });
-        if (nextSession?.user) get().fetchProfile();
+        if (nextSession?.user) await get().fetchProfile();
         else set({ profile: null });
       });
     } catch (e) {

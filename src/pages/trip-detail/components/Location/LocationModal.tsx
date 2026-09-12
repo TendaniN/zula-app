@@ -186,7 +186,7 @@ export const LocationModal = ({
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            form.handleSubmit();
+            void form.handleSubmit();
           }}
         >
           <Stack gap="md" p="lg">
