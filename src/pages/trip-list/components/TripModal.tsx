@@ -76,7 +76,7 @@ export const TripModal = ({
           const data = await createTrip(parsed);
 
           if (data) {
-            navigate(`/trips/${data.id}?tab=Stays & itinerary`);
+            void navigate(`/trips/${data.id}?tab=Stays & itinerary`);
           }
         }
         form.reset();
@@ -114,7 +114,7 @@ export const TripModal = ({
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            form.handleSubmit();
+            void form.handleSubmit();
           }}
           data-tour="trip-modal"
         >

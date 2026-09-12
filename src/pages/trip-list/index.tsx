@@ -44,7 +44,7 @@ export default function TripListPage() {
   };
 
   useEffect(() => {
-    getTrips();
+    void getTrips();
   }, []);
 
   if (!loading && tripSummaries.length === 0) {

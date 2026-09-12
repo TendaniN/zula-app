@@ -13,21 +13,21 @@ export default function DefaultLayout() {
   const location = useLocation();
 
   useEffect(() => {
-    initialize().finally(() => setInitialized(true));
-  }, []);
+    void initialize().finally(() => setInitialized(true));
+  }, [initialize]);
 
   useEffect(() => {
     if (user) {
-      refresh(user.id);
+      void refresh(user.id);
     }
-  }, [user?.id]);
+  }, [refresh, user?.id]);
 
   // Show loader until the auth session has been checked at least once.
   if (!initialized || loading) {
     return <DefaultLoader />;
   }
 
-  if (!user || !profile) {
+  if (!user && !profile) {
     const next = encodeURIComponent(location.pathname + location.search);
     return <Navigate to={`/login?next=${next}`} replace />;
   }
@@ -35,7 +35,9 @@ export default function DefaultLayout() {
   return (
     <>
       <Outlet />
-      <OnboardingModal name={profile.first_name} userId={user.id} />
+      {profile && user && (
+        <OnboardingModal name={profile.first_name} userId={user.id} />
+      )}
     </>
   );
 }

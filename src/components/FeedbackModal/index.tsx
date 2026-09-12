@@ -114,7 +114,7 @@ export const FeedbackModal = ({
         {submitted ? (
           <Stack gap="md" p="lg" align="center">
             <Text size="xl">🎉</Text>
-            <Text fw={700}>Thank you — got it.</Text>
+            <Text fw="bold">Thank you — got it.</Text>
             <Text size="sm" c="dimmed" ta="center">
               Your feedback helps shape where Zula goes next.
             </Text>
@@ -125,7 +125,7 @@ export const FeedbackModal = ({
             onSubmit={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              form.handleSubmit();
+              void form.handleSubmit();
             }}
           >
             <Stack gap="lg" p="lg">

@@ -206,25 +206,34 @@ const buildLocationPage = (location, includeActivities = false) => {
         (a, b) =>
           dayjs(a.activity_date).valueOf() - dayjs(b.activity_date).valueOf(),
       )
-      .map(({ activity_time, name, duration_minutes, cost, link, activity_date }) => [
-        dayjs(activity_date).format("dddd, DD MMMM YYYY"),
-        {
-          text: activity_time ? activity_time.slice(0, 5) : "",
-          alignment: "center",
-        },
-        name,
-        { text: `${currency} ${cost}`, alignment: "center" },
-        { text: formatDuration(duration_minutes), alignment: "center" },
-        link
-          ? {
-              text: "link",
-              link: link,
-              color: "blue",
-              decoration: "underline",
-              alignment: "center",
-            }
-          : { text: "", alignment: "center" },
-      ]);
+      .map(
+        ({
+          activity_time,
+          name,
+          duration_minutes,
+          cost,
+          link,
+          activity_date,
+        }) => [
+          dayjs(activity_date).format("dddd, DD MMMM YYYY"),
+          {
+            text: activity_time ? activity_time.slice(0, 5) : "",
+            alignment: "center",
+          },
+          name,
+          { text: `${currency} ${cost}`, alignment: "center" },
+          { text: formatDuration(duration_minutes), alignment: "center" },
+          link
+            ? {
+                text: "link",
+                link: link,
+                color: "blue",
+                decoration: "underline",
+                alignment: "center",
+              }
+            : { text: "", alignment: "center" },
+        ],
+      );
 
     finalDisplay.push({
       layout: TABLE_LAYOUT,
@@ -417,9 +426,18 @@ const buildBudgetPage = (trip, months = DEFAULT_BUDGET_MONTHS) => {
               text: `${r.span} ${r.span === 1 ? "month" : "months"}`,
               alignment: "center",
             },
-            { text: `${currency} ${Math.round(r.monthly * 100) / 100}`, alignment: "center" },
-            { text: `${currency} ${Math.round(r.saved * 100) / 100}`, alignment: "center" },
-            { text: `${currency} ${Math.round(r.remaining * 100) / 100}`, alignment: "center" },
+            {
+              text: `${currency} ${Math.round(r.monthly * 100) / 100}`,
+              alignment: "center",
+            },
+            {
+              text: `${currency} ${Math.round(r.saved * 100) / 100}`,
+              alignment: "center",
+            },
+            {
+              text: `${currency} ${Math.round(r.remaining * 100) / 100}`,
+              alignment: "center",
+            },
           ]),
           [
             { text: "Budget Total", bold: true },
@@ -473,7 +491,6 @@ export const exportTripPDF = async (trip) => {
 
   content.push(...buildTravelPage(trip));
   content.push(...buildBudgetPage(trip));
-
 
   const docDefinition = {
     pageSize: "A4",

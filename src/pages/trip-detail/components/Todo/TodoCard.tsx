@@ -124,18 +124,6 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
                 >
                   {title}
                 </Text>
-                {(getTodoType() === "near" || getTodoType() === "overdue") && (
-                  <Badge
-                    variant="filled"
-                    color={`${TYPE_COLOR[getTodoType()]}.3`}
-                    c="var(--border-color)"
-                    tt="capitalize"
-                    bd={`2px solid ${TYPE_COLOR[getTodoType()]}.5`}
-                    style={{ flexShrink: 0 }}
-                  >
-                    {TYPE_LABEL[getTodoType()]}
-                  </Badge>
-                )}
               </Flex>
 
               {!is_complete && description && (
@@ -153,33 +141,47 @@ export const TodoCard = ({ tripId, todo }: TodoCardProps) => {
               </Text>
             </Stack>
           </Group>
-
-          <CanEditTrip>
-            <Menu position="bottom-end" withinPortal shadow="md">
-              <Menu.Target>
-                <IconButton
-                  icon={<PiDotsThreeOutlineFill />}
-                  variant="ghost"
-                  size="sm"
-                  aria-label="Todo options" // was "Location options"
-                  style={{ flexShrink: 0 }}
-                />
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item leftSection={<FaPencil />} onClick={openEdit}>
-                  Edit
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item
-                  color="red"
-                  leftSection={<FaRegTrashCan />}
-                  onClick={openDelete}
-                >
-                  Delete
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </CanEditTrip>
+          <Group>
+            {(getTodoType() === "near" || getTodoType() === "overdue") && (
+              <Badge
+                variant="filled"
+                color={`${TYPE_COLOR[getTodoType()]}.3`}
+                c="var(--border-color)"
+                tt="capitalize"
+                bd={`2px solid ${TYPE_COLOR[getTodoType()]}.5`}
+                style={{ flexShrink: 0 }}
+                my="auto"
+              >
+                {TYPE_LABEL[getTodoType()]}
+              </Badge>
+            )}
+            <CanEditTrip>
+              <Menu position="bottom-end" withinPortal shadow="md">
+                <Menu.Target>
+                  <IconButton
+                    icon={<PiDotsThreeOutlineFill />}
+                    variant="ghost"
+                    size="sm"
+                    aria-label="Todo options" // was "Location options"
+                    style={{ flexShrink: 0 }}
+                  />
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item leftSection={<FaPencil />} onClick={openEdit}>
+                    Edit
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item
+                    color="red"
+                    leftSection={<FaRegTrashCan />}
+                    onClick={openDelete}
+                  >
+                    Delete
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </CanEditTrip>
+          </Group>
         </Group>
         <TodoModal
           todo={todo}
