@@ -89,7 +89,7 @@ export const ExportModal = ({
       }
       case "pptx": {
         const { exportTripPPT } = await import("@/utils/export/exportTripPPT");
-        exportTripPPT(
+        await exportTripPPT(
           trip as TripSummaryRow & {
             start_date: string;
             end_date: string;
@@ -100,7 +100,7 @@ export const ExportModal = ({
       default: {
         const { exportTripXLSX } =
           await import("@/utils/export/exportTripXLSX");
-        exportTripXLSX(
+        await exportTripXLSX(
           trip as TripSummaryRow & {
             start_date: string;
             end_date: string;

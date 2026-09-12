@@ -119,7 +119,7 @@ export const ShareModal = ({
               value={email}
               onChange={(e) => setEmail(e.currentTarget.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleSend();
+                if (e.key === "Enter") void handleSend();
               }}
               error={
                 email.length > 0 && !emailValid ? "Enter a valid email" : null

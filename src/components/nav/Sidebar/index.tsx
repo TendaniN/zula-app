@@ -119,7 +119,9 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
                 fluid
                 onClick={() =>
                   startTour({
-                    onComplete: () => complete(user.id),
+                    onComplete: () => {
+                      void complete(user.id);
+                    },
                   })
                 }
               >
