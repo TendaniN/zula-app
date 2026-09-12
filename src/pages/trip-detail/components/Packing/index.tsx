@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import {
+  Badge,
+  Button,
   Card,
   Checkbox,
   Chip,
@@ -19,10 +21,9 @@ import {
   PACKING_SUGGESTIONS,
   NEED_TAG_LABELS,
   type PackingBag,
+  type PackingItem,
   type PackingNeedTag,
 } from "@/constants/packing";
-
-import { Button } from "@/components/ui/Button";
 
 /**
  * Packing Panel. Constants provide the suggested items; everything mutable —
@@ -79,9 +80,9 @@ export const PackingPanel = () => {
       const base = group.items.filter(
         (item) => !item.needTag || needTags.includes(item.needTag),
       );
-      const custom = customItems
+      const custom: PackingItem[] = customItems
         .filter((c) => c.bag === group.bag)
-        .map((c) => ({ id: c.id, label: c.label, note: undefined }));
+        .map((c) => ({ id: c.id, label: c.label }));
       return { ...group, items: [...base, ...custom] };
     }).filter((group) => group.items.length > 0);
   }, [needTags, customItems]);
@@ -140,13 +141,14 @@ export const PackingPanel = () => {
           <Text fw={800} size="lg">
             Packing list
           </Text>
-          <Text size="sm" c="dimmed">
+          <Badge size="sm" color="mint">
             {`${packedCount} packed · ${finalCount} final-checked · ${visibleItems.length} items`}
-          </Text>
+          </Badge>
         </Stack>
         <Group gap="xs">
           <Button
             variant="ghost"
+            size="sm"
             leftSection={<LuDownload />}
             onClick={downloadText}
           >
@@ -154,6 +156,7 @@ export const PackingPanel = () => {
           </Button>
           <Button
             variant="secondary"
+            size="sm"
             leftSection={<LuFileSpreadsheet />}
             onClick={exportSheet}
           >
@@ -175,7 +178,7 @@ export const PackingPanel = () => {
 
       {/* Opt-in need tags */}
       <Stack gap={6}>
-        <Text size="xs" fw={700} c="dimmed" tt="uppercase">
+        <Text size="xs" fw="bold" c="dimmed" tt="uppercase">
           What do you need to pack for?
         </Text>
         <Chip.Group

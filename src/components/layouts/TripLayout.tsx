@@ -32,6 +32,7 @@ import {
   PiPaperPlaneTilt,
   PiDotsThreeBold,
   PiSuitcaseRollingBold,
+  PiSignOut,
 } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { ViewOnlyBanner } from "../auth/ViewOnlyBanner";
@@ -46,6 +47,18 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { ShareModal } from "../ShareModal";
 import { useAuthStore } from "@/stores/authStore";
 import { getTripCountdown } from "@/utils/getTripCountdown";
+
+const DEFAULT_TAB = "Stays & itinerary";
+const ALL_TAB_LABELS = [
+  "Stays & itinerary",
+  "Transport",
+  "To-dos",
+  "Budget",
+  "Packing",
+  "Departure",
+];
+
+const LONG_TRIP_NIGHTS = 5;
 
 export default function TripLayout() {
   const {
@@ -71,13 +84,19 @@ export default function TripLayout() {
   const theme = useMantineTheme();
   const isSmallScreen = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
-  const DEFAULT_TAB = "Stays & itinerary";
+  const navigate = useNavigate();
+  const { tripId, locationId } = useParams();
+
+  // Whole nights for the trip (0 when dates aren't set → not "long"). Optional-
+  // chained so it's safe during the loading phase when the summary is null.
+  const tripNights =
+    currentTripSummary?.start_date && currentTripSummary?.end_date
+      ? calcNights(currentTripSummary.start_date, currentTripSummary.end_date)
+      : 0;
+  const isLongTrip = tripNights > LONG_TRIP_NIGHTS;
 
   const TRIP_TABS_MAP = [
-    {
-      label: "Stays & itinerary",
-      icon: <PiMapPin />,
-    },
+    { label: "Stays & itinerary", icon: <PiMapPin /> },
     {
       label: "Transport",
       icon: <PiPaperPlaneTilt />,
@@ -98,26 +117,33 @@ export default function TripLayout() {
       icon: <PiSuitcaseRollingBold />,
       disabled: locations.length === 0,
     },
+    // Departure checklist only surfaces for longer trips.
+    ...(isLongTrip
+      ? [
+          {
+            label: "Departure",
+            icon: <PiSignOut />,
+            disabled: locations.length === 0,
+          },
+        ]
+      : []),
   ];
 
-  const defaultTab = searchParams.get("tab")
-    ? TRIP_TABS_MAP.filter((t) => t.label === searchParams.get("tab")).length >
-      0
-      ? searchParams.get("tab")
-      : DEFAULT_TAB
-    : DEFAULT_TAB;
+  const urlTab = searchParams.get("tab");
+  const initialTab =
+    urlTab && ALL_TAB_LABELS.includes(urlTab) ? urlTab : DEFAULT_TAB;
 
   const [initialized, setInitialized] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>(defaultTab ?? DEFAULT_TAB);
+  const [selectedTab, setSelectedTab] = useState<string>(initialTab);
+
+  const effectiveTab =
+    selectedTab === "Departure" && !isLongTrip ? DEFAULT_TAB : selectedTab;
   const [costPanelExpanded, setCostPanelExpanded] = useState(isSmallScreen);
 
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
   const [editOpened, { open: openEdit, close: closeEdit }] =
     useDisclosure(false);
-
-  const navigate = useNavigate();
-  const { tripId, locationId } = useParams();
 
   useEffect(() => {
     const load = async (id: string) => {
@@ -131,6 +157,23 @@ export default function TripLayout() {
       void load(tripId);
     }
   }, [tripId]);
+
+  // If the selection clamped to a different tab (Departure on a too-short
+  // trip), sync the URL to the effective tab so the downstream panel matches.
+  // This effect ONLY touches the URL — an external system — never React state,
+  // so there's no cascading render. Guarded on `initialized` so it can't fire
+  // during loading when isLongTrip is provisionally false.
+  useEffect(() => {
+    if (!initialized) return;
+    if (effectiveTab !== selectedTab) {
+      void navigate(
+        `/trips/${tripId}?tab=${encodeURIComponent(effectiveTab)}`,
+        {
+          replace: true,
+        },
+      );
+    }
+  }, [initialized, effectiveTab, selectedTab, tripId, navigate]);
 
   // Show loader until the first fetch resolves.
   if (!initialized || tripLoading || locationsLoading) {
@@ -221,8 +264,8 @@ export default function TripLayout() {
 
   const handleTabSelect = (tab: string | null) => {
     if (tab) {
-      setActiveTab(tab);
-      void navigate(`/trips/${tripId}?tab=${tab}`);
+      setSelectedTab(tab);
+      void navigate(`/trips/${tripId}?tab=${encodeURIComponent(tab)}`);
     }
   };
 
@@ -325,7 +368,7 @@ export default function TripLayout() {
         <ViewOnlyBanner fallback={<TripStatusBanner />} />
 
         <Tabs
-          value={activeTab}
+          value={effectiveTab}
           onChange={handleTabSelect}
           flex={1}
           mih={0}

@@ -461,7 +461,7 @@ const QuickStartCard = ({
         onOpen={onOpen}
       />
       <Stack gap={2} flex={1}>
-        <Text fw={700} size="sm">
+        <Text fw="bold" size="sm">
           {quickStart.title}
         </Text>
         <Text size="xs" c="dimmed">
