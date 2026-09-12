@@ -32,6 +32,7 @@ import {
   PiPaperPlaneTilt,
   PiDotsThreeBold,
   PiSuitcaseRollingBold,
+  PiSignOut,
 } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { ViewOnlyBanner } from "../auth/ViewOnlyBanner";
@@ -96,6 +97,11 @@ export default function TripLayout() {
     {
       label: "Packing",
       icon: <PiSuitcaseRollingBold />,
+      disabled: locations.length === 0,
+    },
+    {
+      label: "Departure",
+      icon: <PiSignOut />,
       disabled: locations.length === 0,
     },
   ];

@@ -12,6 +12,7 @@ import {
   PackingPanel,
   TodoPanel,
   TransportPanel,
+  ChecklistPanel,
 } from "./components";
 import { Button, CanEditTrip } from "@/components";
 
@@ -90,6 +91,9 @@ export default function TripDetailPage() {
     }
     case "Packing": {
       return <PackingPanel />;
+    }
+    case "Departure": {
+      return <ChecklistPanel />;
     }
     default: {
       return <LocationPanel tripId={tripId} />;
