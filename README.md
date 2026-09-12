@@ -191,14 +191,15 @@ feedback                                    (standalone; optional trip/user refs
 
 ## Roadmap
 
-| Milestone    | Outcome                                                                                                                                            |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0.1.0** ✅ | All pages and components built, running on mock data                                                                                               |
-| **0.2.0** ✅ | Mock data removed; Supabase auth, RLS, and cost/budget views working                                                                               |
-| **0.3.0** ✅ | Theme toggling (light/dark/auto) and full responsiveness complete                                                                                  |
-| **0.4.0** 🚧 | _(current)_ Beta-ready: sharing, help pages, feedback, onboarding, and a live GitHub Pages deploy                                                  |
-| **0.5.0**    | Hardening & delight: tooling/CI, error logging (Sentry), and traveller features (countdowns, packing lists, departure checklists, calendar export) |
-| **1.0.0**    | Beta feedback implemented; ready to expand the user base                                                                                           |
+| Milestone    | Outcome                                                                                                                                                        |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0.1.0** ✅ | All pages and components built, running on mock data                                                                                                           |
+| **0.2.0** ✅ | Mock data removed; Supabase auth, RLS, and cost/budget views working                                                                                           |
+| **0.3.0** ✅ | Theme toggling (light/dark/auto) and full responsiveness complete                                                                                              |
+| **0.4.0** ✅ | Beta-ready: sharing, help pages, feedback, onboarding, and a live GitHub Pages deploy                                                                          |
+| **0.5.0** 🚧 | _(current)_ Hardening & delight: tooling/CI, error logging (Sentry), and traveller features (countdowns, packing lists, departure checklists, calendar export) |
+| **0.5.1**    | Platform foundations: installable PWA + a portable design-token system (reduced Mantine lock-in)                                                               |
+| **1.0.0**    | Beta feedback implemented; ready to expand the user base                                                                                                       |
 
 ## Deployment
 
