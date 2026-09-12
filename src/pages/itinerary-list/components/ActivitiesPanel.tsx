@@ -12,7 +12,12 @@ import {
 import { ActivityModal } from "./ActivityModal";
 import { CanEditTrip, Button, IconButton, DeleteModal } from "@/components";
 import { PiPlus, PiDotsThreeBold } from "react-icons/pi";
-import { FaPencil, FaRegTrashCan, FaLink } from "react-icons/fa6";
+import {
+  FaPencil,
+  FaRegTrashCan,
+  FaLink,
+  FaRegCalendarPlus,
+} from "react-icons/fa6";
 import dayjs from "dayjs";
 import type { Activity, ActivityType, Location } from "@/types/models";
 import { calcNights } from "@/utils/calcNights";
@@ -22,6 +27,7 @@ import { useState } from "react";
 import { useActivityStore } from "@/stores/activityStore";
 import { formatDuration } from "@/utils/formatDuration";
 import { formatDate } from "@/utils/date";
+import { downloadCalendarEvent } from "@/utils/calendar";
 
 const ACTIVITY_TYPE_COLOR: Record<ActivityType, string> = {
   breakfast: "lavender",
@@ -53,11 +59,19 @@ interface DayGroup {
 interface ActivitiesPanelProps {
   location: Location;
   activities: Activity[];
+  getActivityCalendarEvent: (activity: Activity) => {
+    title: string;
+    location: string;
+    url: string | null;
+    start: Date;
+    end: Date;
+  } | null;
 }
 
 export const ActivitiesPanel = ({
   location,
   activities,
+  getActivityCalendarEvent,
 }: ActivitiesPanelProps) => {
   const [deleteTarget, setDeleteTarget] = useState<Activity | null>(null);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
@@ -121,6 +135,16 @@ export const ActivitiesPanel = ({
     await deleteActivity(deleteTarget.id);
     setDeleteTarget(null);
     closeDelete();
+  };
+
+  const handleAddToCalendar = (activity: Activity) => {
+    const event = getActivityCalendarEvent(activity);
+
+    if (!event) {
+      return;
+    }
+
+    downloadCalendarEvent(event);
   };
 
   return (
@@ -235,7 +259,7 @@ export const ActivitiesPanel = ({
                               color="peach.3"
                               c="peach.8"
                               radius="sm"
-                              size="sm"
+                              size="md"
                               bd="2px solid peach.8"
                               p={2}
                             >
@@ -243,6 +267,20 @@ export const ActivitiesPanel = ({
                             </ThemeIcon>
                           </Anchor>
                         )}
+                        <ThemeIcon
+                          variant="filled"
+                          color="mint.3"
+                          c="mint.8"
+                          radius="sm"
+                          size="md"
+                          bd="2px solid mint.8"
+                          p={0}
+                          style={{ cursor: "pointer" }}
+                          title="Add to calendar"
+                          onClick={() => handleAddToCalendar(activity)}
+                        >
+                          <FaRegCalendarPlus size="0.8rem" />
+                        </ThemeIcon>
                       </Group>
 
                       <Group gap="md" wrap="nowrap" style={{ flexShrink: 0 }}>

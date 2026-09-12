@@ -16,7 +16,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { FaPencil, FaRegTrashCan } from "react-icons/fa6";
+import { FaPencil, FaRegTrashCan, FaRegCalendarPlus } from "react-icons/fa6";
 import {
   PiSubway,
   PiBus,
@@ -28,6 +28,9 @@ import {
 } from "react-icons/pi";
 import { TransportModal } from "./TransportModal";
 import { useTransportStore } from "@/stores/transportStore";
+import dayjs from "dayjs";
+import { useLocationStore } from "@/stores/locationStore";
+import { downloadCalendarEvent } from "@/utils/calendar";
 
 const TYPE_COLOR: Record<Transport["type"], string> = {
   flight: "lavender",
@@ -69,6 +72,7 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
     useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
+  const locations = useLocationStore((s) => s.locations);
 
   const { type, name, start_date, end_date, duration_minutes, cost } =
     transport;
@@ -87,6 +91,51 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
   const confirmDelete = async () => {
     await deleteTransport(transport.id);
     closeDelete();
+  };
+
+  const getTransportCalendarEvent = () => {
+    if (!transport.start_date) {
+      return null;
+    }
+
+    const start = dayjs(transport.start_date);
+
+    if (!start.isValid()) {
+      return null;
+    }
+
+    const end = transport.end_date
+      ? dayjs(transport.end_date)
+      : transport.duration_minutes
+        ? start.add(transport.duration_minutes, "minute")
+        : start.add(1, "hour");
+
+    if (!end.isValid()) {
+      return null;
+    }
+
+    const startLocation =
+      locations.find((l) => l.id === transport.start_location_id) ?? null;
+    const endLocation =
+      locations.find((l) => l.id === transport.end_location_id) ?? null;
+
+    return {
+      title: transport.name,
+      location: startLocation ? startLocation.city : "",
+      description: endLocation ? `To: ${endLocation.city}` : undefined,
+      start: start.toDate(),
+      end: end.toDate(),
+    };
+  };
+
+  const handleAddToCalendar = () => {
+    const event = getTransportCalendarEvent();
+
+    if (!event) {
+      return;
+    }
+
+    downloadCalendarEvent(event);
   };
 
   return (
@@ -164,6 +213,12 @@ export const TransportCard = ({ tripId, transport }: TransportCardProps) => {
                 <Menu.Dropdown>
                   <Menu.Item leftSection={<FaPencil />} onClick={openEdit}>
                     Edit
+                  </Menu.Item>
+                  <Menu.Item
+                    leftSection={<FaRegCalendarPlus />}
+                    onClick={handleAddToCalendar}
+                  >
+                    Add to Calendar
                   </Menu.Item>
                   <Menu.Divider />
                   <Menu.Item

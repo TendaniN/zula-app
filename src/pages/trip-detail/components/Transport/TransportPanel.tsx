@@ -29,7 +29,7 @@ export const TransportPanel = ({ tripId }: TransportPanelProps) => {
       setInitialized(true);
     };
 
-    load(tripId);
+    void load(tripId);
   }, [tripId]);
 
   if (!initialized) {

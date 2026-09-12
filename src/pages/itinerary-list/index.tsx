@@ -16,12 +16,15 @@ import noActivitiesImg from "@/assets/icons/empty-itinerary.svg";
 import { useLocationStore } from "@/stores/locationStore";
 import { ActivityModal } from "./components/ActivityModal";
 import { Button, CanEditTrip } from "@/components";
-import { PiArrowLeft, PiPlus } from "react-icons/pi";
+import { PiArrowLeft, PiPlus, PiCalendarPlus } from "react-icons/pi";
 import "./styles.scss";
 import { getCountryFlag } from "@/utils/getCountryFlag";
 import { calcNights } from "@/utils/calcNights";
 import { ActivitiesPanel } from "./components/ActivitiesPanel";
 import { formatDate } from "@/utils/date";
+import type { Activity } from "@/types/models";
+import { downloadCalendarEvents } from "@/utils/calendar";
+import dayjs from "dayjs";
 
 export default function ItineraryListPage() {
   const { fetchByLocation, loading, activities } = useActivityStore();
@@ -33,15 +36,15 @@ export default function ItineraryListPage() {
 
   useEffect(() => {
     const load = async (id: string, tripId: string) => {
-      fetchByLocation(id);
+      void fetchByLocation(id);
       if (locations.length === 0) {
-        fetchByTrip(tripId);
+        void fetchByTrip(tripId);
       }
       setInitialized(true);
     };
 
     if (locationId && tripId) {
-      load(locationId, tripId);
+      void load(locationId, tripId);
     }
   }, [locationId, tripId]);
 
@@ -142,6 +145,40 @@ export default function ItineraryListPage() {
     nights > 0 ? `${nights} ${nights === 1 ? "night" : "nights"}` : null,
   ].join(" · ");
 
+  const getActivityCalendarEvent = (activity: Activity) => {
+    if (!activity.activity_date || !activity.activity_time) {
+      return null;
+    }
+
+    const start = dayjs(`${activity.activity_date} ${activity.activity_time}`);
+
+    if (!start.isValid()) {
+      return null;
+    }
+
+    const end = activity.duration_minutes
+      ? start.add(activity.duration_minutes, "minute")
+      : start.add(1, "hour");
+
+    return {
+      title: activity.name,
+      location: location.city,
+      url: activity.link,
+      start: start.toDate(),
+      end: end.toDate(),
+    };
+  };
+
+  const handleAddToCalendar = () => {
+    const calendarEvents = [
+      ...activities
+        .map((activity) => getActivityCalendarEvent(activity))
+        .filter((event) => event !== null),
+    ];
+
+    downloadCalendarEvents(calendarEvents);
+  };
+
   return (
     <Stack p="lg" gap="lg" flex={1} miw={0}>
       <Group align="flex-start" gap="lg" wrap="nowrap" w="100%">
@@ -187,11 +224,25 @@ export default function ItineraryListPage() {
               <Text size="sm" c="dimmed" fw={500}>
                 {infoLine || "Dates and stay details will show once set"}
               </Text>
-              <CanEditTrip>
-                <ActivityModal locationId={locationId} />
-              </CanEditTrip>
+              <Group>
+                <Button
+                  leftSection={<PiCalendarPlus />}
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleAddToCalendar()}
+                >
+                  Add all to calendar
+                </Button>
+                <CanEditTrip>
+                  <ActivityModal locationId={locationId} />
+                </CanEditTrip>
+              </Group>
             </Group>
-            <ActivitiesPanel location={location} activities={activities} />
+            <ActivitiesPanel
+              location={location}
+              activities={activities}
+              getActivityCalendarEvent={getActivityCalendarEvent}
+            />
           </Card>
         </Stack>
       </Group>
