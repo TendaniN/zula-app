@@ -30,7 +30,7 @@ export const TodoPanel = ({ tripId }: TodoPanelProps) => {
       setInitialized(true);
     };
 
-    load(tripId);
+    void load(tripId);
   }, [tripId]);
 
   if (!initialized) {

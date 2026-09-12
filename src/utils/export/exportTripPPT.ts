@@ -565,5 +565,5 @@ export const exportTripPPT = async (
   buildTravelSlide(pptx, trip);
   buildBudgetSlide(pptx, trip, months);
 
-  pptx.writeFile({ fileName: `${trip.name ?? "Trip"}.pptx` });
+  await pptx.writeFile({ fileName: `${trip.name ?? "Trip"}.pptx` });
 };

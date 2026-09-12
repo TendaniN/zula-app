@@ -72,7 +72,7 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
       setInitialized(true);
     };
 
-    load(
+    void load(
       locations.map((s) => s.id),
       currentTripSummary.id,
     );
@@ -96,8 +96,9 @@ export const BudgetPanel = ({ currentTripSummary }: BudgetPanelProps) => {
     );
   }
 
-  const handleAdjust = (key: keyof BudgetMonths, delta: number) => {
-    if (currentTripSummary.id) adjustMonth(currentTripSummary.id, key, delta);
+  const handleAdjust = async (key: keyof BudgetMonths, delta: number) => {
+    if (currentTripSummary.id)
+      await adjustMonth(currentTripSummary.id, key, delta);
   };
 
   const {
