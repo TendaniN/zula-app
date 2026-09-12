@@ -21,7 +21,9 @@ export const OnboardingModal = ({ name, userId }: OnboardingModalProps) => {
     close();
 
     startTour({
-      onComplete: () => userId && complete(userId),
+      onComplete: () => {
+        if (userId) void complete(userId);
+      },
     });
   };
 

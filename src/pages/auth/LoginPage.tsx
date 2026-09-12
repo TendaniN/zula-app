@@ -48,12 +48,12 @@ export default function LoginPage() {
   useEffect(() => {
     if (!user) return;
 
-    refresh(user.id);
+    void refresh(user.id);
 
     const next = searchParams.get("next");
     const isInternal = !!next && next.startsWith("/") && !next.startsWith("//");
 
-    navigate(isInternal ? next : "/trips", { replace: true });
+    void navigate(isInternal ? next : "/trips", { replace: true });
   }, [navigate, user, searchParams, refresh]);
 
   return (
@@ -66,7 +66,7 @@ export default function LoginPage() {
             e.preventDefault();
             e.stopPropagation();
 
-            handleSubmit();
+            void handleSubmit();
           }}
         >
           <Stack gap="md">

@@ -22,7 +22,7 @@ export default function LogoutPage() {
   };
 
   useEffect(() => {
-    handleLogout();
+    void handleLogout();
   }, []);
 
   const { colorScheme } = useMantineColorScheme();

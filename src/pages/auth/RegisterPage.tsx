@@ -44,14 +44,14 @@ export default function RegisterPage() {
         if (error) {
           setFormErrors(error);
         }
-        navigate("/login");
+        void navigate("/login");
       }
     },
   });
 
   useEffect(() => {
     if (user) {
-      navigate("/trips");
+      void navigate("/trips");
     }
   }, [navigate, user]);
 
@@ -65,7 +65,7 @@ export default function RegisterPage() {
             e.preventDefault();
             e.stopPropagation();
 
-            handleSubmit();
+            void handleSubmit();
           }}
         >
           <Stack gap="md">
