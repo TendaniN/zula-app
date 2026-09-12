@@ -13,14 +13,14 @@ export default function DefaultLayout() {
   const location = useLocation();
 
   useEffect(() => {
-    initialize().finally(() => setInitialized(true));
-  }, []);
+    void initialize().finally(() => setInitialized(true));
+  }, [initialize]);
 
   useEffect(() => {
     if (user) {
-      refresh(user.id);
+      void refresh(user.id);
     }
-  }, [user?.id]);
+  }, [refresh, user?.id]);
 
   // Show loader until the auth session has been checked at least once.
   if (!initialized || loading) {
