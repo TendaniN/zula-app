@@ -27,7 +27,7 @@ export default function DefaultLayout() {
     return <DefaultLoader />;
   }
 
-  if (!user || !profile) {
+  if (!user && !profile) {
     const next = encodeURIComponent(location.pathname + location.search);
     return <Navigate to={`/login?next=${next}`} replace />;
   }
@@ -35,7 +35,9 @@ export default function DefaultLayout() {
   return (
     <>
       <Outlet />
-      <OnboardingModal name={profile.first_name} userId={user.id} />
+      {profile && user && (
+        <OnboardingModal name={profile.first_name} userId={user.id} />
+      )}
     </>
   );
 }
